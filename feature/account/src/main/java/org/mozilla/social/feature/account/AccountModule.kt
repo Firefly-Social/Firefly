@@ -2,8 +2,10 @@ package org.mozilla.social.feature.account
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.mozilla.social.common.commonModule
+import org.mozilla.social.core.analytics.AccountAnalytics
 import org.mozilla.social.core.analytics.analyticsModule
 import org.mozilla.social.core.datastore.dataStoreModule
 import org.mozilla.social.core.navigation.navigationModule

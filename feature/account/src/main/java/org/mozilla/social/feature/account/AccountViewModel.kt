@@ -15,14 +15,13 @@ import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import org.mozilla.social.common.Resource
 import org.mozilla.social.common.utils.edit
-import org.mozilla.social.core.analytics.Analytics
-import org.mozilla.social.core.analytics.AnalyticsIdentifiers
-import org.mozilla.social.core.analytics.EngagementType
+import org.mozilla.social.core.analytics.AccountAnalytics
 import org.mozilla.social.core.model.AccountTimelineType
 import org.mozilla.social.core.navigation.NavigationDestination
 import org.mozilla.social.core.navigation.usecases.NavigateTo
 import org.mozilla.social.core.repository.mastodon.TimelineRepository
 import org.mozilla.social.core.repository.paging.AccountTimelineRemoteMediator
+import org.mozilla.social.core.analytics.FeedLocation
 import org.mozilla.social.core.ui.postcard.PostCardDelegate
 import org.mozilla.social.core.ui.postcard.toPostCardUiState
 import org.mozilla.social.core.usecase.mastodon.account.BlockAccount
@@ -36,7 +35,7 @@ import org.mozilla.social.core.usecase.mastodon.account.UnmuteAccount
 import timber.log.Timber
 
 class AccountViewModel(
-    private val analytics: Analytics,
+    private val analytics: AccountAnalytics,
     getLoggedInUserAccountId: GetLoggedInUserAccountId,
     timelineRepository: TimelineRepository,
     private val getDetailedAccount: GetDetailedAccount,
@@ -53,7 +52,7 @@ class AccountViewModel(
     val postCardDelegate: PostCardDelegate by inject {
         parametersOf(
             viewModelScope,
-            AnalyticsIdentifiers.FEED_PREFIX_PROFILE
+            FeedLocation.PROFILE,
         )
     }
 
@@ -108,7 +107,7 @@ class AccountViewModel(
         remoteMediator = postsRemoteMediator,
     ).map { pagingData ->
         pagingData.map {
-            it.toPostCardUiState(usersAccountId)
+            it.toPostCardUiState(usersAccountId, postCardDelegate)
         }
     }.cachedIn(viewModelScope)
 
@@ -119,7 +118,7 @@ class AccountViewModel(
         remoteMediator = postsAndRepliesRemoteMediator,
     ).map { pagingData ->
         pagingData.map {
-            it.toPostCardUiState(usersAccountId)
+            it.toPostCardUiState(usersAccountId, postCardDelegate)
         }
     }.cachedIn(viewModelScope)
 
@@ -130,7 +129,7 @@ class AccountViewModel(
         remoteMediator = mediaRemoteMediator,
     ).map { pagingData ->
         pagingData.map {
-            it.toPostCardUiState(usersAccountId)
+            it.toPostCardUiState(usersAccountId, postCardDelegate)
         }
     }.cachedIn(viewModelScope)
 
@@ -165,9 +164,7 @@ class AccountViewModel(
     }
 
     override fun onScreenViewed() {
-        analytics.uiImpression(
-            uiIdentifier = AnalyticsIdentifiers.ACCOUNTS_SCREEN_IMPRESSION,
-        )
+        analytics.accountScreenViewed()
     }
 
     override fun onOverflowFavoritesClicked() {
@@ -177,16 +174,11 @@ class AccountViewModel(
     }
 
     override fun onOverflowShareClicked() {
-        analytics.uiEngagement(
-            uiIdentifier = AnalyticsIdentifiers.PROFILE_OVERFLOW_SHARE,
-        )
+        analytics.overflowShareClicked()
     }
 
     override fun onOverflowMuteClicked() {
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.PROFILE_OVERFLOW_MUTE,
-        )
+        analytics.overflowMuteClicked()
         viewModelScope.launch {
             try {
                 muteAccount(accountId)
@@ -197,10 +189,7 @@ class AccountViewModel(
     }
 
     override fun onOverflowUnmuteClicked() {
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.PROFILE_OVERFLOW_UNMUTE,
-        )
+        analytics.overflowUnmuteClicked()
         viewModelScope.launch {
             try {
                 unmuteAccount(accountId)
@@ -211,10 +200,7 @@ class AccountViewModel(
     }
 
     override fun onOverflowBlockClicked() {
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.PROFILE_OVERFLOW_BLOCK,
-        )
+        analytics.overflowBlockClicked()
         viewModelScope.launch {
             try {
                 blockAccount(accountId)
@@ -225,10 +211,7 @@ class AccountViewModel(
     }
 
     override fun onOverflowUnblockClicked() {
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.PROFILE_OVERFLOW_UNBLOCK,
-        )
+        analytics.overflowUnblockClicked()
         viewModelScope.launch {
             try {
                 unblockAccount(accountId)
@@ -239,10 +222,7 @@ class AccountViewModel(
     }
 
     override fun onOverflowReportClicked() {
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.PROFILE_OVERFLOW_REPORT,
-        )
+        analytics.overflowReportClicked()
         (uiState.value as? Resource.Loaded)?.data?.webFinger?.let { webFinger ->
             navigateTo(
                 NavigationDestination.Report(
@@ -278,9 +258,7 @@ class AccountViewModel(
     }
 
     override fun onFollowClicked() {
-        analytics.uiEngagement(
-            uiIdentifier = AnalyticsIdentifiers.ACCOUNTS_SCREEN_FOLLOW,
-        )
+        analytics.followClicked()
         viewModelScope.launch {
             try {
                 followAccount(
@@ -294,9 +272,7 @@ class AccountViewModel(
     }
 
     override fun onUnfollowClicked() {
-        analytics.uiEngagement(
-            uiIdentifier = AnalyticsIdentifiers.ACCOUNTS_SCREEN_UNFOLLOW,
-        )
+        analytics.unfollowClicked()
         viewModelScope.launch {
             try {
                 unfollowAccount(
@@ -317,14 +293,7 @@ class AccountViewModel(
         _timeline.edit { copy(
             type = timelineType
         ) }
-        when (timelineType) {
-            AccountTimelineType.POSTS ->
-                analytics.uiEngagement(uiIdentifier = AnalyticsIdentifiers.PROFILE_FEED_POSTS)
-            AccountTimelineType.POSTS_AND_REPLIES ->
-                analytics.uiEngagement(uiIdentifier = AnalyticsIdentifiers.PROFILE_FEED_POSTS_AND_REPLIES,)
-            AccountTimelineType.MEDIA ->
-                analytics.uiEngagement(uiIdentifier = AnalyticsIdentifiers.PROFILE_FEED_MEDIA,)
-        }
+        analytics.tabClicked(timelineType.toAnalyticsTimelineType())
     }
 
     override fun onSettingsClicked() {
@@ -332,9 +301,13 @@ class AccountViewModel(
     }
 
     override fun onEditAccountClicked() {
-        analytics.uiEngagement(
-            uiIdentifier = AnalyticsIdentifiers.PROFILE_EDIT_PROFILE,
-        )
+        analytics.editAccountClicked()
         navigateTo(NavigationDestination.EditAccount)
     }
+}
+
+private fun AccountTimelineType.toAnalyticsTimelineType(): AccountAnalytics.TimelineType = when (this) {
+    AccountTimelineType.POSTS -> AccountAnalytics.TimelineType.POSTS
+    AccountTimelineType.POSTS_AND_REPLIES -> AccountAnalytics.TimelineType.POSTS_AND_REPLIES
+    AccountTimelineType.MEDIA -> AccountAnalytics.TimelineType.MEDIA
 }

@@ -1,3 +1,3 @@
-# MozillaSocialAndroid
+# Firefly - A Mastodon android client
 
-Android client for [mozilla.social](https://mozilla.social) in early stages of development.
+This is a continuation of the Mozilla Social Android app.

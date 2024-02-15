@@ -14,9 +14,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import org.mozilla.social.common.utils.edit
-import org.mozilla.social.core.analytics.Analytics
-import org.mozilla.social.core.analytics.AnalyticsIdentifiers
-import org.mozilla.social.core.analytics.EngagementType
 import org.mozilla.social.core.navigation.NavigationDestination
 import org.mozilla.social.core.navigation.usecases.NavigateTo
 import org.mozilla.social.core.repository.mastodon.SearchRepository
@@ -25,6 +22,8 @@ import org.mozilla.social.core.repository.paging.SearchStatusesRemoteMediator
 import org.mozilla.social.core.repository.paging.SearchedHashTagsRemoteMediator
 import org.mozilla.social.core.ui.accountfollower.toAccountFollowerUiState
 import org.mozilla.social.core.ui.common.hashtag.quickview.toHashTagQuickViewUiState
+import org.mozilla.social.core.analytics.FeedLocation
+import org.mozilla.social.core.analytics.SearchAnalytics
 import org.mozilla.social.core.ui.postcard.PostCardDelegate
 import org.mozilla.social.core.ui.postcard.toPostCardUiState
 import org.mozilla.social.core.usecase.mastodon.account.FollowAccount
@@ -45,7 +44,7 @@ class SearchViewModel(
     private val searchRepository: SearchRepository,
     private val followHashTag: FollowHashTag,
     private val unfollowHashTag: UnfollowHashTag,
-    private val analytics: Analytics,
+    private val analytics: SearchAnalytics,
 ) : ViewModel(), SearchInteractions, KoinComponent {
 
     private val usersAccountId: String = getLoggedInUserAccountId()
@@ -58,7 +57,7 @@ class SearchViewModel(
     val postCardDelegate: PostCardDelegate by inject {
         parametersOf(
             viewModelScope,
-            AnalyticsIdentifiers.FEED_PREFIX_SEARCH,
+            FeedLocation.SEARCH,
         )
     }
 
@@ -92,7 +91,7 @@ class SearchViewModel(
                 remoteMediator = statusesRemoteMediator,
             ).map { pagingData ->
                 pagingData.map {
-                    it.toPostCardUiState(usersAccountId)
+                    it.toPostCardUiState(usersAccountId, postCardDelegate)
                 }
             }.cachedIn(viewModelScope)
         ) }
@@ -133,8 +132,17 @@ class SearchViewModel(
                 viewModelScope,
             ) { searchResult ->
                 SearchResultUiState(
-                    postCardUiStates = searchResult.statuses.map { it.toPostCardUiState(usersAccountId) },
-                    accountUiStates = searchResult.accounts.map { it.toSearchedAccountUiState(usersAccountId) },
+                    postCardUiStates = searchResult.statuses.map {
+                        it.toPostCardUiState(
+                            usersAccountId,
+                            postCardDelegate
+                        )
+                    },
+                    accountUiStates = searchResult.accounts.map {
+                        it.toSearchedAccountUiState(
+                            usersAccountId
+                        )
+                    },
                 )
             }.collect {
                 _uiState.edit { copy(
@@ -142,11 +150,7 @@ class SearchViewModel(
                 ) }
             }
         }
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.SEARCH_QUERY,
-            uiAdditionalDetail = uiState.value.query,
-        )
+        analytics.searchClicked(uiState.value.query)
     }
 
     override fun onRetryClicked() {
@@ -157,15 +161,7 @@ class SearchViewModel(
         _uiState.edit { copy(
             selectedTab = tab
         ) }
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = when (tab) {
-                SearchTab.POSTS -> AnalyticsIdentifiers.SEARCH_TAB_POSTS
-                SearchTab.ACCOUNTS -> AnalyticsIdentifiers.SEARCH_TAB_ACCOUNTS
-                SearchTab.HASHTAGS -> AnalyticsIdentifiers.SEARCH_TAB_HASHTAGS
-                SearchTab.TOP -> AnalyticsIdentifiers.SEARCH_TAB_TOP
-            }
-        )
+        analytics.searchTabClicked(tab.toAnalyticsSearchTab())
     }
 
     override fun onFollowClicked(accountId: String, isFollowing: Boolean) {
@@ -184,26 +180,17 @@ class SearchViewModel(
                 }
             }
         }
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.SEARCH_ACCOUNT_FOLLOW,
-        )
+        analytics.followClicked()
     }
 
     override fun onAccountClicked(accountId: String) {
         navigateTo(NavigationDestination.Account(accountId = accountId))
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.SEARCH_ACCOUNT_CLICKED,
-        )
+        analytics.accountClicked()
     }
 
     override fun onHashTagClicked(name: String) {
         navigateTo(NavigationDestination.HashTag(name))
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.SEARCH_HASHTAG_CLICKED,
-        )
+        analytics.hashtagClicked()
     }
 
     override fun onHashTagFollowClicked(name: String, isFollowing: Boolean) {
@@ -222,9 +209,15 @@ class SearchViewModel(
                 }
             }
         }
-        analytics.uiEngagement(
-            engagementType = EngagementType.GENERAL,
-            uiIdentifier = AnalyticsIdentifiers.SEARCH_HASHTAG_FOLLOW,
-        )
+        analytics.hashtagFollowClicked()
+    }
+}
+
+private fun SearchTab.toAnalyticsSearchTab(): SearchAnalytics.SearchTab {
+    return when (this) {
+        SearchTab.TOP -> SearchAnalytics.SearchTab.TOP
+        SearchTab.ACCOUNTS -> SearchAnalytics.SearchTab.ACCOUNTS
+        SearchTab.POSTS -> SearchAnalytics.SearchTab.POSTS
+        SearchTab.HASHTAGS -> SearchAnalytics.SearchTab.HASHTAGS
     }
 }

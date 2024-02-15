@@ -2,6 +2,8 @@ package org.mozilla.social.core.ui.postcard
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.mozilla.social.core.analytics.FeedLocation
+import org.mozilla.social.core.analytics.PostCardAnalytics
 import org.mozilla.social.core.model.Attachment
 import org.mozilla.social.core.navigation.NavigationDestination
 import org.mozilla.social.core.navigation.usecases.NavigateTo
@@ -18,7 +20,7 @@ import timber.log.Timber
 
 class PostCardDelegate(
     private val coroutineScope: CoroutineScope,
-    private val baseAnalyticsIdentifier: String,
+    feedLocation: FeedLocation,
     private val navigateTo: NavigateTo,
     private val openLink: OpenLink,
     private val blockAccount: BlockAccount,
@@ -31,6 +33,8 @@ class PostCardDelegate(
     private val deleteStatus: DeleteStatus,
     private val analytics: PostCardAnalytics,
 ) : PostCardInteractions {
+
+    private val baseAnalyticsIdentifier: String = feedLocation.baseAnalyticsIdentifier
     override fun onVoteClicked(
         pollId: String,
         choices: List<Int>,
