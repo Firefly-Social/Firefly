@@ -12,6 +12,5 @@ if [[ -z "$GPG_KEY" ]]; then
 fi
 
 encrypt "secret.properties"
-encrypt "../app/sentry.properties"
 encrypt "secret-environment-variables.sh"
 encrypt "boxwood-axon-825-ed7aa5764ee6.json"
