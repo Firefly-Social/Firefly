@@ -1,7 +1,6 @@
 plugins {
     id("org.mozilla.social.android.library")
     id("org.mozilla.social.android.library.secrets")
-    alias(libs.plugins.jetbrains.python)
 }
 
 android {
