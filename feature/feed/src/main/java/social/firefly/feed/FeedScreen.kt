@@ -90,7 +90,7 @@ private fun FeedScreen(
                         text = stringResource(id = R.string.firefly),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.W700,
-                        fontFamily = MoSoFonts.zillaSlab,
+                        fontFamily = MoSoFonts.petiteFormalScript,
                     )
                 },
             )
