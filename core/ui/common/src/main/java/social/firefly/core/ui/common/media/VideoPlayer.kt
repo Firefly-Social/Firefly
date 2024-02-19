@@ -27,8 +27,8 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import social.firefly.common.LoadState
 import social.firefly.core.designsystem.icon.MoSoIcons
-import social.firefly.core.designsystem.theme.FirefoxColor
 import social.firefly.core.designsystem.theme.MoSoRadius
+import social.firefly.core.designsystem.theme.MoSoTheme
 import social.firefly.core.ui.common.NoTouchOverlay
 import social.firefly.core.ui.common.utils.media
 import timber.log.Timber
@@ -123,13 +123,13 @@ private fun BoxScope.MuteButton(exoPlayer: ExoPlayer) {
             Icon(
                 painter = MoSoIcons.volumeMute(),
                 contentDescription = null,
-                tint = FirefoxColor.White,
+                tint = MoSoTheme.colors.playerControlsForeground,
             )
         } else {
             Icon(
                 painter = MoSoIcons.volumeUp(),
                 contentDescription = null,
-                tint = FirefoxColor.White,
+                tint = MoSoTheme.colors.playerControlsForeground,
             )
         }
     }
