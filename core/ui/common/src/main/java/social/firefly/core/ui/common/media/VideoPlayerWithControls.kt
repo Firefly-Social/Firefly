@@ -32,11 +32,11 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import kotlinx.coroutines.delay
-import social.firefly.core.designsystem.icon.MoSoIcons
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.icon.FfIcons
+import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.ui.common.NoTouchOverlay
 import social.firefly.core.ui.common.R
-import social.firefly.core.ui.common.loading.MoSoLinearProgressIndicator
+import social.firefly.core.ui.common.loading.FfLinearProgressIndicator
 import social.firefly.core.ui.common.text.SmallTextLabel
 import timber.log.Timber
 import kotlin.math.roundToLong
@@ -118,7 +118,7 @@ private fun VideoControls(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(MoSoTheme.colors.playerControlsBackground),
+            .background(FfTheme.colors.playerControlsBackground),
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = {
@@ -131,22 +131,22 @@ private fun VideoControls(
         }) {
             Icon(
                 modifier = Modifier
-                    .size(MoSoIcons.Sizes.small),
+                    .size(FfIcons.Sizes.small),
                 painter = if (isPlaying) {
-                    MoSoIcons.pause()
+                    FfIcons.pause()
                 } else {
-                    MoSoIcons.play()
+                    FfIcons.play()
                 },
                 contentDescription = if (isPlaying) {
                     stringResource(id = R.string.pause)
                 } else {
                     stringResource(id = R.string.play)
                 },
-                tint = MoSoTheme.colors.playerControlsForeground,
+                tint = FfTheme.colors.playerControlsForeground,
             )
         }
 
-        MoSoLinearProgressIndicator(
+        FfLinearProgressIndicator(
             modifier = Modifier.weight(1f),
             progress = progress,
             onTouch = {
@@ -158,7 +158,7 @@ private fun VideoControls(
 
         SmallTextLabel(
             text = "${exoPlayer.contentPosition.toTimeString()}/${exoPlayer.duration.toTimeString()}",
-            color = MoSoTheme.colors.playerControlsForeground,
+            color = FfTheme.colors.playerControlsForeground,
         )
 
         IconButton(
@@ -174,14 +174,14 @@ private fun VideoControls(
         ) {
             Icon(
                 modifier = Modifier
-                    .size(MoSoIcons.Sizes.small),
+                    .size(FfIcons.Sizes.small),
                 painter = if (muted.value) {
-                    MoSoIcons.volumeMute()
+                    FfIcons.volumeMute()
                 } else {
-                    MoSoIcons.volumeUp()
+                    FfIcons.volumeUp()
                 },
                 contentDescription = stringResource(id = R.string.mute),
-                tint = MoSoTheme.colors.playerControlsForeground,
+                tint = FfTheme.colors.playerControlsForeground,
             )
         }
     }
