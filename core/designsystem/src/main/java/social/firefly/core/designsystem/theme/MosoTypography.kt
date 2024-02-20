@@ -51,7 +51,7 @@ val Typography =
 /**
  * A custom typography for Mozilla Social for Android.
  */
-class MoSoTypography(
+class FfTypography(
     val displayLarge: TextStyle,
     val displayMedium: TextStyle,
     val displaySmall: TextStyle,
@@ -69,7 +69,7 @@ class MoSoTypography(
 )
 
 val defaultTypography =
-    MoSoTypography(
+    FfTypography(
         displayLarge =
         TextStyle(
             fontSize = 54.sp,
@@ -184,11 +184,11 @@ private fun TypographyPreview() {
             Pair("Body Small", defaultTypography.bodySmall),
         )
 
-    MoSoTheme {
+    FfTheme {
         LazyColumn(
             modifier =
             Modifier
-                .background(MoSoTheme.colors.layer1)
+                .background(FfTheme.colors.layer1)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {

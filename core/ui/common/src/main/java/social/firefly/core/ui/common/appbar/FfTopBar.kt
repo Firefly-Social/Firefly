@@ -21,10 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import org.koin.compose.koinInject
 import social.firefly.core.designsystem.R
-import social.firefly.core.designsystem.icon.MoSoIcons
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.icon.FfIcons
+import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.navigation.usecases.PopNavBackstack
-import social.firefly.core.ui.common.divider.MoSoDivider
+import social.firefly.core.ui.common.divider.FfDivider
 
 /**
  * Top app bar which defaults to showing an X button which defaults to popping the navigation
@@ -38,7 +38,7 @@ import social.firefly.core.ui.common.divider.MoSoDivider
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MoSoCloseableTopAppBar(
+fun FfCloseableTopAppBar(
     modifier: Modifier = Modifier,
     title: String = "",
     showCloseButton: Boolean = true,
@@ -46,10 +46,10 @@ fun MoSoCloseableTopAppBar(
     actions: @Composable () -> Unit = {},
     showDivider: Boolean = false,
 ) {
-    MoSoTopBar(
+    FfTopBar(
         modifier = modifier,
         title = title,
-        icon = if (showCloseButton) MoSoIcons.backArrow() else null,
+        icon = if (showCloseButton) FfIcons.backArrow() else null,
         onIconClicked = { popBackstack() },
         actions = actions,
         showDivider = showDivider,
@@ -58,7 +58,7 @@ fun MoSoCloseableTopAppBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MoSoTopBar(
+fun FfTopBar(
     modifier: Modifier = Modifier,
     title: String = "",
     icon: Painter?,
@@ -70,7 +70,7 @@ fun MoSoTopBar(
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
-        MoSoTopBar(
+        FfTopBar(
             title = { TopBarTitle(title = title) },
             navigationIcon = {
                 icon?.let {
@@ -85,7 +85,7 @@ fun MoSoTopBar(
         )
 
         if (showDivider) {
-            MoSoDivider()
+            FfDivider()
         }
     }
 }
@@ -101,13 +101,13 @@ private fun TopBarTitle(title: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MoSoTopBar(
+fun FfTopBar(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-    colors: TopAppBarColors = MoSoTopBarDefaults.colors(),
+    colors: TopAppBarColors = FfTopBarDefaults.colors(),
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     TopAppBar(
@@ -132,29 +132,29 @@ private fun TopBarIconButton(
         Icon(
             painter = painter,
             contentDescription = stringResource(id = R.string.top_bar_close_content_description),
-            tint = MoSoTheme.colors.iconPrimary,
+            tint = FfTheme.colors.iconPrimary,
         )
     }
 }
 
-object MoSoTopBarDefaults {
+object FfTopBarDefaults {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun colors(): TopAppBarColors =
         TopAppBarDefaults.topAppBarColors(
-            containerColor = MoSoTheme.colors.layer1,
-            scrolledContainerColor = MoSoTheme.colors.layer1,
-            navigationIconContentColor = MoSoTheme.colors.iconPrimary,
-            titleContentColor = MoSoTheme.colors.textPrimary,
-            actionIconContentColor = MoSoTheme.colors.iconPrimary,
+            containerColor = FfTheme.colors.layer1,
+            scrolledContainerColor = FfTheme.colors.layer1,
+            navigationIconContentColor = FfTheme.colors.iconPrimary,
+            titleContentColor = FfTheme.colors.textPrimary,
+            actionIconContentColor = FfTheme.colors.iconPrimary,
         )
 }
 
 @Preview
 @Composable
-private fun MoSoTopBarPreview() {
-    MoSoTheme {
-        MoSoCloseableTopAppBar(
+private fun FfTopBarPreview() {
+    FfTheme {
+        FfCloseableTopAppBar(
             title = "test",
             actions = {
                 Text(text = "rightSide")

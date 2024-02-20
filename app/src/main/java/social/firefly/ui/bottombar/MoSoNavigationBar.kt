@@ -28,26 +28,26 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import social.firefly.common.utils.StringFactory
-import social.firefly.core.designsystem.icon.MoSoIcons
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.icon.FfIcons
+import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.navigation.BottomBarNavigationDestination
 import social.firefly.core.navigation.NavigationDestination
-import social.firefly.core.ui.common.MoSoSurface
+import social.firefly.core.ui.common.FfSurface
 import social.firefly.ui.bottombar.Destination.Main
 
 @Composable
-fun MoSoBottomNavigationBar(
+fun FfBottomNavigationBar(
     modifier: Modifier = Modifier,
     currentDestination: BottomBarNavigationDestination,
     bottomBarTabs: List<BottomBarTab>,
     navigateTo: (route: Destination) -> Unit,
-    containerColor: Color = MoSoNavigationBarDefaults.containerColor,
-    contentColor: Color = MoSoTheme.colors.iconPrimary,
+    containerColor: Color = FfNavigationBarDefaults.containerColor,
+    contentColor: Color = FfTheme.colors.iconPrimary,
     tonalElevation: Dp = NavigationBarDefaults.Elevation,
-    windowInsets: WindowInsets = MoSoNavigationBarDefaults.windowInsets,
+    windowInsets: WindowInsets = FfNavigationBarDefaults.windowInsets,
 ) {
     val context = LocalContext.current
-    MoSoNavigationBar(
+    FfNavigationBar(
         modifier = modifier,
         containerColor = containerColor,
         contentColor = contentColor,
@@ -57,7 +57,7 @@ fun MoSoBottomNavigationBar(
         bottomBarTabs.forEach {
             when (it.navigationDestination) {
                 is Destination.BottomBar -> {
-                    MoSoNavigationBarItem(
+                    FfNavigationBarItem(
                         modifier = Modifier
                             .semantics { contentDescription = it.tabText.build(context) },
                         destination = it,
@@ -75,15 +75,15 @@ fun MoSoBottomNavigationBar(
                             .height(48.dp),
                         selected = false,
                         onClick = { navigateTo(it.navigationDestination) },
-                        colors = MoSoNavigationBarItemDefaults.colors(),
+                        colors = FfNavigationBarItemDefaults.colors(),
                         icon = {
                             Icon(
-                                painter = MoSoIcons.connect(),
+                                painter = FfIcons.connect(),
                                 modifier =
                                     Modifier
                                         .size(40.dp),
                                 contentDescription = null,
-                                tint = MoSoTheme.colors.actionPrimary,
+                                tint = FfTheme.colors.actionPrimary,
                             )
                         },
                     )
@@ -94,16 +94,16 @@ fun MoSoBottomNavigationBar(
 }
 
 @Composable
-private fun MoSoNavigationBar(
+private fun FfNavigationBar(
     modifier: Modifier = Modifier,
-    containerColor: Color = MoSoNavigationBarDefaults.containerColor,
-    contentColor: Color = MoSoTheme.colors.iconPrimary,
-    tonalElevation: Dp = MoSoNavigationBarDefaults.Elevation,
-    windowInsets: WindowInsets = MoSoNavigationBarDefaults.windowInsets,
-    height: Dp = MoSoNavigationBarDefaults.height,
+    containerColor: Color = FfNavigationBarDefaults.containerColor,
+    contentColor: Color = FfTheme.colors.iconPrimary,
+    tonalElevation: Dp = FfNavigationBarDefaults.Elevation,
+    windowInsets: WindowInsets = FfNavigationBarDefaults.windowInsets,
+    height: Dp = FfNavigationBarDefaults.height,
     content: @Composable RowScope.() -> Unit,
 ) {
-    MoSoSurface(
+    FfSurface(
         color = containerColor,
         contentColor = contentColor,
         tonalElevation = tonalElevation,
@@ -123,7 +123,7 @@ private fun MoSoNavigationBar(
 }
 
 @Composable
-private fun RowScope.MoSoNavigationBarItem(
+private fun RowScope.FfNavigationBarItem(
     modifier: Modifier = Modifier,
     destination: BottomBarTab,
     isSelected: Boolean,
@@ -140,7 +140,7 @@ private fun RowScope.MoSoNavigationBarItem(
                 navigateTo(destination.navigationDestination)
             }
         },
-        colors = MoSoNavigationBarItemDefaults.colors(),
+        colors = FfNavigationBarItemDefaults.colors(),
         icon = {
             BottomBarIcon(
                 destination = destination,
@@ -199,36 +199,36 @@ sealed interface Destination {
     data class Main(val navigationDestination: NavigationDestination) : Destination
 }
 
-object MoSoNavigationDefaults {
+object FfNavigationDefaults {
     @Composable
-    fun unselectedItemColor() = MoSoTheme.colors.iconPrimary
+    fun unselectedItemColor() = FfTheme.colors.iconPrimary
 
     @Composable
-    fun selectedItemColor() = MoSoTheme.colors.actionPrimary
+    fun selectedItemColor() = FfTheme.colors.actionPrimary
 
     @Composable
-    fun indicatorColor() = MoSoTheme.colors.layer1
+    fun indicatorColor() = FfTheme.colors.layer1
 }
 
-object MoSoNavigationBarItemDefaults {
+object FfNavigationBarItemDefaults {
     @Composable
     fun colors(): NavigationBarItemColors {
         return NavigationBarItemDefaults.colors(
-            selectedIconColor = MoSoNavigationDefaults.selectedItemColor(),
-            unselectedIconColor = MoSoNavigationDefaults.unselectedItemColor(),
-            selectedTextColor = MoSoNavigationDefaults.selectedItemColor(),
-            unselectedTextColor = MoSoNavigationDefaults.unselectedItemColor(),
-            indicatorColor = MoSoNavigationDefaults.indicatorColor(),
+            selectedIconColor = FfNavigationDefaults.selectedItemColor(),
+            unselectedIconColor = FfNavigationDefaults.unselectedItemColor(),
+            selectedTextColor = FfNavigationDefaults.selectedItemColor(),
+            unselectedTextColor = FfNavigationDefaults.unselectedItemColor(),
+            indicatorColor = FfNavigationDefaults.indicatorColor(),
         )
     }
 }
 
-object MoSoNavigationBarDefaults {
+object FfNavigationBarDefaults {
     /** Default elevation for a navigation bar. */
     val Elevation: Dp = 0.dp
 
     /** Default color for a navigation bar. */
-    val containerColor: Color @Composable get() = MoSoTheme.colors.layer1
+    val containerColor: Color @Composable get() = FfTheme.colors.layer1
 
     /**
      * Default window insets to be used and consumed by navigation bar

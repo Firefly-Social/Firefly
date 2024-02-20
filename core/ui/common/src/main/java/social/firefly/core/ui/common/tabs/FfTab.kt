@@ -12,16 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoTab(
+fun FfTab(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    selectedContentColor: Color = MoSoTheme.colors.textLink,
-    unselectedContentColor: Color = MoSoTheme.colors.textPrimary,
+    selectedContentColor: Color = FfTheme.colors.textLink,
+    unselectedContentColor: Color = FfTheme.colors.textPrimary,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     contentPadding: Dp = 16.dp,
     content: @Composable ColumnScope.() -> Unit,

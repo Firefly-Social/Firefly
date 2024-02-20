@@ -9,16 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoSwitch(
+fun FfSwitch(
     modifier: Modifier = Modifier,
     checked: Boolean = false,
     onCheckChanged: () -> Unit,
     thumbContent: (@Composable () -> Unit)? = null,
     enabled: Boolean = true,
-    colors: SwitchColors = MoSoSwitchPrimaryDefaults.colors(),
+    colors: SwitchColors = FfSwitchPrimaryDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     Switch(
@@ -32,18 +32,18 @@ fun MoSoSwitch(
     )
 }
 
-object MoSoSwitchPrimaryDefaults {
+object FfSwitchPrimaryDefaults {
     @Composable
     fun colors(): SwitchColors =
         SwitchDefaults.colors(
-            checkedThumbColor = MoSoTheme.colors.layer1,
-            checkedTrackColor = MoSoTheme.colors.layerActionPrimaryEnabled,
-            uncheckedThumbColor = MoSoTheme.colors.layerActionDisabled,
-            uncheckedBorderColor = MoSoTheme.colors.layerActionDisabled,
-            disabledCheckedTrackColor = MoSoTheme.colors.layerActionDisabled,
-            disabledUncheckedThumbColor = MoSoTheme.colors.layer2,
-            disabledUncheckedTrackColor = MoSoTheme.colors.textActionDisabled,
-            disabledUncheckedBorderColor = MoSoTheme.colors.textActionDisabled,
+            checkedThumbColor = FfTheme.colors.layer1,
+            checkedTrackColor = FfTheme.colors.layerActionPrimaryEnabled,
+            uncheckedThumbColor = FfTheme.colors.layerActionDisabled,
+            uncheckedBorderColor = FfTheme.colors.layerActionDisabled,
+            disabledCheckedTrackColor = FfTheme.colors.layerActionDisabled,
+            disabledUncheckedThumbColor = FfTheme.colors.layer2,
+            disabledUncheckedTrackColor = FfTheme.colors.textActionDisabled,
+            disabledUncheckedBorderColor = FfTheme.colors.textActionDisabled,
         )
 }
 
@@ -51,21 +51,21 @@ object MoSoSwitchPrimaryDefaults {
 @Composable
 private fun SwitchPreview() {
     Column {
-        MoSoTheme {
-            MoSoSwitch(
+        FfTheme {
+            FfSwitch(
                 checked = true,
                 onCheckChanged = { /*TODO*/ },
             )
-            MoSoSwitch(
+            FfSwitch(
                 checked = false,
                 onCheckChanged = { /*TODO*/ },
             )
-            MoSoSwitch(
+            FfSwitch(
                 checked = true,
                 enabled = false,
                 onCheckChanged = { /*TODO*/ },
             )
-            MoSoSwitch(
+            FfSwitch(
                 checked = false,
                 enabled = false,
                 onCheckChanged = { /*TODO*/ },

@@ -17,16 +17,16 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MoSoLinearProgressIndicator(
+fun FfLinearProgressIndicator(
     progress: Float,
     modifier: Modifier = Modifier,
-    color: Color = MoSoLinearProgressIndicatorDefaults.linearColor(),
-    trackColor: Color = MoSoLinearProgressIndicatorDefaults.linearTrackColor(),
-    strokeCap: StrokeCap = MoSoLinearProgressIndicatorDefaults.strokeCap,
+    color: Color = FfLinearProgressIndicatorDefaults.linearColor(),
+    trackColor: Color = FfLinearProgressIndicatorDefaults.linearTrackColor(),
+    strokeCap: StrokeCap = FfLinearProgressIndicatorDefaults.strokeCap,
     onTouch: (value: Float) -> Unit,
 ) {
     var width by remember { mutableFloatStateOf(1f) }
@@ -55,12 +55,12 @@ fun MoSoLinearProgressIndicator(
 }
 
 @Composable
-fun MoSoLinearProgressIndicator(
+fun FfLinearProgressIndicator(
     progress: Float,
     modifier: Modifier = Modifier,
-    color: Color = MoSoLinearProgressIndicatorDefaults.linearColor(),
-    trackColor: Color = MoSoLinearProgressIndicatorDefaults.linearTrackColor(),
-    strokeCap: StrokeCap = MoSoLinearProgressIndicatorDefaults.strokeCap,
+    color: Color = FfLinearProgressIndicatorDefaults.linearColor(),
+    trackColor: Color = FfLinearProgressIndicatorDefaults.linearTrackColor(),
+    strokeCap: StrokeCap = FfLinearProgressIndicatorDefaults.strokeCap,
 ) {
     LinearProgressIndicator(
         modifier = modifier,
@@ -71,12 +71,12 @@ fun MoSoLinearProgressIndicator(
     )
 }
 
-object MoSoLinearProgressIndicatorDefaults {
+object FfLinearProgressIndicatorDefaults {
     @Composable
-    fun linearColor() = MoSoTheme.colors.actionPrimary
+    fun linearColor() = FfTheme.colors.actionPrimary
 
     @Composable
-    fun linearTrackColor() = MoSoTheme.colors.layer1
+    fun linearTrackColor() = FfTheme.colors.layer1
 
     val strokeCap = StrokeCap.Round
 }

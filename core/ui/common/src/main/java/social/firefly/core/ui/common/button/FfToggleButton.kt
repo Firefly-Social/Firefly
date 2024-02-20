@@ -21,7 +21,7 @@ import social.firefly.core.ui.common.utils.PreviewTheme
  * (primary being the more visually prominent state)
  */
 @Composable
-fun MoSoAutomaticToggleButton(
+fun FfAutomaticToggleButton(
     onClick: (ToggleButtonState) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -34,7 +34,7 @@ fun MoSoAutomaticToggleButton(
 ) {
     var toggleState by remember { mutableStateOf(initialToggleState) }
 
-    MoSoToggleButton(
+    FfToggleButton(
         onClick = {
             toggleState = !toggleState
             onClick(toggleState)
@@ -55,7 +55,7 @@ fun MoSoAutomaticToggleButton(
  * visually prominent state)
  */
 @Composable
-fun MoSoToggleButton(
+fun FfToggleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -67,7 +67,7 @@ fun MoSoToggleButton(
     content: @Composable RowScope.() -> Unit,
 ) {
 
-    MoSoButton(
+    FfButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
@@ -87,7 +87,7 @@ private fun ToggleButtonPreview() {
     PreviewTheme {
         var state: ToggleButtonState by remember { mutableStateOf(ToggleButtonState.Primary) }
 
-        MoSoAutomaticToggleButton(
+        FfAutomaticToggleButton(
             onClick = { state = it }) {
             SmallTextLabel(
                 text = when (state) {

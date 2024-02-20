@@ -24,14 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import kotlinx.coroutines.delay
-import social.firefly.core.designsystem.icon.MoSoIcons
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.icon.FfIcons
+import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.utils.PreviewTheme
 
 @Suppress("MagicNumber")
 @Composable
-fun MoSoDropDownMenu(
+fun FfDropDownMenu(
     modifier: Modifier = Modifier,
     expanded: MutableState<Boolean>,
     properties: PopupProperties = PopupProperties(focusable = false),
@@ -65,15 +65,15 @@ fun MoSoDropDownMenu(
                 Spacer(modifier = Modifier.padding(start = 8.dp))
                 Icon(
                     modifier = Modifier
-                        .size(MoSoIcons.Sizes.small)
+                        .size(FfIcons.Sizes.small)
                         .align(Alignment.CenterVertically),
-                    painter = MoSoIcons.caretDown(),
+                    painter = FfIcons.caretDown(),
                     contentDescription = null,
-                    tint = MoSoTheme.colors.iconPrimary,
+                    tint = FfTheme.colors.iconPrimary,
                 )
             }
         }
-        MoSoDropdownMenu(
+        FfDropdownMenu(
             expanded = expanded.value,
             onDismissRequest = {
                 expanded.value = false
@@ -88,9 +88,9 @@ fun MoSoDropDownMenu(
 @SuppressLint("UnrememberedMutableState")
 @Preview
 @Composable
-private fun MoSoDropDownPreview() {
+private fun FfDropDownPreview() {
     PreviewTheme {
-        MoSoDropDownMenu(
+        FfDropDownMenu(
             expanded = mutableStateOf(false),
             dropDownMenuContent = {},
         ) {

@@ -6,14 +6,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MoSoBadge(
+fun FfBadge(
     modifier: Modifier = Modifier,
-    containerColor: Color = MoSoTheme.colors.actionPrimary,
-    contentColor: Color = MoSoTheme.colors.textActionPrimary,
+    containerColor: Color = FfTheme.colors.actionPrimary,
+    contentColor: Color = FfTheme.colors.textActionPrimary,
     content: @Composable (RowScope.() -> Unit)? = null,
 ) {
     Badge(

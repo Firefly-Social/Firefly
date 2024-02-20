@@ -22,15 +22,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 /**
- * Wrapper for [SnackbarHost] for use with [MoSoSnackbar] and [MoSoSnackbarHostState], which
+ * Wrapper for [SnackbarHost] for use with [FfSnackbar] and [FfSnackbarHostState], which
  * adds the [SnackbarType] parameter
  */
 @Composable
-fun MoSoSnackbarHost(
-    hostState: MoSoSnackbarHostState,
+fun FfSnackbarHost(
+    hostState: FfSnackbarHostState,
     modifier: Modifier = Modifier,
     snackbar: @Composable (SnackbarData, SnackbarType) -> Unit = { snackbarData, snackbarType ->
-        MoSoSnackbar(snackbarData = snackbarData, snackbarType = snackbarType)
+        FfSnackbar(snackbarData = snackbarData, snackbarType = snackbarType)
     },
 ) {
     val currentSnackbarType = hostState.currentSnackbarType

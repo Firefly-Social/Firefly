@@ -10,12 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoVerticalDivider(
+fun FfVerticalDivider(
     modifier: Modifier = Modifier,
-    color: Color = MoSoTheme.colors.borderPrimary,
+    color: Color = FfTheme.colors.borderPrimary,
     thickness: Dp = 1.dp,
 ) {
     Box(
@@ -30,7 +30,7 @@ fun MoSoVerticalDivider(
 @Preview
 @Composable
 private fun VerticalDividerPreview() {
-    MoSoTheme {
-        MoSoVerticalDivider()
+    FfTheme {
+        FfVerticalDivider()
     }
 }

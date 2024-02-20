@@ -26,9 +26,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 /**
- * Wrapper for [SnackbarHostState] for use with [MoSoSnackbar] and [MoSoSnackbarHost]
+ * Wrapper for [SnackbarHostState] for use with [FfSnackbar] and [FfSnackbarHost]
  */
-class MoSoSnackbarHostState(val snackbarHostState: SnackbarHostState = SnackbarHostState()) {
+class FfSnackbarHostState(val snackbarHostState: SnackbarHostState = SnackbarHostState()) {
     var currentSnackbarType by mutableStateOf<SnackbarType?>(null)
         private set
 
@@ -36,7 +36,7 @@ class MoSoSnackbarHostState(val snackbarHostState: SnackbarHostState = SnackbarH
 
     /**
      * Wrapper for [SnackbarHostState.showSnackbar] which takes in the additional parameter
-     * [SnackbarType] for special styling of [MoSoSnackbar]
+     * [SnackbarType] for special styling of [FfSnackbar]
      */
     suspend fun showSnackbar(
         snackbarType: SnackbarType,

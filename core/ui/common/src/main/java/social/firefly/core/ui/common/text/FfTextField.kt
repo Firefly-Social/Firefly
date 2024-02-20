@@ -22,12 +22,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import social.firefly.core.designsystem.theme.MoSoRadius
-import social.firefly.core.designsystem.theme.MoSoTheme
-import social.firefly.core.ui.common.MoSoSurface
+import social.firefly.core.designsystem.theme.FfRadius
+import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.ui.common.FfSurface
 
 @Composable
-fun MoSoTextField(
+fun FfTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -50,9 +50,9 @@ fun MoSoTextField(
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
-    colors: TextFieldColors = MoSoTextFieldDefaults.colors(),
-    borderColor: Color = MoSoTheme.colors.borderInputEnabled,
-    borderShape: Shape = RoundedCornerShape(MoSoRadius.md_8_dp)
+    colors: TextFieldColors = FfTextFieldDefaults.colors(),
+    borderColor: Color = FfTheme.colors.borderInputEnabled,
+    borderShape: Shape = RoundedCornerShape(FfRadius.md_8_dp)
 ) {
     TextField(
         value = value,
@@ -63,7 +63,7 @@ fun MoSoTextField(
                 width = 1.dp,
                 color =
                 if (isError) {
-                    MoSoTheme.colors.borderWarning
+                    FfTheme.colors.borderWarning
                 } else {
                     borderColor
                 },
@@ -93,7 +93,7 @@ fun MoSoTextField(
 }
 
 @Composable
-fun MoSoTextField(
+fun FfTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -116,7 +116,7 @@ fun MoSoTextField(
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
-    colors: TextFieldColors = MoSoTextFieldDefaults.colors(),
+    colors: TextFieldColors = FfTextFieldDefaults.colors(),
 ) {
     TextField(
         value = value,
@@ -145,15 +145,15 @@ fun MoSoTextField(
     )
 }
 
-object MoSoTextFieldDefaults {
+object FfTextFieldDefaults {
     @Composable
     fun colors(
-        cursorColor: Color = MoSoTheme.colors.textPrimary,
-        errorCursorColor: Color = MoSoTheme.colors.textPrimary,
-        unfocusedLabelColor: Color = MoSoTheme.colors.textSecondary,
-        focusedLabelColor: Color = MoSoTheme.colors.textSecondary,
-        disabledLabelColor: Color = MoSoTheme.colors.textSecondary,
-        errorLabelColor: Color = MoSoTheme.colors.textWarning,
+        cursorColor: Color = FfTheme.colors.textPrimary,
+        errorCursorColor: Color = FfTheme.colors.textPrimary,
+        unfocusedLabelColor: Color = FfTheme.colors.textSecondary,
+        focusedLabelColor: Color = FfTheme.colors.textSecondary,
+        disabledLabelColor: Color = FfTheme.colors.textSecondary,
+        errorLabelColor: Color = FfTheme.colors.textWarning,
         focusedIndicatorColor: Color = Color.Transparent,
         unfocusedIndicatorColor: Color = Color.Transparent,
         disabledIndicatorColor: Color = Color.Transparent,
@@ -183,13 +183,13 @@ object MoSoTextFieldDefaults {
 
 @Preview
 @Composable
-private fun MoSoTextFieldPreview() {
-    MoSoTheme {
-        MoSoSurface {
+private fun FfTextFieldPreview() {
+    FfTheme {
+        FfSurface {
             Box(
                 modifier = Modifier.padding(8.dp),
             ) {
-                MoSoTextField(
+                FfTextField(
                     value = "test",
                     onValueChange = {},
                     label = { Text(text = "label") },
@@ -201,13 +201,13 @@ private fun MoSoTextFieldPreview() {
 
 @Preview
 @Composable
-private fun MoSoTextFieldErrorPreview() {
-    MoSoTheme {
-        MoSoSurface {
+private fun FfTextFieldErrorPreview() {
+    FfTheme {
+        FfSurface {
             Box(
                 modifier = Modifier.padding(8.dp),
             ) {
-                MoSoTextField(
+                FfTextField(
                     value = "test",
                     onValueChange = {},
                     label = { Text(text = "label") },

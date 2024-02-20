@@ -11,14 +11,14 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoSurface(
+fun FfSurface(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
-    color: Color = MoSoTheme.colors.layer1,
-    contentColor: Color = MoSoTheme.colors.textPrimary,
+    color: Color = FfTheme.colors.layer1,
+    contentColor: Color = FfTheme.colors.textPrimary,
     tonalElevation: Dp = 0.dp,
     shadowElevation: Dp = 0.dp,
     border: BorderStroke? = null,
@@ -37,13 +37,13 @@ fun MoSoSurface(
 }
 
 @Composable
-fun MoSoSurface(
+fun FfSurface(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = RectangleShape,
-    color: Color = MoSoTheme.colors.layer1,
-    contentColor: Color = MoSoTheme.colors.textPrimary,
+    color: Color = FfTheme.colors.layer1,
+    contentColor: Color = FfTheme.colors.textPrimary,
     tonalElevation: Dp = 0.dp,
     shadowElevation: Dp = 0.dp,
     border: BorderStroke? = null,

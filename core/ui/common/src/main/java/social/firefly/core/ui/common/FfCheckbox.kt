@@ -9,15 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoCheckBox(
+fun FfCheckBox(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: CheckboxColors = MoSoCheckboxDefaults.colors(),
+    colors: CheckboxColors = FfCheckboxDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     Checkbox(
@@ -30,27 +30,27 @@ fun MoSoCheckBox(
     )
 }
 
-object MoSoCheckboxDefaults {
+object FfCheckboxDefaults {
     @Composable
     fun colors(): CheckboxColors =
         CheckboxDefaults.colors(
-            checkedColor = MoSoTheme.colors.iconActionActive,
-            uncheckedColor = MoSoTheme.colors.borderInputEnabled,
-            checkmarkColor = MoSoTheme.colors.textActionPrimary,
-            disabledCheckedColor = MoSoTheme.colors.iconActionActive,
-            disabledUncheckedColor = MoSoTheme.colors.iconActionDisabled,
-            disabledIndeterminateColor = MoSoTheme.colors.textActionPrimary,
+            checkedColor = FfTheme.colors.iconActionActive,
+            uncheckedColor = FfTheme.colors.borderInputEnabled,
+            checkmarkColor = FfTheme.colors.textActionPrimary,
+            disabledCheckedColor = FfTheme.colors.iconActionActive,
+            disabledUncheckedColor = FfTheme.colors.iconActionDisabled,
+            disabledIndeterminateColor = FfTheme.colors.textActionPrimary,
         )
 }
 
 @Preview
 @Composable
 private fun Preview() {
-    MoSoTheme {
-        MoSoSurface {
+    FfTheme {
+        FfSurface {
             Column {
-                MoSoCheckBox(checked = true, onCheckedChange = {})
-                MoSoCheckBox(checked = false, onCheckedChange = {})
+                FfCheckBox(checked = true, onCheckedChange = {})
+                FfCheckBox(checked = false, onCheckedChange = {})
             }
         }
     }
@@ -59,13 +59,13 @@ private fun Preview() {
 @Preview
 @Composable
 private fun PreviewDarkMode() {
-    MoSoTheme(
+    FfTheme(
         darkTheme = true,
     ) {
-        MoSoSurface {
+        FfSurface {
             Column {
-                MoSoCheckBox(checked = true, onCheckedChange = {})
-                MoSoCheckBox(checked = false, onCheckedChange = {})
+                FfCheckBox(checked = true, onCheckedChange = {})
+                FfCheckBox(checked = false, onCheckedChange = {})
             }
         }
     }

@@ -30,11 +30,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import social.firefly.core.designsystem.icon.MoSoIcons
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.icon.FfIcons
+import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.ui.common.R
 import social.firefly.core.ui.common.text.MediumTextBody
-import social.firefly.core.ui.common.text.MoSoTextFieldDefaults
+import social.firefly.core.ui.common.text.FfTextFieldDefaults
 import social.firefly.core.ui.common.utils.PreviewTheme
 
 /**
@@ -44,7 +44,7 @@ import social.firefly.core.ui.common.utils.PreviewTheme
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MoSoSearchBar(
+fun FfSearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearch: (String) -> Unit,
@@ -68,7 +68,7 @@ fun MoSoSearchBar(
     val textColor = textStyle.color.takeOrElse {
         colors.textColor
     }
-    val mergedTextStyle = textStyle.merge(MoSoTheme.typography.bodyMedium.merge(color = textColor))
+    val mergedTextStyle = textStyle.merge(FfTheme.typography.bodyMedium.merge(color = textColor))
 
     CompositionLocalProvider(LocalTextSelectionColors provides colors.selectionColors) {
         BasicTextField(
@@ -79,7 +79,7 @@ fun MoSoSearchBar(
                     width = 1.dp,
                     color =
                     if (isError) {
-                        MoSoTheme.colors.borderWarning
+                        FfTheme.colors.borderWarning
                     } else {
                         colors.borderColor
                     },
@@ -112,16 +112,16 @@ fun MoSoSearchBar(
                     placeholder = {
                         MediumTextBody(
                             text = stringResource(id = R.string.search),
-                            color = MoSoTheme.colors.textSecondary,
+                            color = FfTheme.colors.textSecondary,
                         )
                     },
                     label = label,
                     leadingIcon = {
                         Icon(
                             modifier = Modifier.size(16.dp),
-                            painter = MoSoIcons.magnifyingGlass(),
+                            painter = FfIcons.magnifyingGlass(),
                             contentDescription = stringResource(id = R.string.search),
-                            tint = MoSoTheme.colors.iconSecondary,
+                            tint = FfTheme.colors.iconSecondary,
                         )
                     },
                     trailingIcon = trailingIcon,
@@ -145,11 +145,11 @@ internal object SearchBarTextFieldDefaults {
     @Composable
     fun colors(): SearchBarColors =
         SearchBarColors(
-            cursorColor = MoSoTheme.colors.textPrimary,
-            textColor = MoSoTheme.colors.textPrimary,
+            cursorColor = FfTheme.colors.textPrimary,
+            textColor = FfTheme.colors.textPrimary,
             selectionColors = LocalTextSelectionColors.current,
-            borderColor = MoSoTheme.colors.borderInputEnabled,
-            inputFieldColors = MoSoTextFieldDefaults.colors(),
+            borderColor = FfTheme.colors.borderInputEnabled,
+            inputFieldColors = FfTextFieldDefaults.colors(),
         )
 }
 
@@ -163,18 +163,18 @@ data class SearchBarColors(
 
 @Preview
 @Composable
-private fun MoSoSearchBarPreview() {
+private fun FfSearchBarPreview() {
     PreviewTheme {
-        MoSoSearchBar(
+        FfSearchBar(
             query = "",
             onQueryChange = {},
             onSearch = {},
             trailingIcon = {
                 Icon(
                     modifier = Modifier.size(16.dp),
-                    painter = MoSoIcons.x(),
+                    painter = FfIcons.x(),
                     contentDescription = null,
-                    tint = MoSoTheme.colors.iconSecondary,
+                    tint = FfTheme.colors.iconSecondary,
                 )
             },
         )
@@ -183,18 +183,18 @@ private fun MoSoSearchBarPreview() {
 
 @Preview
 @Composable
-private fun MoSoSearchBarPreview2() {
+private fun FfSearchBarPreview2() {
     PreviewTheme {
-        MoSoSearchBar(
+        FfSearchBar(
             query = "test",
             onQueryChange = {},
             onSearch = {},
             trailingIcon = {
                 Icon(
                     modifier = Modifier.size(16.dp),
-                    painter = MoSoIcons.x(),
+                    painter = FfIcons.x(),
                     contentDescription = null,
-                    tint = MoSoTheme.colors.iconSecondary,
+                    tint = FfTheme.colors.iconSecondary,
                 )
             },
         )

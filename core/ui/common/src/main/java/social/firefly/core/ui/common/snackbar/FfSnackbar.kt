@@ -40,35 +40,35 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import social.firefly.core.designsystem.theme.MoSoRadius
-import social.firefly.core.designsystem.theme.MoSoSpacing
-import social.firefly.core.designsystem.theme.MoSoTheme
-import social.firefly.core.ui.common.button.MoSoButton
+import social.firefly.core.designsystem.theme.FfRadius
+import social.firefly.core.designsystem.theme.FfSpacing
+import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.ui.common.button.FfButton
 
 /**
  * Wrapper for [Snackbar] which takes in a [SnackbarType], which is used to determine the styling
  * of the resulting snackbar. Note that this implementation does not include an action button
  */
 @Composable
-fun MoSoSnackbar(snackbarState: MoSoSnackbarState) =
-    with(snackbarState) { MoSoSnackbar(snackbarData = snackbarData, snackbarType = snackbarType) }
+fun FfSnackbar(snackbarState: FfSnackbarState) =
+    with(snackbarState) { FfSnackbar(snackbarData = snackbarData, snackbarType = snackbarType) }
 
 /**
  * Wrapper for [Snackbar] which takes in a [SnackbarType], which is used to determine the styling
  * of the resulting snackbar. Note that this implementation does not include an action button
  */
 @Composable
-fun MoSoSnackbar(
+fun FfSnackbar(
     snackbarData: SnackbarData,
     snackbarType: SnackbarType,
 ) {
     when (snackbarType) {
         SnackbarType.SUCCESS -> {
-            MoSoSuccessSnackbar(snackbarData = snackbarData)
+            FfSuccessSnackbar(snackbarData = snackbarData)
         }
 
         SnackbarType.ERROR -> {
-            MoSoErrorSnackbar(snackbarData = snackbarData)
+            FfErrorSnackbar(snackbarData = snackbarData)
         }
     }
 }
@@ -77,12 +77,12 @@ fun MoSoSnackbar(
  * A snackbar denoting success
  */
 @Composable
-private fun MoSoSuccessSnackbar(snackbarData: SnackbarData) {
-    MoSoSnackbar(
+private fun FfSuccessSnackbar(snackbarData: SnackbarData) {
+    FfSnackbar(
         snackbarData = snackbarData,
-        backgroundColor = MoSoTheme.colors.snackbarBkgSuccess,
-        borderColor = MoSoTheme.colors.snackbarBorderSuccess,
-        contentColor = MoSoTheme.colors.snackbarTextSuccess,
+        backgroundColor = FfTheme.colors.snackbarBkgSuccess,
+        borderColor = FfTheme.colors.snackbarBorderSuccess,
+        contentColor = FfTheme.colors.snackbarTextSuccess,
     )
 }
 
@@ -90,12 +90,12 @@ private fun MoSoSuccessSnackbar(snackbarData: SnackbarData) {
  * A snackbar denoting an error
  */
 @Composable
-private fun MoSoErrorSnackbar(snackbarData: SnackbarData) {
-    MoSoSnackbar(
+private fun FfErrorSnackbar(snackbarData: SnackbarData) {
+    FfSnackbar(
         snackbarData = snackbarData,
-        backgroundColor = MoSoTheme.colors.snackbarBkgError,
-        borderColor = MoSoTheme.colors.snackbarBorderError,
-        contentColor = MoSoTheme.colors.snackbarTextError,
+        backgroundColor = FfTheme.colors.snackbarBkgError,
+        borderColor = FfTheme.colors.snackbarBorderError,
+        contentColor = FfTheme.colors.snackbarTextError,
     )
 }
 
@@ -104,7 +104,7 @@ private fun MoSoErrorSnackbar(snackbarData: SnackbarData) {
  * implementation does not include an action button
  */
 @Composable
-private fun MoSoSnackbar(
+private fun FfSnackbar(
     snackbarData: SnackbarData,
     backgroundColor: Color,
     borderColor: Color,
@@ -116,18 +116,18 @@ private fun MoSoSnackbar(
             .defaultMinSize(minHeight = 32.dp),
         color = backgroundColor,
         border = BorderStroke(width = 1.dp, brush = SolidColor(borderColor)),
-        shape = RoundedCornerShape(MoSoRadius.md_8_dp),
+        shape = RoundedCornerShape(FfRadius.md_8_dp),
     ) {
         Box(
             modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(MoSoSpacing.sm),
+                .padding(FfSpacing.sm),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = snackbarData.visuals.message,
-                style = MoSoTheme.typography.labelSmall,
+                style = FfTheme.typography.labelSmall,
                 color = contentColor,
                 textAlign = TextAlign.Center,
             )
@@ -143,7 +143,7 @@ enum class SnackbarType {
     ERROR,
 }
 
-data class MoSoSnackbarState(
+data class FfSnackbarState(
     val snackbarType: SnackbarType,
     val snackbarData: SnackbarData,
 )
@@ -151,22 +151,22 @@ data class MoSoSnackbarState(
 @Preview
 @Composable
 private fun SnackbarPreview() {
-    val snackbarHostState = MoSoSnackbarHostState()
+    val snackbarHostState = FfSnackbarHostState()
     val scope = rememberCoroutineScope()
-    MoSoTheme {
+    FfTheme {
         Surface {
             Column(
                 modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(MoSoSpacing.lg),
+                    .padding(FfSpacing.lg),
                 verticalArrangement = Arrangement.Bottom,
             ) {
-                MoSoSnackbarHost(snackbarHostState) { snackbarData, snackbarType ->
-                    MoSoSnackbar(snackbarData = snackbarData, snackbarType = snackbarType)
+                FfSnackbarHost(snackbarHostState) { snackbarData, snackbarType ->
+                    FfSnackbar(snackbarData = snackbarData, snackbarType = snackbarType)
                 }
 
-                MoSoButton(onClick = {
+                FfButton(onClick = {
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             snackbarType = SnackbarType.SUCCESS,
@@ -178,7 +178,7 @@ private fun SnackbarPreview() {
                     Text(text = "show success snackbar")
                 }
 
-                MoSoButton(onClick = {
+                FfButton(onClick = {
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             snackbarType = SnackbarType.ERROR,
@@ -190,7 +190,7 @@ private fun SnackbarPreview() {
                     Text(text = "show error snackbar")
                 }
 
-                MoSoButton(onClick = {
+                FfButton(onClick = {
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             snackbarType = SnackbarType.ERROR,

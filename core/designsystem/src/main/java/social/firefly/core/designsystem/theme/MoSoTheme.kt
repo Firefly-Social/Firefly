@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 @Composable
-fun MoSoTheme(
+fun FfTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
@@ -45,15 +45,15 @@ fun MoSoTheme(
     MaterialTheme(
         colorScheme = if (darkTheme) MaterialDarkColorScheme else MaterialLightColorScheme,
     ) {
-        ProvideMoSoColors(colors = colors) {
+        ProvideFfColors(colors = colors) {
             val textSelectionColors = TextSelectionColors(
-                handleColor = MoSoTheme.colors.iconAccent,
-                backgroundColor = MoSoTheme.colors.layer2,
+                handleColor = FfTheme.colors.iconAccent,
+                backgroundColor = FfTheme.colors.layer2,
             )
 
             CompositionLocalProvider(
-                LocalContentColor provides MoSoTheme.colors.textPrimary,
-                LocalTextStyle provides MoSoTheme.typography.bodyMedium,
+                LocalContentColor provides FfTheme.colors.textPrimary,
+                LocalTextStyle provides FfTheme.typography.bodyMedium,
                 LocalTextSelectionColors provides textSelectionColors,
                 content = content,
             )
@@ -61,17 +61,17 @@ fun MoSoTheme(
     }
 }
 
-object MoSoTheme {
-    val colors: MoSoColors
+object FfTheme {
+    val colors: FfColors
         @Composable
-        get() = localMoSoColors.current
+        get() = localFfColors.current
 
-    val typography: MoSoTypography
+    val typography: FfTypography
         get() = defaultTypography
 }
 
 private val darkColorPalette =
-    MoSoColors(
+    FfColors(
         layer1 = FirefoxColor.DarkGrey70,
         layer2 = FirefoxColor.DarkGrey40,
         layerAccent = FirefoxColor.Violet60,
@@ -111,7 +111,7 @@ private val darkColorPalette =
     )
 
 private val lightColorPalette =
-    MoSoColors(
+    FfColors(
         layer1 = FirefoxColor.White,
         layer2 = FirefoxColor.LightGrey20,
         layerActionPrimaryEnabled = FirefoxColor.Violet70,
@@ -152,7 +152,7 @@ private val lightColorPalette =
 
 @Suppress("LargeClass", "LongParameterList")
 @Stable
-data class MoSoColors(
+data class FfColors(
     // General background colors
     val layer1: Color,
     val layer2: Color,
@@ -198,14 +198,14 @@ data class MoSoColors(
 )
 
 @Composable
-fun ProvideMoSoColors(
-    colors: MoSoColors,
+fun ProvideFfColors(
+    colors: FfColors,
     content: @Composable () -> Unit,
 ) {
-    CompositionLocalProvider(localMoSoColors provides colors, content = content)
+    CompositionLocalProvider(localFfColors provides colors, content = content)
 }
 
-private val localMoSoColors =
-    staticCompositionLocalOf<MoSoColors> {
-        error("No MoSo provided")
+private val localFfColors =
+    staticCompositionLocalOf<FfColors> {
+        error("No Ff provided")
     }

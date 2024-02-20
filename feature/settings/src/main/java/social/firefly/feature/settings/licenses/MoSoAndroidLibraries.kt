@@ -26,13 +26,13 @@ import com.mikepenz.aboutlibraries.ui.compose.util.stable
 import com.mikepenz.aboutlibraries.util.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 /**
  * Displays all provided libraries in a simple list.
  */
 @Composable
-fun MoSoLibrariesContainer(
+fun FfLibrariesContainer(
     modifier: Modifier = Modifier,
     librariesBlock: (Context) -> Libs = { context ->
         Libs.Builder().withContext(context).build()
@@ -42,10 +42,10 @@ fun MoSoLibrariesContainer(
     showAuthor: Boolean = true,
     showVersion: Boolean = true,
     showLicenseBadges: Boolean = true,
-    colors: MoSoLibraryColors = MoSoLibraryDefaults.moSoLibraryColors(),
-    padding: MoSoLibraryPadding = MoSoLibraryDefaults.moSoLibraryPadding(),
+    colors: FfLibraryColors = FfLibraryDefaults.FfLibraryColors(),
+    padding: FfLibraryPadding = FfLibraryDefaults.FfLibraryPadding(),
     itemContentPadding: PaddingValues = LibraryDefaults.ContentPadding,
-    itemSpacing: Dp = MoSoLibraryDefaults.LibraryItemSpacing,
+    itemSpacing: Dp = FfLibraryDefaults.LibraryItemSpacing,
     header: (LazyListScope.() -> Unit)? = null,
     onLibraryClick: ((StableLibrary) -> Unit)? = null,
 ) {
@@ -56,7 +56,7 @@ fun MoSoLibrariesContainer(
             librariesBlock(context)
         }
     }
-    MoSoLibrariesContainer(
+    FfLibrariesContainer(
         libraries.value?.stable,
         modifier,
         lazyListState,
@@ -95,7 +95,7 @@ fun HtmlText(
 @Preview("Library items (Default)")
 @Composable
 fun PreviewLibraries() {
-    MoSoTheme {
+    FfTheme {
         Surface {
             Libraries(fakeData.libraries.stable)
         }

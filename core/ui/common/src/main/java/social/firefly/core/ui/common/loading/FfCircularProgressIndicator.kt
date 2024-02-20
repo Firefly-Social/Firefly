@@ -7,12 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.Dp
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoCircularProgressIndicator(
+fun FfCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = MoSoTheme.colors.actionPrimary,
+    color: Color = FfTheme.colors.actionPrimary,
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
     trackColor: Color = ProgressIndicatorDefaults.circularTrackColor,
     strokeCap: StrokeCap = ProgressIndicatorDefaults.CircularIndeterminateStrokeCap,

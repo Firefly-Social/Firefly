@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MoSoDropDownItem(
+fun FfDropDownItem(
     text: String,
     expanded: MutableState<Boolean>,
     onClick: () -> Unit,

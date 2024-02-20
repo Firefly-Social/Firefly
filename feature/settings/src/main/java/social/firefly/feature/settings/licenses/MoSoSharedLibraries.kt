@@ -44,14 +44,14 @@ import com.mikepenz.aboutlibraries.ui.compose.util.StableLibs
 import com.mikepenz.aboutlibraries.ui.compose.util.author
 import com.mikepenz.aboutlibraries.ui.compose.util.htmlReadyLicenseContent
 import com.mikepenz.aboutlibraries.ui.compose.util.stable
-import social.firefly.core.designsystem.theme.MoSoTheme
-import social.firefly.core.designsystem.theme.MoSoTypography
-import social.firefly.core.ui.common.MoSoBadge
+import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.designsystem.theme.FfTypography
+import social.firefly.core.ui.common.FfBadge
 import social.firefly.feature.settings.R
 import java.net.MalformedURLException
 
 @Composable
-fun MoSoLibrariesContainer(
+fun FfLibrariesContainer(
     libraries: StableLibs?,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
@@ -59,10 +59,10 @@ fun MoSoLibrariesContainer(
     showAuthor: Boolean = true,
     showVersion: Boolean = true,
     showLicenseBadges: Boolean = true,
-    colors: MoSoLibraryColors = MoSoLibraryDefaults.moSoLibraryColors(),
-    padding: MoSoLibraryPadding = MoSoLibraryDefaults.moSoLibraryPadding(),
-    itemContentPadding: PaddingValues = MoSoLibraryDefaults.ContentPadding,
-    itemSpacing: Dp = MoSoLibraryDefaults.LibraryItemSpacing,
+    colors: FfLibraryColors = FfLibraryDefaults.FfLibraryColors(),
+    padding: FfLibraryPadding = FfLibraryDefaults.FfLibraryPadding(),
+    itemContentPadding: PaddingValues = FfLibraryDefaults.ContentPadding,
+    itemSpacing: Dp = FfLibraryDefaults.LibraryItemSpacing,
     header: (LazyListScope.() -> Unit)? = null,
     onLibraryClick: ((StableLibrary) -> Unit)? = null,
     licenseDialogBody: (@Composable (StableLibrary) -> Unit)? = null,
@@ -115,7 +115,7 @@ fun MoSoLibrariesContainer(
 @Composable
 fun LicenseDialog(
     library: StableLibrary,
-    colors: MoSoLibraryColors = MoSoLibraryDefaults.moSoLibraryColors(),
+    colors: FfLibraryColors = FfLibraryDefaults.FfLibraryColors(),
     confirmText: String = stringResource(id = R.string.license_okay_button),
     body: @Composable (StableLibrary) -> Unit,
     onDismiss: () -> Unit,
@@ -172,10 +172,10 @@ fun Libraries(
     showAuthor: Boolean = true,
     showVersion: Boolean = true,
     showLicenseBadges: Boolean = true,
-    colors: MoSoLibraryColors = MoSoLibraryDefaults.moSoLibraryColors(),
-    padding: MoSoLibraryPadding = MoSoLibraryDefaults.moSoLibraryPadding(),
-    itemContentPadding: PaddingValues = MoSoLibraryDefaults.ContentPadding,
-    itemSpacing: Dp = MoSoLibraryDefaults.LibraryItemSpacing,
+    colors: FfLibraryColors = FfLibraryDefaults.FfLibraryColors(),
+    padding: FfLibraryPadding = FfLibraryDefaults.FfLibraryPadding(),
+    itemContentPadding: PaddingValues = FfLibraryDefaults.ContentPadding,
+    itemSpacing: Dp = FfLibraryDefaults.LibraryItemSpacing,
     header: (LazyListScope.() -> Unit)? = null,
     onLibraryClick: ((StableLibrary) -> Unit)? = null,
 ) {
@@ -218,9 +218,9 @@ internal inline fun LazyListScope.libraryItems(
     showAuthor: Boolean = true,
     showVersion: Boolean = true,
     showLicenseBadges: Boolean = true,
-    colors: MoSoLibraryColors,
-    padding: MoSoLibraryPadding,
-    itemContentPadding: PaddingValues = MoSoLibraryDefaults.ContentPadding,
+    colors: FfLibraryColors,
+    padding: FfLibraryPadding,
+    itemContentPadding: PaddingValues = FfLibraryDefaults.ContentPadding,
     crossinline onLibraryClick: ((StableLibrary) -> Unit),
 ) {
     items(libraries) { library ->
@@ -244,10 +244,10 @@ internal fun Library(
     showAuthor: Boolean = true,
     showVersion: Boolean = true,
     showLicenseBadges: Boolean = true,
-    colors: MoSoLibraryColors = MoSoLibraryDefaults.moSoLibraryColors(),
-    padding: MoSoLibraryPadding = MoSoLibraryDefaults.moSoLibraryPadding(),
-    contentPadding: PaddingValues = MoSoLibraryDefaults.ContentPadding,
-    typography: MoSoTypography = MoSoTheme.typography,
+    colors: FfLibraryColors = FfLibraryDefaults.FfLibraryColors(),
+    padding: FfLibraryPadding = FfLibraryDefaults.FfLibraryPadding(),
+    contentPadding: PaddingValues = FfLibraryDefaults.ContentPadding,
+    typography: FfTypography = FfTheme.typography,
     onClick: () -> Unit,
 ) {
     Column(
@@ -294,7 +294,7 @@ internal fun Library(
                     modifier = Modifier
                         .padding(2.dp)
                 ) {
-                    MoSoBadge {
+                    FfBadge {
                         Text(
                             modifier = Modifier
                                 .padding(padding.badgeContentPadding),
@@ -310,7 +310,7 @@ internal fun Library(
 /**
  * Contains the default values used by [Library]
  */
-object MoSoLibraryDefaults {
+object FfLibraryDefaults {
     private val LibraryItemPadding = 16.dp
     private val LibraryNamePaddingTop = 4.dp
     private val LibraryVersionPaddingStart = 8.dp
@@ -324,7 +324,7 @@ object MoSoLibraryDefaults {
     val ContentPadding = PaddingValues(LibraryItemPadding)
 
     /**
-     * Creates a [MoSoLibraryColors] that represents the default colors used in
+     * Creates a [FfLibraryColors] that represents the default colors used in
      * a [Library].
      *
      * @param backgroundColor the background color of this [Library]
@@ -334,13 +334,13 @@ object MoSoLibraryDefaults {
      * @param dialogConfirmButtonColor the dialog's confirm button color of this [Library]
      */
     @Composable
-    fun moSoLibraryColors(
-        backgroundColor: Color = MoSoTheme.colors.layer1,
+    fun FfLibraryColors(
+        backgroundColor: Color = FfTheme.colors.layer1,
         contentColor: Color = contentColorFor(backgroundColor),
-        badgeBackgroundColor: Color = MoSoTheme.colors.iconActionActive,
+        badgeBackgroundColor: Color = FfTheme.colors.iconActionActive,
         badgeContentColor: Color = contentColorFor(badgeBackgroundColor),
-        dialogConfirmButtonColor: Color = MoSoTheme.colors.actionPrimary,
-    ): MoSoLibraryColors = DefaultMoSoLibraryColors(
+        dialogConfirmButtonColor: Color = FfTheme.colors.actionPrimary,
+    ): FfLibraryColors = DefaultFfLibraryColors(
         backgroundColor = backgroundColor,
         contentColor = contentColor,
         badgeBackgroundColor = badgeBackgroundColor,
@@ -349,7 +349,7 @@ object MoSoLibraryDefaults {
     )
 
     /**
-     * Creates a [moSoLibraryPadding] that represents the default paddings used in a [Library]
+     * Creates a [FfLibraryPadding] that represents the default paddings used in a [Library]
      *
      * @param namePadding the padding around the name shown as part of a [Library]
      * @param versionPadding the padding around the version shown as part of a [Library]
@@ -357,7 +357,7 @@ object MoSoLibraryDefaults {
      * @param badgeContentPadding the padding around the content of a badge element shown as part of a [Library]
      */
     @Composable
-    fun moSoLibraryPadding(
+    fun FfLibraryPadding(
         namePadding: PaddingValues = PaddingValues(top = LibraryNamePaddingTop),
         versionPadding: PaddingValues = PaddingValues(start = LibraryVersionPaddingStart),
         badgePadding: PaddingValues = PaddingValues(
@@ -365,7 +365,7 @@ object MoSoLibraryDefaults {
             end = LibraryBadgePaddingEnd
         ),
         badgeContentPadding: PaddingValues = PaddingValues(0.dp),
-    ): MoSoLibraryPadding = DefaultMoSoLibraryPadding(
+    ): FfLibraryPadding = DefaultFfLibraryPadding(
         namePadding = namePadding,
         versionPadding = versionPadding,
         badgePadding = badgePadding,
@@ -377,7 +377,7 @@ object MoSoLibraryDefaults {
  * Represents the background and content colors used in a library.
  */
 @Stable
-interface MoSoLibraryColors {
+interface FfLibraryColors {
     /** Represents the background color for this library item. */
     val backgroundColor: Color
 
@@ -395,23 +395,23 @@ interface MoSoLibraryColors {
 }
 
 /**
- * Default [MoSoLibraryColors].
+ * Default [FfLibraryColors].
  */
 @Immutable
-private class DefaultMoSoLibraryColors(
+private class DefaultFfLibraryColors(
     override val backgroundColor: Color,
     override val contentColor: Color,
     override val badgeBackgroundColor: Color,
     override val badgeContentColor: Color,
     override val dialogConfirmButtonColor: Color,
-) : MoSoLibraryColors
+) : FfLibraryColors
 
 
 /**
  * Represents the padding values used in a library.
  */
 @Stable
-interface MoSoLibraryPadding {
+interface FfLibraryPadding {
     /** Represents the padding around the name shown as part of a [Library] */
     val namePadding: PaddingValues
 
@@ -426,12 +426,12 @@ interface MoSoLibraryPadding {
 }
 
 /**
- * Default [MoSoLibraryPadding].
+ * Default [FfLibraryPadding].
  */
 @Immutable
-private class DefaultMoSoLibraryPadding(
+private class DefaultFfLibraryPadding(
     override val namePadding: PaddingValues,
     override val versionPadding: PaddingValues,
     override val badgePadding: PaddingValues,
     override val badgeContentPadding: PaddingValues,
-) : MoSoLibraryPadding
+) : FfLibraryPadding

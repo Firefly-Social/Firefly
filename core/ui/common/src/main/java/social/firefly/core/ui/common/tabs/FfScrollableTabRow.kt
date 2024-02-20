@@ -58,8 +58,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import social.firefly.core.designsystem.theme.MoSoTheme
-import social.firefly.core.ui.common.divider.MoSoDivider
+import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.ui.common.divider.FfDivider
 import social.firefly.core.ui.common.tabs.TabRowDefaults.tabIndicatorOffset
 import kotlin.math.min
 
@@ -69,21 +69,21 @@ import kotlin.math.min
  * can fit inside the parent's width, they will take up the entire space.
  */
 @Composable
-fun MoSoTabRow(
+fun FfTabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
-    containerColor: Color = MoSoTheme.colors.layer1,
+    containerColor: Color = FfTheme.colors.layer1,
     contentColor: Color = TabRowDefaults.contentColor,
     indicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
         if (selectedTabIndex < tabPositions.size) {
             TabRowDefaults.Indicator(
                 modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                color = MoSoTheme.colors.borderAccent,
+                color = FfTheme.colors.borderAccent,
             )
         }
     },
     divider: @Composable () -> Unit = @Composable {
-        MoSoDivider()
+        FfDivider()
     },
     scrollIndicator: @Composable () -> Unit = @Composable {
         Box(
@@ -92,7 +92,7 @@ fun MoSoTabRow(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
                             Color.Transparent,
-                            MoSoTheme.colors.layer1,
+                            FfTheme.colors.layer1,
                         )
                     )
                 )
@@ -290,7 +290,7 @@ object TabRowDefaults {
     /** Default content color of a tab row. */
     val contentColor: Color
         @Composable get() =
-            MoSoTheme.colors.layer1
+            FfTheme.colors.layer1
 
     /**
      * Default indicator, which will be positioned at the bottom of the [TabRow], on top of the
@@ -304,7 +304,7 @@ object TabRowDefaults {
     fun Indicator(
         modifier: Modifier = Modifier,
         height: Dp = 3.dp,
-        color: Color = MoSoTheme.colors.layer1
+        color: Color = FfTheme.colors.layer1
     ) {
         Box(
             modifier
@@ -424,12 +424,12 @@ private val ScrollableTabRowScrollSpec: AnimationSpec<Float> = tween(
 @Preview
 @Composable
 private fun TabRowPreview() {
-    MoSoTheme {
-        MoSoTabRow(selectedTabIndex = 0) {
-            MoSoTab(selected = true, onClick = { /*TODO*/ }) {
+    FfTheme {
+        FfTabRow(selectedTabIndex = 0) {
+            FfTab(selected = true, onClick = { /*TODO*/ }) {
                 Text(text = "test")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test2")
             }
         }
@@ -439,15 +439,15 @@ private fun TabRowPreview() {
 @Preview
 @Composable
 private fun TabRowPreview2() {
-    MoSoTheme {
-        MoSoTabRow(selectedTabIndex = 0) {
-            MoSoTab(selected = true, onClick = { /*TODO*/ }) {
+    FfTheme {
+        FfTabRow(selectedTabIndex = 0) {
+            FfTab(selected = true, onClick = { /*TODO*/ }) {
                 Text(text = "test")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test2")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test and stuff 2")
             }
         }
@@ -457,15 +457,15 @@ private fun TabRowPreview2() {
 @Preview
 @Composable
 private fun TabRowPreview3() {
-    MoSoTheme {
-        MoSoTabRow(selectedTabIndex = 0) {
-            MoSoTab(selected = true, onClick = { /*TODO*/ }) {
+    FfTheme {
+        FfTabRow(selectedTabIndex = 0) {
+            FfTab(selected = true, onClick = { /*TODO*/ }) {
                 Text(text = "test")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test2")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test and some cool stuff that I like a lot")
             }
         }
@@ -475,15 +475,15 @@ private fun TabRowPreview3() {
 @Preview
 @Composable
 private fun TabRowPreview4() {
-    MoSoTheme {
-        MoSoTabRow(selectedTabIndex = 0) {
-            MoSoTab(selected = true, onClick = { /*TODO*/ }) {
+    FfTheme {
+        FfTabRow(selectedTabIndex = 0) {
+            FfTab(selected = true, onClick = { /*TODO*/ }) {
                 Text(text = "test")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test2")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test and some cool stuff")
             }
         }
@@ -493,15 +493,15 @@ private fun TabRowPreview4() {
 @Preview
 @Composable
 private fun TabRowPreview5() {
-    MoSoTheme {
-        MoSoTabRow(selectedTabIndex = 0) {
-            MoSoTab(selected = true, onClick = { /*TODO*/ }) {
+    FfTheme {
+        FfTabRow(selectedTabIndex = 0) {
+            FfTab(selected = true, onClick = { /*TODO*/ }) {
                 Text(text = "test")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test and stuff 2")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test and some cool stuff")
             }
         }
@@ -511,12 +511,12 @@ private fun TabRowPreview5() {
 @Preview
 @Composable
 private fun TabRowPreview6() {
-    MoSoTheme {
-        MoSoTabRow(selectedTabIndex = 0) {
-            MoSoTab(selected = true, onClick = { /*TODO*/ }) {
+    FfTheme {
+        FfTabRow(selectedTabIndex = 0) {
+            FfTab(selected = true, onClick = { /*TODO*/ }) {
                 Text(text = "test")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test and some cool stuff its neat")
             }
         }
@@ -526,18 +526,18 @@ private fun TabRowPreview6() {
 @Preview
 @Composable
 private fun TabRowPreview7() {
-    MoSoTheme {
-        MoSoTabRow(selectedTabIndex = 0) {
-            MoSoTab(selected = true, onClick = { /*TODO*/ }) {
+    FfTheme {
+        FfTabRow(selectedTabIndex = 0) {
+            FfTab(selected = true, onClick = { /*TODO*/ }) {
                 Text(text = "test")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test 2333")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test and some cool")
             }
         }
@@ -547,18 +547,18 @@ private fun TabRowPreview7() {
 @Preview
 @Composable
 private fun TabRowPreview8() {
-    MoSoTheme {
-        MoSoTabRow(selectedTabIndex = 0) {
-            MoSoTab(selected = true, onClick = { /*TODO*/ }) {
+    FfTheme {
+        FfTabRow(selectedTabIndex = 0) {
+            FfTab(selected = true, onClick = { /*TODO*/ }) {
                 Text(text = "test is super cool")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "full gradient!")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test 2333")
             }
-            MoSoTab(selected = false, onClick = { /*TODO*/ }) {
+            FfTab(selected = false, onClick = { /*TODO*/ }) {
                 Text(text = "test and some cool fun")
             }
         }

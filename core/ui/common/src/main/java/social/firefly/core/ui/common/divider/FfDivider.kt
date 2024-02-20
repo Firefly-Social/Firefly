@@ -6,21 +6,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoDivider(
+fun FfDivider(
     modifier: Modifier = Modifier,
-    thickness: Dp = MoSoDividerDefaults.Thickness,
-    color: Color = MoSoDividerDefaults.color,
+    thickness: Dp = FfDividerDefaults.Thickness,
+    color: Color = FfDividerDefaults.color,
 ) {
     Divider(modifier, thickness, color)
 }
 
-object MoSoDividerDefaults {
+object FfDividerDefaults {
     /** Default thickness of a divider. */
     val Thickness: Dp = 1.dp
 
     /** Default color of a divider. */
-    val color: Color @Composable get() = MoSoTheme.colors.borderPrimary
+    val color: Color @Composable get() = FfTheme.colors.borderPrimary
 }

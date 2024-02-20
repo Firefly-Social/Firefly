@@ -8,16 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import social.firefly.core.designsystem.theme.MoSoTheme
-import social.firefly.core.ui.common.MoSoSurface
+import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.ui.common.FfSurface
 
 @Composable
-fun MoSoRadioButton(
+fun FfRadioButton(
     selected: Boolean,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: RadioButtonColors = MoSoRadioButtonDefaults.colors(),
+    colors: RadioButtonColors = FfRadioButtonDefaults.colors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     RadioButton(
@@ -30,23 +30,23 @@ fun MoSoRadioButton(
     )
 }
 
-object MoSoRadioButtonDefaults {
+object FfRadioButtonDefaults {
     @Composable
     fun colors(): RadioButtonColors =
         RadioButtonDefaults.colors(
-            selectedColor = MoSoTheme.colors.iconActionActive,
-            unselectedColor = MoSoTheme.colors.iconActionDisabled,
-            disabledSelectedColor = MoSoTheme.colors.iconActionActive,
-            disabledUnselectedColor = MoSoTheme.colors.iconActionDisabled,
+            selectedColor = FfTheme.colors.iconActionActive,
+            unselectedColor = FfTheme.colors.iconActionDisabled,
+            disabledSelectedColor = FfTheme.colors.iconActionActive,
+            disabledUnselectedColor = FfTheme.colors.iconActionDisabled,
         )
 }
 
 @Preview
 @Composable
 private fun Preview() {
-    MoSoTheme {
-        MoSoSurface {
-            MoSoRadioButton(selected = true, onClick = null)
+    FfTheme {
+        FfSurface {
+            FfRadioButton(selected = true, onClick = null)
         }
     }
 }
@@ -54,11 +54,11 @@ private fun Preview() {
 @Preview
 @Composable
 private fun PreviewDarkMode() {
-    MoSoTheme(
+    FfTheme(
         darkTheme = true,
     ) {
-        MoSoSurface {
-            MoSoRadioButton(selected = true, onClick = null)
+        FfSurface {
+            FfRadioButton(selected = true, onClick = null)
         }
     }
 }

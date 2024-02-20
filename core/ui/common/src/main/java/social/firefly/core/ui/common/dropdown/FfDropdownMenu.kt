@@ -14,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoDropdownMenu(
+fun FfDropdownMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
@@ -30,7 +30,7 @@ fun MoSoDropdownMenu(
         onDismissRequest = onDismissRequest,
         modifier =
         modifier
-            .background(MoSoTheme.colors.layer1),
+            .background(FfTheme.colors.layer1),
         offset = offset,
         properties = properties,
         content = content,
@@ -38,7 +38,7 @@ fun MoSoDropdownMenu(
 }
 
 @Composable
-fun MoSoDropdownMenuItem(
+fun FfDropdownMenuItem(
     text: @Composable () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,

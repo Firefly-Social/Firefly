@@ -18,20 +18,20 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import social.firefly.core.designsystem.theme.MoSoTheme
+import social.firefly.core.designsystem.theme.FfTheme
 
 @Composable
-fun MoSoButton(
+fun FfButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = MoSoButtonDefaults.shape,
-    theme: MoSoButtonTheme = MoSoButtonPrimaryDefaults,
-    contentPadding: PaddingValues = MoSoButtonContentPadding.default,
+    shape: Shape = FfButtonDefaults.shape,
+    theme: FfButtonTheme = FfButtonPrimaryDefaults,
+    contentPadding: PaddingValues = FfButtonContentPadding.default,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit,
 ) {
-    MoSoButton(
+    FfButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
@@ -46,15 +46,15 @@ fun MoSoButton(
 }
 
 @Composable
-fun MoSoButton(
+fun FfButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = MoSoButtonDefaults.shape,
-    colors: ButtonColors = MoSoButtonPrimaryDefaults.colors(),
-    elevation: ButtonElevation? = MoSoButtonDefaults.buttonElevation(),
-    border: BorderStroke? = MoSoButtonPrimaryDefaults.border(),
-    contentPadding: PaddingValues = MoSoButtonContentPadding.default,
+    shape: Shape = FfButtonDefaults.shape,
+    colors: ButtonColors = FfButtonPrimaryDefaults.colors(),
+    elevation: ButtonElevation? = FfButtonDefaults.buttonElevation(),
+    border: BorderStroke? = FfButtonPrimaryDefaults.border(),
+    contentPadding: PaddingValues = FfButtonContentPadding.default,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -73,19 +73,19 @@ fun MoSoButton(
 }
 
 @Composable
-fun MoSoButtonSecondary(
+fun FfButtonSecondary(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = MoSoButtonDefaults.shape,
-    colors: ButtonColors = MoSoButtonSecondaryDefaults.colors(),
-    elevation: ButtonElevation? = MoSoButtonDefaults.buttonElevation(),
-    border: BorderStroke? = MoSoButtonSecondaryDefaults.border(),
-    contentPadding: PaddingValues = MoSoButtonContentPadding.default,
+    shape: Shape = FfButtonDefaults.shape,
+    colors: ButtonColors = FfButtonSecondaryDefaults.colors(),
+    elevation: ButtonElevation? = FfButtonDefaults.buttonElevation(),
+    border: BorderStroke? = FfButtonSecondaryDefaults.border(),
+    contentPadding: PaddingValues = FfButtonContentPadding.default,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit,
 ) {
-    MoSoButton(
+    FfButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
@@ -99,38 +99,38 @@ fun MoSoButtonSecondary(
     )
 }
 
-object MoSoButtonPrimaryDefaults : MoSoButtonTheme {
+object FfButtonPrimaryDefaults : FfButtonTheme {
     @Composable
     override fun colors(): ButtonColors =
-        MoSoButtonDefaults.buttonColors(
-            containerColor = MoSoTheme.colors.layerActionPrimaryEnabled,
-            contentColor = MoSoTheme.colors.textActionPrimary,
-            disabledContainerColor = MoSoTheme.colors.layerActionDisabled,
-            disabledContentColor = MoSoTheme.colors.textActionPrimary,
+        FfButtonDefaults.buttonColors(
+            containerColor = FfTheme.colors.layerActionPrimaryEnabled,
+            contentColor = FfTheme.colors.textActionPrimary,
+            disabledContainerColor = FfTheme.colors.layerActionDisabled,
+            disabledContentColor = FfTheme.colors.textActionPrimary,
         )
 
     @Composable
     override fun border(): BorderStroke? = null
 }
 
-object MoSoButtonSecondaryDefaults : MoSoButtonTheme {
+object FfButtonSecondaryDefaults : FfButtonTheme {
     @Composable
     override fun colors(): ButtonColors =
-        MoSoButtonDefaults.buttonColors(
-            containerColor = MoSoTheme.colors.layer1,
-            contentColor = MoSoTheme.colors.textActionSecondary,
-            disabledContainerColor = MoSoTheme.colors.layer2,
-            disabledContentColor = MoSoTheme.colors.textActionDisabled,
+        FfButtonDefaults.buttonColors(
+            containerColor = FfTheme.colors.layer1,
+            contentColor = FfTheme.colors.textActionSecondary,
+            disabledContainerColor = FfTheme.colors.layer2,
+            disabledContentColor = FfTheme.colors.textActionDisabled,
         )
 
     @Composable
     override fun border(): BorderStroke = BorderStroke(
         width = 1.dp,
-        brush = SolidColor(MoSoTheme.colors.borderPrimary),
+        brush = SolidColor(FfTheme.colors.borderPrimary),
     )
 }
 
-interface MoSoButtonTheme {
+interface FfButtonTheme {
     @Composable
     fun colors(): ButtonColors
 
@@ -138,10 +138,10 @@ interface MoSoButtonTheme {
     fun border(): BorderStroke?
 
     @Composable
-    fun elevation(): ButtonElevation? = MoSoButtonDefaults.buttonElevation()
+    fun elevation(): ButtonElevation? = FfButtonDefaults.buttonElevation()
 }
 
-object MoSoButtonContentPadding {
+object FfButtonContentPadding {
     val default = PaddingValues(
         horizontal = 24.dp,
         vertical = 14.dp,
@@ -152,7 +152,7 @@ object MoSoButtonContentPadding {
     )
 }
 
-object MoSoButtonDefaults {
+object FfButtonDefaults {
 
     val shape: Shape @Composable get() = ButtonDefaults.shape
 
@@ -177,20 +177,20 @@ object MoSoButtonDefaults {
 @Composable
 private fun ButtonPreview() {
     Column {
-        MoSoTheme {
-            MoSoButton(onClick = { /*TODO*/ }) {
+        FfTheme {
+            FfButton(onClick = { /*TODO*/ }) {
                 Text(text = "Primary")
             }
-            MoSoButton(
+            FfButton(
                 enabled = false,
                 onClick = { /*TODO*/ },
             ) {
                 Text(text = "Primary Disabled")
             }
-            MoSoButtonSecondary(onClick = { /*TODO*/ }) {
+            FfButtonSecondary(onClick = { /*TODO*/ }) {
                 Text(text = "Secondary")
             }
-            MoSoButtonSecondary(
+            FfButtonSecondary(
                 enabled = false,
                 onClick = { /*TODO*/ },
             ) {
@@ -198,22 +198,22 @@ private fun ButtonPreview() {
             }
         }
 
-        MoSoTheme(
+        FfTheme(
             darkTheme = true,
         ) {
-            MoSoButton(onClick = { /*TODO*/ }) {
+            FfButton(onClick = { /*TODO*/ }) {
                 Text(text = "Dark mode Primary")
             }
-            MoSoButton(
+            FfButton(
                 enabled = false,
                 onClick = { /*TODO*/ },
             ) {
                 Text(text = "Dark mode Primary Disabled")
             }
-            MoSoButtonSecondary(onClick = { /*TODO*/ }) {
+            FfButtonSecondary(onClick = { /*TODO*/ }) {
                 Text(text = "Dark mode Secondary")
             }
-            MoSoButtonSecondary(
+            FfButtonSecondary(
                 enabled = false,
                 onClick = { /*TODO*/ },
             ) {

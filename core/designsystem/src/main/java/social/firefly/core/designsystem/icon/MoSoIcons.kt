@@ -30,7 +30,7 @@ import social.firefly.core.designsystem.R
  * [phosphor library](https://phosphoricons.com/).
  * TODO@release update material icons with phosphor icons
  */
-object MoSoIcons {
+object FfIcons {
     @Composable
     fun at() = painterResource(id = R.drawable.at)
 
