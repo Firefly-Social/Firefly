@@ -24,8 +24,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.derivedStateOf
@@ -37,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -57,6 +60,7 @@ import social.firefly.core.navigation.NavigationDestination
 import social.firefly.core.navigation.navigationModule
 import social.firefly.core.ui.common.FfSurface
 import social.firefly.core.ui.common.appbar.FfCloseableTopAppBar
+import social.firefly.core.ui.common.appbar.FfTopBarDefaults
 import social.firefly.core.ui.common.media.VideoPlayer
 import social.firefly.core.ui.common.media.calculateAspectRatio
 import social.firefly.core.ui.common.text.MediumTextBody
@@ -78,99 +82,103 @@ internal fun MediaScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun MediaScreen(
     attachments: List<Attachment>,
     selectedIndex: Int,
     mediaInteractions: MediaInteractions,
 ) {
+    val attachment = attachments[selectedIndex]
+    val context = LocalContext.current
+    var altTextVisible by remember {
+        mutableStateOf(false)
+    }
+    val pagerState = rememberPagerState(
+        initialPage = selectedIndex
+    ) { attachments.size }
+
     FfSurface(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
     ) {
-        val attachment = attachments[selectedIndex]
-        val context = LocalContext.current
-        var altTextVisible by remember {
-            mutableStateOf(false)
+        when (attachment) {
+            is Attachment.Image -> ImagePager(
+                attachments = attachments,
+                pagerState = pagerState,
+            )
+
+            is Attachment.Video -> VideoContent(attachment = attachment,)
+            is Attachment.Gifv -> VideoContent(attachment = attachment)
+            else -> {}
         }
-        val pagerState = rememberPagerState(
-            initialPage = selectedIndex
-        ) { attachments.size }
 
-        Column {
-            FfCloseableTopAppBar(
-                modifier = Modifier
-                    .zIndex(1f),
-                actions = {
-                    attachments[pagerState.currentPage].description?.let {
-                        IconButton(onClick = { altTextVisible = !altTextVisible }) {
-                            MediumTextLabel(
-                                text = stringResource(id = R.string.alt_text_label)
-                            )
-                        }
-                    }
-
-                    IconButton(
-                        onClick = {
-                            val uri = Uri.parse(attachments[pagerState.currentPage].url)
-                            val fileName = uri.lastPathSegment
-
-                            DownloadManager.Request(uri).apply {
-                                setDestinationInExternalPublicDir(
-                                    Environment.DIRECTORY_DOWNLOADS,
-                                    fileName,
-                                )
-                                (context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager)
-                                    .enqueue(this)
-                            }
-
-                            mediaInteractions.onDownloadClicked(fileName ?: "")
-                        }
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(FfIcons.Sizes.normal),
-                            painter = FfIcons.downloadSimple(),
-                            contentDescription = stringResource(id = R.string.download_content_description),
+        FfCloseableTopAppBar(
+            modifier = Modifier
+                .zIndex(1f),
+            colors = FfTopBarDefaults.colors(
+                containerColor = FfTheme.colors.layer1.copy(alpha = 0.5f)
+            ),
+            actions = {
+                attachments[pagerState.currentPage].description?.let {
+                    IconButton(onClick = { altTextVisible = !altTextVisible }) {
+                        MediumTextLabel(
+                            text = stringResource(id = R.string.alt_text_label)
                         )
                     }
                 }
-            )
-            when (attachment) {
-                is Attachment.Image -> ImagePager(
-                    attachments = attachments,
-                    pagerState = pagerState,
-                )
-                is Attachment.Video -> VideoContent(attachment = attachment,)
-                is Attachment.Gifv -> VideoContent(attachment = attachment)
-                else -> {}
-            }
-        }
-        attachments[pagerState.currentPage].description?.let { description ->
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                AnimatedVisibility(
-                    modifier = Modifier.align(Alignment.BottomCenter),
-                    visible = altTextVisible,
-                    enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
-                    exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(
-                                RoundedCornerShape(
-                                    topStart = 16.dp,
-                                    topEnd = 16.dp,
-                                )
+
+                IconButton(
+                    onClick = {
+                        val uri = Uri.parse(attachments[pagerState.currentPage].url)
+                        val fileName = uri.lastPathSegment
+
+                        DownloadManager.Request(uri).apply {
+                            setDestinationInExternalPublicDir(
+                                Environment.DIRECTORY_DOWNLOADS,
+                                fileName,
                             )
-                            .background(FfTheme.colors.layer2)
-                            .padding(16.dp)
-                    ) {
-                        MediumTextBody(text = description)
+                            (context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager)
+                                .enqueue(this)
+                        }
+
+                        mediaInteractions.onDownloadClicked(fileName ?: "")
                     }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(FfIcons.Sizes.normal),
+                        painter = FfIcons.downloadSimple(),
+                        contentDescription = stringResource(id = R.string.download_content_description),
+                    )
+                }
+            }
+        )
+    }
+
+    attachments[pagerState.currentPage].description?.let { description ->
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            AnimatedVisibility(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                visible = altTextVisible,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 16.dp,
+                                topEnd = 16.dp,
+                            )
+                        )
+                        .background(FfTheme.colors.layer2)
+                        .padding(16.dp)
+                ) {
+                    MediumTextBody(text = description)
                 }
             }
         }
