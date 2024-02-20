@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import social.firefly.common.utils.FfFadeIn
-import social.firefly.common.utils.FfFadeOut
+import social.firefly.common.utils.ffFadeIn
+import social.firefly.common.utils.ffFadeOut
 import social.firefly.core.navigation.BottomBarNavigationDestination
 import social.firefly.feature.account.myAccountScreen
 import social.firefly.feature.discover.discoverScreen
@@ -21,10 +21,10 @@ fun BottomTabNavHost(
         modifier = modifier,
         navController = tabbedNavController,
         startDestination = BottomBarNavigationDestination.Feed.route,
-        enterTransition = { FfFadeIn() },
-        exitTransition = { FfFadeOut() },
-        popEnterTransition = { FfFadeIn() },
-        popExitTransition = { FfFadeOut() },
+        enterTransition = { ffFadeIn() },
+        exitTransition = { ffFadeOut() },
+        popEnterTransition = { ffFadeIn() },
+        popExitTransition = { ffFadeOut() },
     ) {
         feedScreen()
         discoverScreen()

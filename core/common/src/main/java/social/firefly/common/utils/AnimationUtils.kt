@@ -8,20 +8,20 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.navigation.NavBackStackEntry
 
-fun AnimatedContentTransitionScope<NavBackStackEntry>.FfSlideIn(): EnterTransition =
+fun AnimatedContentTransitionScope<NavBackStackEntry>.ffSlideIn(): EnterTransition =
     slideIntoContainer(
         towards = AnimatedContentTransitionScope.SlideDirection.Up,
         animationSpec = tween(TWEEN_DURATION),
     )
 
-fun AnimatedContentTransitionScope<NavBackStackEntry>.FfSlideOut(): ExitTransition =
+fun AnimatedContentTransitionScope<NavBackStackEntry>.ffSlideOut(): ExitTransition =
     slideOutOfContainer(
         towards = AnimatedContentTransitionScope.SlideDirection.Down,
         animationSpec = tween(TWEEN_DURATION),
     )
 
-fun FfFadeIn(): EnterTransition = fadeIn(tween(durationMillis = TWEEN_DURATION))
+fun ffFadeIn(): EnterTransition = fadeIn(tween(durationMillis = TWEEN_DURATION))
 
-fun FfFadeOut(): ExitTransition = fadeOut(tween(durationMillis = TWEEN_DURATION))
+fun ffFadeOut(): ExitTransition = fadeOut(tween(durationMillis = TWEEN_DURATION))
 
 const val TWEEN_DURATION = 250
