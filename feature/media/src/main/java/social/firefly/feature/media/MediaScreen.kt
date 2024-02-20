@@ -11,6 +11,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -94,9 +95,17 @@ private fun MediaScreen(
     var altTextVisible by remember {
         mutableStateOf(false)
     }
+    var barVisibility by remember {
+        mutableStateOf(true)
+    }
     val pagerState = rememberPagerState(
         initialPage = selectedIndex
     ) { attachments.size }
+
+    val visibilityClick = {
+        barVisibility = !barVisibility
+        altTextVisible = false
+    }
 
     FfSurface(
         modifier = Modifier
@@ -107,58 +116,73 @@ private fun MediaScreen(
             is Attachment.Image -> ImagePager(
                 attachments = attachments,
                 pagerState = pagerState,
+                onClick = visibilityClick
             )
 
-            is Attachment.Video -> VideoContent(attachment = attachment,)
-            is Attachment.Gifv -> VideoContent(attachment = attachment)
+            is Attachment.Video -> VideoContent(
+                onClick = visibilityClick,
+                attachment = attachment,
+            )
+            is Attachment.Gifv -> VideoContent(
+                onClick = visibilityClick,
+                attachment = attachment,
+            )
             else -> {}
         }
 
-        FfCloseableTopAppBar(
-            modifier = Modifier
-                .zIndex(1f),
-            colors = FfTopBarDefaults.colors(
-                containerColor = FfTheme.colors.layer1.copy(alpha = 0.5f)
-            ),
-            actions = {
-                attachments[pagerState.currentPage].description?.let {
-                    IconButton(onClick = { altTextVisible = !altTextVisible }) {
-                        MediumTextLabel(
-                            text = stringResource(id = R.string.alt_text_label)
+        AnimatedVisibility(
+            visible = barVisibility,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            FfCloseableTopAppBar(
+                modifier = Modifier
+                    .zIndex(1f),
+                colors = FfTopBarDefaults.colors(
+                    containerColor = FfTheme.colors.layer1.copy(alpha = 0.5f)
+                ),
+                actions = {
+                    attachments[pagerState.currentPage].description?.let {
+                        IconButton(onClick = { altTextVisible = !altTextVisible }) {
+                            MediumTextLabel(
+                                text = stringResource(id = R.string.alt_text_label)
+                            )
+                        }
+                    }
+
+                    IconButton(
+                        onClick = {
+                            val uri = Uri.parse(attachments[pagerState.currentPage].url)
+                            val fileName = uri.lastPathSegment
+
+                            DownloadManager.Request(uri).apply {
+                                setDestinationInExternalPublicDir(
+                                    Environment.DIRECTORY_DOWNLOADS,
+                                    fileName,
+                                )
+                                (context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager)
+                                    .enqueue(this)
+                            }
+
+                            mediaInteractions.onDownloadClicked(fileName ?: "")
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(FfIcons.Sizes.normal),
+                            painter = FfIcons.downloadSimple(),
+                            contentDescription = stringResource(id = R.string.download_content_description),
                         )
                     }
                 }
-
-                IconButton(
-                    onClick = {
-                        val uri = Uri.parse(attachments[pagerState.currentPage].url)
-                        val fileName = uri.lastPathSegment
-
-                        DownloadManager.Request(uri).apply {
-                            setDestinationInExternalPublicDir(
-                                Environment.DIRECTORY_DOWNLOADS,
-                                fileName,
-                            )
-                            (context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager)
-                                .enqueue(this)
-                        }
-
-                        mediaInteractions.onDownloadClicked(fileName ?: "")
-                    }
-                ) {
-                    Icon(
-                        modifier = Modifier.size(FfIcons.Sizes.normal),
-                        painter = FfIcons.downloadSimple(),
-                        contentDescription = stringResource(id = R.string.download_content_description),
-                    )
-                }
-            }
-        )
+            )
+        }
     }
 
     attachments[pagerState.currentPage].description?.let { description ->
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
         ) {
             AnimatedVisibility(
                 modifier = Modifier.align(Alignment.BottomCenter),
@@ -190,6 +214,7 @@ private fun MediaScreen(
 private fun ImagePager(
     attachments: List<Attachment>,
     pagerState: PagerState,
+    onClick: () -> Unit,
 ) {
     val scale = remember { mutableFloatStateOf(1f) }
 
@@ -201,7 +226,8 @@ private fun ImagePager(
             is Attachment.Image -> ZoomableImage(
                 attachment = attachment,
                 pagerState,
-                scale
+                scale,
+                onClick = onClick,
             )
 
             else -> {}
@@ -214,7 +240,8 @@ private fun ImagePager(
 private fun ZoomableImage(
     attachment: Attachment.Image,
     pagerState: PagerState,
-    scale: MutableFloatState = remember { mutableFloatStateOf(1f) }
+    scale: MutableFloatState = remember { mutableFloatStateOf(1f) },
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -295,6 +322,9 @@ private fun ZoomableImage(
                                 .coerceIn(-translationLimitX..translationLimitX)
                             translationY = (translationY - (offset.y - (height / 2)) * innerScale)
                                 .coerceIn(-translationLimitY..translationLimitY)
+                        },
+                        onTap = {
+                            onClick()
                         }
                     )
                 },
@@ -308,15 +338,18 @@ private fun ZoomableImage(
 @Composable
 private fun VideoContent(
     attachment: Attachment.Video,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         VideoPlayer(
             modifier = Modifier
                 .align(Alignment.Center)
                 .aspectRatio(attachment.meta?.calculateAspectRatio() ?: 1f),
             uri = Uri.parse(attachment.url),
+            onClick = onClick,
         )
     }
 }
@@ -324,15 +357,18 @@ private fun VideoContent(
 @Composable
 private fun VideoContent(
     attachment: Attachment.Gifv,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         VideoPlayer(
             modifier = Modifier
                 .align(Alignment.Center)
                 .aspectRatio(attachment.meta?.calculateAspectRatio() ?: 1f),
             uri = Uri.parse(attachment.url),
+            onClick = onClick,
         )
     }
 }
