@@ -4,17 +4,26 @@ import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -22,28 +31,37 @@ import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import social.firefly.core.designsystem.icon.FfIcons
+import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.model.Attachment
 import social.firefly.core.navigation.NavigationDestination
+import social.firefly.core.navigation.navigationModule
 import social.firefly.core.ui.common.FfSurface
 import social.firefly.core.ui.common.appbar.FfCloseableTopAppBar
 import social.firefly.core.ui.common.media.VideoPlayer
 import social.firefly.core.ui.common.media.calculateAspectRatio
+import social.firefly.core.ui.common.text.MediumTextBody
+import social.firefly.core.ui.common.text.MediumTextLabel
+import social.firefly.core.ui.common.utils.PreviewTheme
 import kotlin.math.max
 
 @Composable
@@ -74,16 +92,26 @@ private fun MediaScreen(
     ) {
         val attachment = attachments[selectedIndex]
         val context = LocalContext.current
+        var altTextVisible by remember {
+            mutableStateOf(false)
+        }
+        val pagerState = rememberPagerState(
+            initialPage = selectedIndex
+        ) { attachments.size }
 
         Column {
-            val pagerState = rememberPagerState(
-                initialPage = selectedIndex
-            ) { attachments.size }
-
             FfCloseableTopAppBar(
                 modifier = Modifier
                     .zIndex(1f),
                 actions = {
+                    attachments[pagerState.currentPage].description?.let {
+                        IconButton(onClick = { altTextVisible = !altTextVisible }) {
+                            MediumTextLabel(
+                                text = stringResource(id = R.string.alt_text_label)
+                            )
+                        }
+                    }
+
                     IconButton(
                         onClick = {
                             val uri = Uri.parse(attachments[pagerState.currentPage].url)
@@ -119,7 +147,33 @@ private fun MediaScreen(
                 else -> {}
             }
         }
-
+        attachments[pagerState.currentPage].description?.let { description ->
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                AnimatedVisibility(
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    visible = altTextVisible,
+                    enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
+                    exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = 16.dp,
+                                    topEnd = 16.dp,
+                                )
+                            )
+                            .background(FfTheme.colors.layer2)
+                            .padding(16.dp)
+                    ) {
+                        MediumTextBody(text = description)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -271,6 +325,26 @@ private fun VideoContent(
                 .align(Alignment.Center)
                 .aspectRatio(attachment.meta?.calculateAspectRatio() ?: 1f),
             uri = Uri.parse(attachment.url),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun MediaScreenPreview() {
+    PreviewTheme(
+        modules = listOf(
+            navigationModule
+        )
+    ) {
+        MediaScreen(
+            attachments = listOf(
+                Attachment.Image(
+                    attachmentId = "",
+                )
+            ),
+            selectedIndex = 0,
+            mediaInteractions = MediaInteractionsNoOp
         )
     }
 }
