@@ -114,11 +114,8 @@ private fun MediaScreen(
                     attachments = attachments,
                     pagerState = pagerState,
                 )
-
-                is Attachment.Video -> VideoContent(
-                    attachment = attachment,
-                )
-
+                is Attachment.Video -> VideoContent(attachment = attachment,)
+                is Attachment.Gifv -> VideoContent(attachment = attachment)
                 else -> {}
             }
         }
@@ -249,6 +246,22 @@ private fun ZoomableImage(
 @Composable
 private fun VideoContent(
     attachment: Attachment.Video,
+) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        VideoPlayer(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .aspectRatio(attachment.meta?.calculateAspectRatio() ?: 1f),
+            uri = Uri.parse(attachment.url),
+        )
+    }
+}
+
+@Composable
+private fun VideoContent(
+    attachment: Attachment.Gifv,
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
