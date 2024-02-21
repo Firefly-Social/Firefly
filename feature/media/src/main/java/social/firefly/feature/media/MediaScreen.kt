@@ -174,32 +174,44 @@ private fun MediaScreen(
         }
     }
 
+
     attachments[pagerState.currentPage].description?.let { description ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding()
+        AltText(
+            description = description,
+            visible = altTextVisible,
+        )
+    }
+}
+
+@Composable
+private fun AltText(
+    description: String,
+    visible: Boolean
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+    ) {
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            visible = visible,
+            enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
+            exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
         ) {
-            AnimatedVisibility(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                visible = altTextVisible,
-                enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
-                exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(
-                            RoundedCornerShape(
-                                topStart = 16.dp,
-                                topEnd = 16.dp,
-                            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = 16.dp,
+                            topEnd = 16.dp,
                         )
-                        .background(FfTheme.colors.layer2)
-                        .padding(16.dp)
-                ) {
-                    MediumTextBody(text = description)
-                }
+                    )
+                    .background(FfTheme.colors.layer2)
+                    .padding(16.dp)
+            ) {
+                MediumTextBody(text = description)
             }
         }
     }
