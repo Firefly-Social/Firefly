@@ -1,12 +1,10 @@
 package social.firefly.ui
 
 import android.content.Context
-import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
@@ -16,20 +14,17 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import social.firefly.MainViewModel
 import social.firefly.common.utils.StringFactory
 import social.firefly.core.navigation.AuthNavigationDestination
 import social.firefly.core.navigation.AuthNavigationDestination.ChooseServer.navigateToChooseServerScreen
@@ -104,10 +99,9 @@ class AppState(
 
     init {
         coroutineScope.launch(Dispatchers.Main) {
-            val navigationEventFlow = navigationEventFlow().onSubscription {
+            navigationEventFlow().onSubscription {
                 navigationCollectionCompletable.complete(Unit)
-            }
-            navigationEventFlow.collectLatest {
+            }.collectLatest {
                 Timber.d("NAVIGATION consuming event $it")
                 when (it) {
                     is Event.NavigateToDestination -> {
