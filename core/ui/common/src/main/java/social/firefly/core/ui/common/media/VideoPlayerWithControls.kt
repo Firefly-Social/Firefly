@@ -39,6 +39,7 @@ import androidx.media3.ui.PlayerView
 import kotlinx.coroutines.delay
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.R
 import social.firefly.core.ui.common.loading.FfLinearProgressIndicator
 import social.firefly.core.ui.common.text.SmallTextLabel
@@ -94,13 +95,16 @@ fun VideoPlayer(
                 exoPlayer.release()
             }
         }
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .clickable {
-                    onClick()
-                },
-        )
+
+        NoRipple {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .clickable {
+                        onClick()
+                    },
+            )
+        }
 
         AnimatedVisibility(
             modifier = Modifier.align(Alignment.BottomCenter),
