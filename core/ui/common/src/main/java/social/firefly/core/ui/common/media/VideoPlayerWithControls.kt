@@ -39,7 +39,6 @@ import androidx.media3.ui.PlayerView
 import kotlinx.coroutines.delay
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.R
 import social.firefly.core.ui.common.loading.FfLinearProgressIndicator
 import social.firefly.core.ui.common.text.SmallTextLabel
@@ -53,11 +52,9 @@ private const val TAG = "VideoPlayer"
 fun VideoPlayer(
     uri: Uri,
     modifier: Modifier = Modifier,
+    controlsVisible: Boolean,
     onClick: () -> Unit = {},
 ) {
-    var controlsVisibility by remember {
-        mutableStateOf(true)
-    }
     Box(
         modifier = modifier,
     ) {
@@ -101,14 +98,13 @@ fun VideoPlayer(
             modifier = modifier
                 .fillMaxSize()
                 .clickable {
-                    controlsVisibility = !controlsVisibility
                     onClick()
                 },
         )
 
         AnimatedVisibility(
             modifier = Modifier.align(Alignment.BottomCenter),
-            visible = controlsVisibility,
+            visible = controlsVisible,
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
@@ -120,7 +116,7 @@ fun VideoPlayer(
 }
 
 @OptIn(UnstableApi::class)
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongMethod")
 @Composable
 private fun VideoControls(
     exoPlayer: ExoPlayer,
