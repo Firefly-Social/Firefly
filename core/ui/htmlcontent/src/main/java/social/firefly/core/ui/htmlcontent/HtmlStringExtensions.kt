@@ -89,5 +89,4 @@ fun String.htmlToStringWithExpandedMentions(): String {
     return HtmlCompat.fromHtml(expandedHtml, 0).toString()
 }
 
-private const val MENTION_LINK = "class=\"u-url mention\""
-private const val LINK_REGEX = "<a[^>]*>[\\s\\S]+?<\\/a>"
+private const val LINK_REGEX = "<a[^>]*>[\\s\\S]+?</a>"
