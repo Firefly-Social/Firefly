@@ -72,6 +72,18 @@ fun String.htmlToSpannable(
         }
 }
 
+@Suppress("MaxLineLength")
+/**
+ * replaces link html link spans of class "u-url mention" with the full user handle
+ *
+ * For example, it changes this string:
+ *
+ * <p>test <span class="h-card" translate="no"><a href="https://test.social/@obez" class="u-url mention">@<span>obez</span></a></span></p>
+ *
+ * into this string:
+ *
+ * <p>test <span class="h-card" translate="no">@obez@test.social</span></p>
+ */
 fun String.htmlToStringWithExpandedMentions(
     domainToIgnore: String? = null
 ): String {
@@ -93,4 +105,4 @@ fun String.htmlToStringWithExpandedMentions(
     return HtmlCompat.fromHtml(expandedHtml, 0).toString()
 }
 
-private const val LINK_REGEX = "<a[^>]*>[\\s\\S]+?</a>"
+private const val LINK_REGEX = "<a[^>]*class=\"u-url mention\"[^>]*>[\\s\\S]+?</a>"
