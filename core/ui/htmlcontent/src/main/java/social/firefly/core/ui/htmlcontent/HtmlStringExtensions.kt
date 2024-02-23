@@ -72,16 +72,20 @@ fun String.htmlToSpannable(
         }
 }
 
-fun String.htmlToStringWithExpandedMentions(): String {
+fun String.htmlToStringWithExpandedMentions(
+    domainToIgnore: String? = null
+): String {
     var expandedHtml = this.trim('\n')
 
-    LINK_REGEX.toRegex().findAll(expandedHtml).forEach {
-        val link = it.value.substringAfter("href=\"").substringBefore("\"")
+    LINK_REGEX.toRegex().findAll(expandedHtml).forEach { matchResult ->
+        if (domainToIgnore != null && matchResult.value.contains(domainToIgnore)) return@forEach
+
+        val link = matchResult.value.substringAfter("href=\"").substringBefore("\"")
         val domain = link.substringAfter("https://").substringBefore("/")
         val user = link.substringAfter("$domain/")
         val fullHandle = "$user@$domain"
         expandedHtml = expandedHtml.replace(
-            it.value,
+            matchResult.value,
             fullHandle,
         )
     }
