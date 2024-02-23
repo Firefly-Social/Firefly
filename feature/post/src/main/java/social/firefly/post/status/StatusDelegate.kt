@@ -4,14 +4,11 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.core.text.HtmlCompat
 import androidx.core.text.trimmedLength
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import social.firefly.common.utils.edit
 import social.firefly.common.utils.findAccountAtCursor
@@ -21,14 +18,11 @@ import social.firefly.common.utils.replaceHashtag
 import social.firefly.core.analytics.NewPostAnalytics
 import social.firefly.core.repository.mastodon.SearchRepository
 import social.firefly.core.repository.mastodon.StatusRepository
-import social.firefly.core.ui.htmlcontent.htmlToStringWithExpandedMentions
-import social.firefly.core.usecase.mastodon.account.GetDomain
 import social.firefly.post.NewPostViewModel
 import timber.log.Timber
 
 class StatusDelegate(
     private val analytics: NewPostAnalytics,
-    private val getDomain: GetDomain,
     private val searchRepository: SearchRepository,
     private val statusRepository: StatusRepository,
     private val coroutineScope: CoroutineScope,
@@ -63,19 +57,17 @@ class StatusDelegate(
     }
 
     private suspend fun populateEditStatus(editStatusId: String) {
-        getDomain().collect { domain ->
-            statusRepository.getStatusLocal(editStatusId)?.let { status ->
-                val content = status.content.htmlToStringWithExpandedMentions(domainToIgnore = domain)
-                _uiState.edit {
-                    copy(
-                        statusText = TextFieldValue(
-                            text = content,
-                            selection = TextRange(content.trimmedLength())
-                        ),
-                        contentWarningText = status.contentWarningText.ifBlank { null },
-                        editStatusId = status.statusId,
-                    )
-                }
+        statusRepository.getStatusLocal(editStatusId)?.let { status ->
+            val content = HtmlCompat.fromHtml(status.content, 0).toString().trim('\n')
+            _uiState.edit {
+                copy(
+                    statusText = TextFieldValue(
+                        text = content,
+                        selection = TextRange(content.trimmedLength())
+                    ),
+                    contentWarningText = status.contentWarningText.ifBlank { null },
+                    editStatusId = status.statusId,
+                )
             }
         }
     }

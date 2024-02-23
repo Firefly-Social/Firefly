@@ -41,7 +41,6 @@ val newPostModule = module {
     factory { parametersHolder ->
         StatusDelegate(
             analytics = get(),
-            getDomain = get(),
             searchRepository = get(),
             statusRepository = get(),
             coroutineScope = parametersHolder[0],
