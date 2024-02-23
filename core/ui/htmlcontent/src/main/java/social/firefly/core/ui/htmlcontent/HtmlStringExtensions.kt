@@ -71,3 +71,23 @@ fun String.htmlToSpannable(
             }
         }
 }
+
+fun String.htmlToStringWithExpandedMentions(): String {
+    var expandedHtml = this.trim('\n')
+
+    LINK_REGEX.toRegex().findAll(expandedHtml).forEach {
+        val link = it.value.substringAfter("href=\"").substringBefore("\"")
+        val domain = link.substringAfter("https://").substringBefore("/")
+        val user = link.substringAfter("$domain/")
+        val fullHandle = "$user@$domain"
+        expandedHtml = expandedHtml.replace(
+            it.value,
+            fullHandle,
+        )
+    }
+
+    return HtmlCompat.fromHtml(expandedHtml, 0).toString()
+}
+
+private const val MENTION_LINK = "class=\"u-url mention\""
+private const val LINK_REGEX = "<a[^>]*>[\\s\\S]+?<\\/a>"

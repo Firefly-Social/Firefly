@@ -18,6 +18,7 @@ import social.firefly.common.utils.replaceHashtag
 import social.firefly.core.analytics.NewPostAnalytics
 import social.firefly.core.repository.mastodon.SearchRepository
 import social.firefly.core.repository.mastodon.StatusRepository
+import social.firefly.core.ui.htmlcontent.htmlToStringWithExpandedMentions
 import social.firefly.post.NewPostViewModel
 import timber.log.Timber
 
@@ -58,11 +59,11 @@ class StatusDelegate(
 
     private suspend fun populateEditStatus(editStatusId: String) {
         statusRepository.getStatusLocal(editStatusId)?.let { status ->
-            val content = HtmlCompat.fromHtml(status.content, 0)
+            val content = status.content.htmlToStringWithExpandedMentions()
             _uiState.edit {
                 copy(
                     statusText = TextFieldValue(
-                        text = content.toString(),
+                        text = content,
                         selection = TextRange(content.trimmedLength())
                     ),
                     contentWarningText = status.contentWarningText.ifBlank { null },
