@@ -1,9 +1,16 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("social.firefly.android.application")
     id("social.firefly.android.application.compose")
     alias(libs.plugins.about.libraries.plugin)
     id("social.firefly.android.application.secrets")
 }
+
+val keystorePropertiesFile = rootProject.file("secrets/keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     namespace = "social.firefly"
@@ -19,12 +26,22 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFile("proguard-rules.pro")
             matchingFallbacks += "release"
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isDefault = true
