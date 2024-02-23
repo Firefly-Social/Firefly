@@ -29,7 +29,9 @@ import social.firefly.common.utils.toFile
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfSpacing
 import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.model.StatusVisibility
 import social.firefly.core.ui.common.divider.FfDivider
+import social.firefly.core.ui.common.dropdown.VisibilityDropDownButton
 import social.firefly.feature.post.R
 import social.firefly.post.NewPostViewModel
 import social.firefly.post.poll.PollInteractions
@@ -43,7 +45,9 @@ internal fun BottomBar(
     contentWarningInteractions: ContentWarningInteractions,
     onMediaInserted: (Uri, File, FileType) -> Unit,
     onUploadImageClicked: () -> Unit,
-    onUploadMediaClicked: () -> Unit
+    onUploadMediaClicked: () -> Unit,
+    visibility: StatusVisibility,
+    onVisibilitySelected: (StatusVisibility) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -92,6 +96,8 @@ internal fun BottomBar(
         },
         pollInteractions = pollInteractions,
         contentWarningInteractions = contentWarningInteractions,
+        visibility = visibility,
+        onVisibilitySelected = onVisibilitySelected,
     )
 }
 
@@ -102,6 +108,8 @@ internal fun BottomBar(
     onUploadVideoClicked: () -> Unit,
     pollInteractions: PollInteractions,
     contentWarningInteractions: ContentWarningInteractions,
+    visibility: StatusVisibility,
+    onVisibilitySelected: (StatusVisibility) -> Unit,
 ) {
     BottomBar(
         onUploadImageClicked = onUploadImageClicked,
@@ -113,6 +121,8 @@ internal fun BottomBar(
         characterCountText = bottomBarState.characterCountText,
         pollInteractions = pollInteractions,
         contentWarningInteractions = contentWarningInteractions,
+        visibility = visibility,
+        onVisibilitySelected = onVisibilitySelected,
     )
 }
 
@@ -127,6 +137,8 @@ internal fun BottomBar(
     contentWarningInteractions: ContentWarningInteractions,
     characterCountText: String,
     videoButtonEnabled: Boolean,
+    visibility: StatusVisibility,
+    onVisibilitySelected: (StatusVisibility) -> Unit,
 ) {
     Column {
         FfDivider(
@@ -173,6 +185,10 @@ internal fun BottomBar(
                 contentWarningText = contentWarningText,
             )
             Spacer(modifier = Modifier.weight(1f))
+            VisibilityDropDownButton(
+                visibility = visibility,
+                onVisibilitySelected = onVisibilitySelected,
+            )
             CharacterCountLabel(characterCountText = characterCountText)
         }
     }
