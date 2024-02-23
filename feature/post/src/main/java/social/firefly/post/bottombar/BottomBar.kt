@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -145,11 +147,11 @@ internal fun BottomBar(
             color = FfTheme.colors.borderPrimary,
         )
         Row(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .height(56.dp)
                 .fillMaxWidth()
-                .background(FfTheme.colors.layer1),
+                .background(FfTheme.colors.layer1)
+                .horizontalScroll(rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(
@@ -162,8 +164,6 @@ internal fun BottomBar(
                 )
             }
 
-            Spacer(modifier = Modifier.width(FfSpacing.sm))
-
             IconButton(
                 onClick = onUploadVideoClicked,
                 enabled = videoButtonEnabled,
@@ -174,21 +174,23 @@ internal fun BottomBar(
                 )
             }
 
-            Spacer(modifier = Modifier.width(FfSpacing.sm))
             AddPollButton(
                 pollInteractions = pollInteractions,
                 pollButtonEnabled = pollButtonEnabled,
             )
-            Spacer(modifier = Modifier.width(FfSpacing.sm))
+
             ContentWarningButton(
                 contentWarningInteractions = contentWarningInteractions,
                 contentWarningText = contentWarningText,
             )
+
             Spacer(modifier = Modifier.weight(1f))
+
             VisibilityDropDownButton(
                 visibility = visibility,
                 onVisibilitySelected = onVisibilitySelected,
             )
+
             CharacterCountLabel(characterCountText = characterCountText)
         }
     }
