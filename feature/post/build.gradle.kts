@@ -17,7 +17,6 @@ dependencies {
     implementation(project(":core:ui:common"))
     implementation(project(":core:navigation"))
     implementation(project(":core:analytics"))
-    implementation(project(":core:ui:htmlcontent"))
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.koin.core)
