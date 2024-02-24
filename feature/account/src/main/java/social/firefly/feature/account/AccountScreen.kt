@@ -70,6 +70,8 @@ import social.firefly.core.ui.common.appbar.FfCloseableTopAppBar
 import social.firefly.core.ui.common.button.FfButton
 import social.firefly.core.ui.common.button.FfButtonContentPadding
 import social.firefly.core.ui.common.button.FfButtonSecondary
+import social.firefly.core.ui.common.button.FfToggleButton
+import social.firefly.core.ui.common.button.ToggleButtonState
 import social.firefly.core.ui.common.dropdown.FfDropDownItem
 import social.firefly.core.ui.common.dropdown.FfDropdownMenu
 import social.firefly.core.ui.common.error.GenericError
@@ -273,7 +275,7 @@ private fun MainAccount(
                         SmallTextLabel(text = stringResource(id = R.string.edit_button))
                     }
                 } else {
-                    FfButton(
+                    FfToggleButton(
                         modifier = buttonModifier
                             .align(Alignment.CenterVertically),
                         onClick = {
@@ -282,6 +284,11 @@ private fun MainAccount(
                                 FollowStatus.PENDING_REQUEST -> accountInteractions.onUnfollowClicked()
                                 FollowStatus.NOT_FOLLOWING -> accountInteractions.onFollowClicked()
                             }
+                        },
+                        toggleState = when (account.followStatus) {
+                            FollowStatus.FOLLOWING -> ToggleButtonState.Secondary
+                            FollowStatus.PENDING_REQUEST -> ToggleButtonState.Secondary
+                            FollowStatus.NOT_FOLLOWING -> ToggleButtonState.Primary
                         },
                         contentPadding = FfButtonContentPadding.small,
                     ) {
