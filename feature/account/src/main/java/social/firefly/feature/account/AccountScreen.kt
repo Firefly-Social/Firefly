@@ -248,6 +248,7 @@ private fun MainContent(
     }
 }
 
+@Suppress("CyclomaticComplexMethod")
 @Composable
 private fun MainAccount(
     account: AccountUiState,
