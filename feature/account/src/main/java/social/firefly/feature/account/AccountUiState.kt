@@ -20,7 +20,7 @@ data class AccountUiState(
     val statusesCount: Long,
     val fields: List<AccountFieldUiState>,
     val isBot: Boolean,
-    val isFollowing: Boolean,
+    val followStatus: FollowStatus,
     val isMuted: Boolean,
     val isBlocked: Boolean,
     val joinDate: LocalDateTime,
@@ -37,3 +37,9 @@ data class Timeline(
     val postsAndRepliesFeed: Flow<PagingData<PostCardUiState>>,
     val mediaFeed: Flow<PagingData<PostCardUiState>>,
 )
+
+enum class FollowStatus {
+    FOLLOWING,
+    NOT_FOLLOWING,
+    PENDING_REQUEST,
+}

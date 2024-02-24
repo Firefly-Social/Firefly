@@ -276,20 +276,19 @@ private fun MainAccount(
                         modifier = buttonModifier
                             .align(Alignment.CenterVertically),
                         onClick = {
-                            if (account.isFollowing) {
-                                accountInteractions.onUnfollowClicked()
-                            } else {
-                                accountInteractions.onFollowClicked()
+                            when (account.followStatus) {
+                                FollowStatus.FOLLOWING -> accountInteractions.onUnfollowClicked()
+                                FollowStatus.PENDING_REQUEST -> accountInteractions.onUnfollowClicked()
+                                FollowStatus.NOT_FOLLOWING -> accountInteractions.onFollowClicked()
                             }
                         },
                         contentPadding = FfButtonContentPadding.small,
                     ) {
                         SmallTextLabel(
-                            text =
-                            if (account.isFollowing) {
-                                stringResource(id = R.string.unfollow_button)
-                            } else {
-                                stringResource(id = R.string.follow_button)
+                            text = when (account.followStatus) {
+                                FollowStatus.FOLLOWING -> stringResource(id = R.string.unfollow_button)
+                                FollowStatus.PENDING_REQUEST -> stringResource(id = R.string.pending_follow_button)
+                                FollowStatus.NOT_FOLLOWING -> stringResource(id = R.string.follow_button)
                             },
                         )
                     }
@@ -677,7 +676,7 @@ fun AccountScreenPreview() {
                     statusesCount = 4000,
                     fields = listOf(),
                     isBot = false,
-                    isFollowing = false,
+                    followStatus = FollowStatus.NOT_FOLLOWING,
                     isMuted = false,
                     isBlocked = false,
                     joinDate =

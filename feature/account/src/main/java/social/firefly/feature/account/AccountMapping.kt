@@ -21,7 +21,11 @@ fun Account.toUiState(relationship: Relationship) =
         statusesCount = statusesCount,
         fields = fields?.map { it.toUiState() } ?: emptyList(),
         isBot = isBot ?: false,
-        isFollowing = relationship.isFollowing,
+        followStatus = when {
+            relationship.hasPendingFollowRequest -> FollowStatus.PENDING_REQUEST
+            relationship.isFollowing -> FollowStatus.FOLLOWING
+            else -> FollowStatus.NOT_FOLLOWING
+        },
         isMuted = relationship.isMuting,
         isBlocked = relationship.isBlocking,
         joinDate = createdAt.toLocalDateTime(TimeZone.currentSystemDefault()),
