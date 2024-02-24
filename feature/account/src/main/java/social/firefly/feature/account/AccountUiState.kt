@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 import social.firefly.core.model.AccountTimelineType
+import social.firefly.core.ui.common.following.FollowStatus
 import social.firefly.core.ui.postcard.PostCardUiState
 
 data class AccountUiState(
@@ -37,9 +38,3 @@ data class Timeline(
     val postsAndRepliesFeed: Flow<PagingData<PostCardUiState>>,
     val mediaFeed: Flow<PagingData<PostCardUiState>>,
 )
-
-enum class FollowStatus {
-    FOLLOWING,
-    NOT_FOLLOWING,
-    PENDING_REQUEST,
-}

@@ -73,6 +73,7 @@ import social.firefly.core.ui.common.button.FfButtonSecondary
 import social.firefly.core.ui.common.dropdown.FfDropDownItem
 import social.firefly.core.ui.common.dropdown.FfDropdownMenu
 import social.firefly.core.ui.common.error.GenericError
+import social.firefly.core.ui.common.following.FollowStatus
 import social.firefly.core.ui.common.loading.FfCircularProgressIndicator
 import social.firefly.core.ui.common.paging.PagingLazyColumn
 import social.firefly.core.ui.common.tabs.FfTab
