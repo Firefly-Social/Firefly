@@ -390,7 +390,7 @@ private fun MainBox(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .focusRequester(textFieldFocusRequester)
-                                .padding(horizontal = 16.dp, vertical = 6.dp),
+                                .padding(start = 16.dp, end = 16.dp, bottom = 6.dp),
                             value = statusUiState.statusText,
                             onValueChange = { statusInteractions.onStatusTextUpdated(it) },
                             placeholder = {
@@ -441,7 +441,7 @@ private fun MainBox(
 private fun InReplyToText(inReplyToAccountName: String?) {
     if (inReplyToAccountName != null) {
         Row(
-            modifier = Modifier.padding(start = 12.dp),
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 6.dp),
         ) {
             Icon(
                 modifier =
@@ -471,7 +471,7 @@ private fun ContentWarningEntry(
 ) {
     FfTextField(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 6.dp)
             .fillMaxWidth(),
         value = contentWarningText,
         onValueChange = { contentWarningInteractions.onContentWarningTextChanged(it) },
