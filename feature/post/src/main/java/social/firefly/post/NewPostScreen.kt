@@ -68,6 +68,7 @@ import social.firefly.core.ui.common.button.FfButton
 import social.firefly.core.ui.common.button.FfButtonContentPadding
 import social.firefly.core.ui.common.media.AttachmentMedia
 import social.firefly.core.ui.common.text.FfTextField
+import social.firefly.core.ui.common.text.FfTextFieldNoBorder
 import social.firefly.core.ui.common.text.SmallTextLabel
 import social.firefly.core.ui.common.transparentTextFieldColors
 import social.firefly.core.ui.common.utils.getWindowHeightClass
@@ -385,11 +386,11 @@ private fun MainBox(
 
                     item {
                         val highlightColor = FfTheme.colors.textLink
-                        FfTextField(
-                            modifier =
-                            Modifier
+                        FfTextFieldNoBorder(
+                            modifier = Modifier
                                 .fillMaxWidth()
-                                .focusRequester(textFieldFocusRequester),
+                                .focusRequester(textFieldFocusRequester)
+                                .padding(horizontal = 16.dp, vertical = 6.dp),
                             value = statusUiState.statusText,
                             onValueChange = { statusInteractions.onStatusTextUpdated(it) },
                             placeholder = {
