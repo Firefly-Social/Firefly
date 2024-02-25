@@ -290,21 +290,14 @@ private fun NewPostScreenContent(
 fun UserHeader(
     userHeaderState: UserHeaderState,
 ) {
-    Row {
-        AsyncImage(
-            modifier = Modifier
-                .padding(start = FfSpacing.sm)
-                .size(40.dp)
-                .clip(CircleShape)
-                .border(
-                    width = 3.dp,
-                    color = FfTheme.colors.layer1,
-                    shape = CircleShape,
-                ),
-            model = userHeaderState.avatarUrl,
-            contentDescription = null,
-        )
-    }
+    AsyncImage(
+        modifier = Modifier
+            .padding(start = FfSpacing.sm)
+            .size(40.dp)
+            .clip(CircleShape),
+        model = userHeaderState.avatarUrl,
+        contentDescription = null,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -399,7 +392,7 @@ private fun MainBox(
                                 .focusRequester(textFieldFocusRequester),
                             value = statusUiState.statusText,
                             onValueChange = { statusInteractions.onStatusTextUpdated(it) },
-                            label = {
+                            placeholder = {
                                 Text(
                                     text = stringResource(id = R.string.new_post_text_field_label),
                                 )
@@ -476,9 +469,8 @@ private fun ContentWarningEntry(
     contentWarningInteractions: ContentWarningInteractions,
 ) {
     FfTextField(
-        modifier =
-        Modifier
-            .padding(16.dp)
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
             .fillMaxWidth(),
         value = contentWarningText,
         onValueChange = { contentWarningInteractions.onContentWarningTextChanged(it) },
