@@ -33,6 +33,16 @@ class UserPreferencesDatastore(context: Context) {
             !it.accountId.isNullOrBlank() && !it.accessToken.isNullOrBlank()
         }.distinctUntilChanged()
 
+    val pushAuthSecret: Flow<String> =
+        dataStore.data.mapLatest {
+            it.pushAuthSecret
+        }.distinctUntilChanged()
+
+    val serializedPushKeyPair: Flow<String> =
+        dataStore.data.mapLatest {
+            it.serializedPushKeyPair
+        }.distinctUntilChanged()
+
     /**
      * Preload the data so that it's available in the cache
      */
@@ -67,6 +77,22 @@ class UserPreferencesDatastore(context: Context) {
         require(HOST_NAME_REGEX.toRegex().matches(domain))
         dataStore.updateData {
             it.toBuilder().setDomain(domain).build()
+        }
+    }
+
+    suspend fun savePushAuthSecret(pushAuthSecret: String) {
+        dataStore.updateData {
+            it.toBuilder()
+                .setPushAuthSecret(pushAuthSecret)
+                .build()
+        }
+    }
+
+    suspend fun saveSerializedPushKeyPair(serializedPushKeyPair: String) {
+        dataStore.updateData {
+            it.toBuilder()
+                .setSerializedPushKeyPair(serializedPushKeyPair)
+                .build()
         }
     }
 
