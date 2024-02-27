@@ -6,6 +6,7 @@ import org.unifiedpush.android.connector.UnifiedPush
 object PushRegistration {
 
     fun register(context: Context) {
-        UnifiedPush.registerAppWithDialog(context)
+        //TODO enable when finished
+//        UnifiedPush.registerAppWithDialog(context)
     }
 }
