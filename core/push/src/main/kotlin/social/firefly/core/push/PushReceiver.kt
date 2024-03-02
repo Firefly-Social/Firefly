@@ -28,28 +28,21 @@ class PushReceiver : MessagingReceiver(), KoinComponent {
     override fun onNewEndpoint(context: Context, endpoint: String, instance: String) {
         Timber.tag(TAG).d("new endpoint")
         coroutineScope.launch {
-            val authSecretDeferred = CompletableDeferred<String>()
-            val keyPairDeferred = CompletableDeferred<EncodedKeyPair>()
+            val keysDeferred = CompletableDeferred<EncodedPushKeys>()
 
             launch {
-                keyManager.authSecret.collectLatest { authSecretDeferred.complete(it) }
+                keyManager.encodedPushKeys.collectLatest { keysDeferred.complete(it) }
             }
 
-            launch {
-                keyManager.encodedKeyPair.collectLatest { keyPairDeferred.complete(it) }
-            }
+            val keys = keysDeferred.await()
 
-            val authSecret = authSecretDeferred.await()
-            val keyPair = keyPairDeferred.await()
-
-            Timber.tag(TAG).d("auth secret: $authSecret")
-            Timber.tag(TAG).d("key pair: $keyPair")
+            Timber.tag(TAG).d("keys: $keys")
 
             try {
                 val webPushSubscription = pushRepository.subscribe(
                     endpoint = endpoint,
-                    p256dh = keyPair.publicKey,
-                    auth = authSecret,
+                    p256dh = keys.publicKey,
+                    auth = keys.authSecret,
                 )
                 Timber.tag(TAG).d("Web push subscription: $webPushSubscription")
             } catch (e: Exception) {

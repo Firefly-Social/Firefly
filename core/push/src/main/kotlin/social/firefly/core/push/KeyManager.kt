@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import social.firefly.core.datastore.UserPreferencesDatastore
+import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.SecureRandom
 import java.security.spec.ECGenParameterSpec
@@ -16,20 +17,11 @@ class KeyManager(
 ) {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val authSecret: Flow<String> = userPreferencesDatastore.pushAuthSecret.mapLatest {
-        it.ifBlank {
-            val generatedValue = generateAuthSecret()
-            userPreferencesDatastore.savePushAuthSecret(generatedValue)
-            generatedValue
-        }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val encodedKeyPair: Flow<EncodedKeyPair> = userPreferencesDatastore.serializedPushKeyPair.mapLatest {
+    val encodedPushKeys: Flow<EncodedPushKeys> = userPreferencesDatastore.serializedPushKeys.mapLatest {
         if (it.isNotBlank()) {
             Json.decodeFromString(it)
         } else {
-            val generatedValue = generateKeyPair()
+            val generatedValue = generatePushKeys()
             userPreferencesDatastore.saveSerializedPushKeyPair(Json.encodeToString(generatedValue))
             generatedValue
         }
@@ -39,21 +31,23 @@ class KeyManager(
         SecureRandom().nextBytes(this)
     }.encode()
 
+    private fun generateKeyPair(): KeyPair = KeyPairGenerator.getInstance("EC").apply {
+        initialize(
+            ECGenParameterSpec("prime256v1")
+        )
+    }.generateKeyPair()
+
     private fun ByteArray.encode(): String = Base64.encodeToString(
         this,
         Base64.URL_SAFE or Base64.NO_WRAP or Base64.NO_PADDING
     )
 
-    private fun generateKeyPair(): EncodedKeyPair {
-        val keyPair = KeyPairGenerator.getInstance("EC").apply {
-            initialize(
-                ECGenParameterSpec("prime256v1")
-            )
-        }.generateKeyPair()
-
-        return EncodedKeyPair(
+    private fun generatePushKeys(): EncodedPushKeys {
+        val keyPair = generateKeyPair()
+        return EncodedPushKeys(
             privateKey = keyPair.private.encoded.encode(),
-            publicKey = keyPair.public.encoded.encode()
+            publicKey = keyPair.public.encoded.encode(),
+            authSecret = generateAuthSecret(),
         )
     }
 

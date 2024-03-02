@@ -7,6 +7,6 @@ object PushRegistration {
 
     fun register(context: Context) {
         //TODO enable when finished
-//        UnifiedPush.registerAppWithDialog(context)
+        UnifiedPush.registerAppWithDialog(context)
     }
 }

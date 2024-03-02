@@ -33,14 +33,9 @@ class UserPreferencesDatastore(context: Context) {
             !it.accountId.isNullOrBlank() && !it.accessToken.isNullOrBlank()
         }.distinctUntilChanged()
 
-    val pushAuthSecret: Flow<String> =
+    val serializedPushKeys: Flow<String> =
         dataStore.data.mapLatest {
-            it.pushAuthSecret
-        }.distinctUntilChanged()
-
-    val serializedPushKeyPair: Flow<String> =
-        dataStore.data.mapLatest {
-            it.serializedPushKeyPair
+            it.serializedPushKeys
         }.distinctUntilChanged()
 
     /**
@@ -80,18 +75,10 @@ class UserPreferencesDatastore(context: Context) {
         }
     }
 
-    suspend fun savePushAuthSecret(pushAuthSecret: String) {
-        dataStore.updateData {
-            it.toBuilder()
-                .setPushAuthSecret(pushAuthSecret)
-                .build()
-        }
-    }
-
     suspend fun saveSerializedPushKeyPair(serializedPushKeyPair: String) {
         dataStore.updateData {
             it.toBuilder()
-                .setSerializedPushKeyPair(serializedPushKeyPair)
+                .setSerializedPushKeys(serializedPushKeyPair)
                 .build()
         }
     }
