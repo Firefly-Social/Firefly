@@ -17,4 +17,6 @@ class PushRepository(
         p256dh = p256dh,
         auth = auth,
     ).toExternal()
+
+    suspend fun getSubscription(): WebPushSubscription = api.getSubscription().toExternal()
 }
