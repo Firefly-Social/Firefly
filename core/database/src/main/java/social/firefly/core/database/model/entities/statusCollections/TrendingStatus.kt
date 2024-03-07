@@ -29,7 +29,7 @@ data class TrendingStatus(
 
 data class TrendingStatusWrapper(
     @Embedded
-    val searchedStatus: SearchedStatus,
+    val searchedStatus: TrendingStatus,
     @Relation(
         entity = DatabaseStatus::class,
         parentColumn = "statusId",

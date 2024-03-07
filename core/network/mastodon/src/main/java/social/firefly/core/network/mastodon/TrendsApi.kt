@@ -16,13 +16,13 @@ interface TrendsApi {
 
     @GET("/api/v1/trends/statuses")
     suspend fun getTrendingStatuses(
-        limit: Int? = null,
-        offset: Int? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("offset") offset: Int? = null,
     ): List<NetworkStatus>
 
     @GET("/api/v1/trends/links")
     suspend fun getTrendingLinks(
-        limit: Int? = null,
-        offset: Int? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("offset") offset: Int? = null,
     ): List<NetworkLink>
 }
