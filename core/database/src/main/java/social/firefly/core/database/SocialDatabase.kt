@@ -89,7 +89,7 @@ import social.firefly.core.database.model.entities.statusCollections.TrendingSta
         TrendingStatus::class,
         TrendingHashTag::class,
     ],
-    version = 1,
+    version = 2,
     autoMigrations = [],
     exportSchema = true,
 )

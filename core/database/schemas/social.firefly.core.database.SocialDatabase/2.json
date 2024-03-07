@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "989b4ac9baa718600b97bc55065f2a63",
+    "version": 2,
+    "identityHash": "c35470a7ea0b8f3454ffe034c62b33b8",
     "entities": [
       {
         "tableName": "statuses",
@@ -1487,12 +1487,114 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "trendingLinks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`url`))",
+        "fields": [
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "url"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "trendingStatuses",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`statusId` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`statusId`), FOREIGN KEY(`statusId`) REFERENCES `statuses`(`statusId`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "statusId",
+            "columnName": "statusId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "statusId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "statuses",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "statusId"
+            ],
+            "referencedColumns": [
+              "statusId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "trendingHashTags",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`hashTagName` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`hashTagName`), FOREIGN KEY(`hashTagName`) REFERENCES `hashtags`(`name`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "hashTagName",
+            "columnName": "hashTagName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "hashTagName"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "hashtags",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "hashTagName"
+            ],
+            "referencedColumns": [
+              "name"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '989b4ac9baa718600b97bc55065f2a63')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c35470a7ea0b8f3454ffe034c62b33b8')"
     ]
   }
 }
