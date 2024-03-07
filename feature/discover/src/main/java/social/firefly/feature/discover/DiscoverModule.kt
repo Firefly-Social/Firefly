@@ -1,19 +1,23 @@
 package social.firefly.feature.discover
 
-import androidx.paging.ExperimentalPagingApi
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 import social.firefly.common.commonModule
 import social.firefly.core.analytics.analyticsModule
 import social.firefly.core.navigation.navigationModule
+import social.firefly.core.repository.mastodon.mastodonRepositoryModule
+import social.firefly.core.repository.paging.pagingModule
+import social.firefly.core.usecase.mastodon.mastodonUsecaseModule
 
-@OptIn(ExperimentalPagingApi::class)
 val discoverModule =
     module {
         includes(
             commonModule,
             navigationModule,
             analyticsModule,
+            mastodonRepositoryModule,
+            mastodonUsecaseModule,
+            pagingModule,
         )
 
         viewModelOf(::DiscoverViewModel)
