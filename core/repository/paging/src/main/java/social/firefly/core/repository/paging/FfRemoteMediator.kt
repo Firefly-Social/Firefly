@@ -5,9 +5,9 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import kotlinx.coroutines.delay
-import social.firefly.core.repository.mastodon.FFLocalSource
-import social.firefly.core.repository.mastodon.FFRemoteSource
-import social.firefly.core.repository.mastodon.PageItem
+import social.firefly.core.repository.common.FFLocalSource
+import social.firefly.core.repository.common.FFRemoteSource
+import social.firefly.core.repository.common.PageItem
 
 import timber.log.Timber
 
