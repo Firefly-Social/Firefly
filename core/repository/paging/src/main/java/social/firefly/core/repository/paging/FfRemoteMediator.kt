@@ -12,7 +12,7 @@ import social.firefly.core.repository.mastodon.PageItem
 import timber.log.Timber
 
 @OptIn(ExperimentalPagingApi::class)
-abstract class FfRemoteMediator<T : Any, DBO : Any>() : RemoteMediator<Int, DBO>() {
+abstract class FfRemoteMediator<T : Any, DBO : Any> : RemoteMediator<Int, DBO>() {
     private var nextPositionIndex = 0
 
     protected abstract val localSource: FFLocalSource<T>
