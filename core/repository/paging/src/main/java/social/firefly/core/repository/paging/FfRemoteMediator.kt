@@ -11,6 +11,9 @@ import social.firefly.core.repository.common.PageItem
 
 import timber.log.Timber
 
+/**
+ *
+ */
 @OptIn(ExperimentalPagingApi::class)
 abstract class FfRemoteMediator<T : Any, DBO : Any> : RemoteMediator<Int, DBO>() {
     private var nextPositionIndex = 0

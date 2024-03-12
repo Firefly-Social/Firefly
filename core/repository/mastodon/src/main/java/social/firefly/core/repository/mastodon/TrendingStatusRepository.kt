@@ -14,16 +14,16 @@ import social.firefly.core.repository.mastodon.model.status.toExternalModel
 class TrendingStatusRepository(
     private val api: TrendsApi,
     private val dao: TrendingStatusDao,
-) : FFRemoteSource<Status>, FFLocalSource<Status> {
+) {
 
-     fun pagingSource() = dao.pagingSource()
+    fun pagingSource() = dao.pagingSource()
 
-    override suspend fun getRemotely(limit: Int, offset: Int): List<Status> =
+    suspend fun getRemotely(limit: Int, offset: Int): List<Status> =
         api.getTrendingStatuses(limit = limit, offset = offset).mapIndexed { index, status ->
             PageItem(item = status.toExternalModel(), position = index + (offset))
         }.map { it.item }
 
-    override suspend fun saveLocally(currentPage: List<PageItem<Status>>) {
+    suspend fun saveLocally(currentPage: List<PageItem<Status>>) {
         dao.upsertAll(
             currentPage.map { status ->
                 DbTrendingStatus(
