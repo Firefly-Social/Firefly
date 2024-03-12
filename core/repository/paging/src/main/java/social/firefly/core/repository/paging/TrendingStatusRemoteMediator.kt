@@ -15,9 +15,6 @@ import social.firefly.core.repository.common.FFLocalSource
 import social.firefly.core.repository.common.FFRemoteSource
 import social.firefly.core.repository.common.PageItem
 import social.firefly.core.repository.mastodon.DatabaseDelegate
-import social.firefly.core.repository.mastodon.FFLocalSource
-import social.firefly.core.repository.mastodon.FFRemoteSource
-import social.firefly.core.repository.mastodon.PageItem
 import social.firefly.core.repository.mastodon.TrendingStatusRepository
 import social.firefly.core.repository.mastodon.model.status.toExternalModel
 import social.firefly.core.usecase.mastodon.status.SaveStatusToDatabase

@@ -3,9 +3,11 @@ package social.firefly.core.repository.mastodon
 import androidx.paging.ExperimentalPagingApi
 import social.firefly.core.database.dao.TrendingStatusDao
 import social.firefly.core.database.model.entities.statusCollections.DbTrendingStatus
-import social.firefly.core.database.model.entities.statusCollections.TrendingStatusWrapper
 import social.firefly.core.model.Status
 import social.firefly.core.network.mastodon.TrendsApi
+import social.firefly.core.repository.common.FFLocalSource
+import social.firefly.core.repository.common.FFRemoteSource
+import social.firefly.core.repository.common.PageItem
 import social.firefly.core.repository.mastodon.model.status.toExternalModel
 
 @ExperimentalPagingApi
