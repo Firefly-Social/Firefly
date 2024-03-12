@@ -16,7 +16,7 @@ import social.firefly.core.network.mastodon.TrendsApi
 import social.firefly.core.repository.common.PageItem
 import social.firefly.core.repository.mastodon.model.hashtag.toExternalModel
 
-class TrendsRepository internal constructor(
+class TrendingHashtagRepository internal constructor(
     private val api: TrendsApi,
     private val dao: TrendingHashTagDao,
 ) {

@@ -12,7 +12,7 @@ import social.firefly.common.utils.edit
 import social.firefly.core.analytics.DiscoverAnalytics
 import social.firefly.core.navigation.NavigationDestination
 import social.firefly.core.navigation.usecases.NavigateTo
-import social.firefly.core.repository.mastodon.TrendsRepository
+import social.firefly.core.repository.mastodon.TrendingHashtagRepository
 import social.firefly.core.repository.paging.TrendingHashtagsRemoteMediator
 import social.firefly.core.repository.paging.TrendingStatusPagingDataFlow
 import social.firefly.core.ui.common.following.FollowStatus
@@ -26,7 +26,7 @@ import timber.log.Timber
 @OptIn(ExperimentalPagingApi::class)
 class DiscoverViewModel(
     getLoggedInUserAccountId: GetLoggedInUserAccountId,
-    trendsRepository: TrendsRepository,
+    trendingHashtagRepository: TrendingHashtagRepository,
     trendingStatusPagingDataFlow: TrendingStatusPagingDataFlow,
     private val analytics: DiscoverAnalytics,
     private val navigateTo: NavigateTo,
@@ -38,7 +38,7 @@ class DiscoverViewModel(
     private val usersAccountId: String = getLoggedInUserAccountId()
 
     private val hashtags: DiscoverTab.Hashtags =
-        DiscoverTab.Hashtags(pagingDataFlow = trendsRepository.getPager(
+        DiscoverTab.Hashtags(pagingDataFlow = trendingHashtagRepository.getPager(
             remoteMediator = hashtagsRemoteMediator
         ).map { pagingData -> pagingData.map { hashtag -> hashtag.toHashTagQuickViewUiState() } })
 
