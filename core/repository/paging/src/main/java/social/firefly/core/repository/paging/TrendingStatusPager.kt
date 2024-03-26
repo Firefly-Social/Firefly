@@ -3,13 +3,7 @@
 package social.firefly.core.repository.paging
 
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import androidx.paging.map
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import social.firefly.core.database.model.entities.statusCollections.TrendingStatusWrapper
 import social.firefly.core.model.Status
 import social.firefly.core.repository.common.FFLocalSource
@@ -19,8 +13,6 @@ import social.firefly.core.repository.mastodon.DatabaseDelegate
 import social.firefly.core.repository.mastodon.TrendingStatusRepository
 import social.firefly.core.repository.mastodon.model.status.toExternalModel
 import social.firefly.core.repository.paging.common.FfPager
-import social.firefly.core.repository.paging.common.FfRemoteMediator
-import social.firefly.core.repository.paging.common.PagingSourceProvider
 import social.firefly.core.usecase.mastodon.status.SaveStatusToDatabase
 
 class TrendingStatusPager(
