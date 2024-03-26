@@ -3,7 +3,9 @@ package social.firefly.feature.discover
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
 import androidx.paging.map
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
@@ -14,7 +16,7 @@ import social.firefly.core.navigation.NavigationDestination
 import social.firefly.core.navigation.usecases.NavigateTo
 import social.firefly.core.repository.mastodon.TrendingHashtagRepository
 import social.firefly.core.repository.paging.TrendingHashtagsRemoteMediator
-import social.firefly.core.repository.paging.TrendingStatusPagingDataFlow
+import social.firefly.core.repository.paging.TrendingStatusPager
 import social.firefly.core.ui.common.following.FollowStatus
 import social.firefly.core.ui.common.hashtag.quickview.toHashTagQuickViewUiState
 import social.firefly.core.ui.postcard.toPostCardUiState
@@ -27,7 +29,7 @@ import timber.log.Timber
 class DiscoverViewModel(
     getLoggedInUserAccountId: GetLoggedInUserAccountId,
     trendingHashtagRepository: TrendingHashtagRepository,
-    trendingStatusPagingDataFlow: TrendingStatusPagingDataFlow,
+    trendingStatusPager: TrendingStatusPager,
     private val analytics: DiscoverAnalytics,
     private val navigateTo: NavigateTo,
     private val followHashTag: FollowHashTag,
@@ -42,16 +44,18 @@ class DiscoverViewModel(
             remoteMediator = hashtagsRemoteMediator
         ).map { pagingData -> pagingData.map { hashtag -> hashtag.toHashTagQuickViewUiState() } })
 
+
     private val posts: DiscoverTab.Posts =
-        DiscoverTab.Posts(trendingStatusPagingDataFlow.pagingDataFlow()
-            .map { pagingData ->
-                pagingData.map { hashtag ->
-                    hashtag.toPostCardUiState(
-                        currentUserAccountId = usersAccountId,
-                        postCardInteractions = this,
-                    )
-                }
-            })
+        DiscoverTab.Posts(
+            pagingDataFlow = trendingStatusPager.build()
+                .map { pagingData ->
+                    pagingData.map { status ->
+                        status.toPostCardUiState(
+                            currentUserAccountId = usersAccountId,
+                            postCardInteractions = this,
+                        )
+                    }
+                })
 
     private val _uiState = MutableStateFlow(
         DiscoverUiState(

@@ -1,4 +1,4 @@
-package social.firefly.core.repository.paging
+package social.firefly.core.repository.paging.common
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -15,13 +15,11 @@ import timber.log.Timber
  *
  */
 @OptIn(ExperimentalPagingApi::class)
-abstract class FfRemoteMediator<T : Any, DBO : Any> : RemoteMediator<Int, DBO>() {
+class FfRemoteMediator<T : Any, DBO : Any>(
+    private val localSource: FFLocalSource<T, DBO>,
+    private val remoteSource: FFRemoteSource<T>,
+) : RemoteMediator<Int, DBO>() {
     private var nextPositionIndex = 0
-
-    protected abstract val localSource: FFLocalSource<T>
-
-    protected abstract val remoteSource: FFRemoteSource<T>
-
     @Suppress("ReturnCount")
     override suspend fun load(
         loadType: LoadType,

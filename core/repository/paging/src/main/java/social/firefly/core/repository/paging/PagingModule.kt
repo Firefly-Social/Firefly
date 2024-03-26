@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalPagingApi::class)
-
 package social.firefly.core.repository.paging
 
 import androidx.paging.ExperimentalPagingApi
@@ -12,6 +10,7 @@ import social.firefly.core.repository.paging.notifications.FollowNotificationsRe
 import social.firefly.core.repository.paging.notifications.MentionNotificationsRemoteMediator
 import social.firefly.core.usecase.mastodon.mastodonUsecaseModule
 
+@OptIn(ExperimentalPagingApi::class)
 val pagingModule = module {
     includes(
         mastodonRepositoryModule,
@@ -100,8 +99,8 @@ val pagingModule = module {
     }
 
     factoryOf(::TrendingHashtagsRemoteMediator)
-    factoryOf(::TrendingStatusRemoteMediator)
+//    factoryOf(::TrendingStatusRemoteMediator)
+    factoryOf(::TrendingStatusPager)
     factoryOf(::TrendingStatusRemoteSource)
     factoryOf(::TrendingStatusLocalSource)
-    factoryOf(::TrendingStatusPagingDataFlow)
 }

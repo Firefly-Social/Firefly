@@ -6,6 +6,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import androidx.paging.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,24 +18,49 @@ import social.firefly.core.repository.common.PageItem
 import social.firefly.core.repository.mastodon.DatabaseDelegate
 import social.firefly.core.repository.mastodon.TrendingStatusRepository
 import social.firefly.core.repository.mastodon.model.status.toExternalModel
+import social.firefly.core.repository.paging.common.FfPager
+import social.firefly.core.repository.paging.common.FfRemoteMediator
+import social.firefly.core.repository.paging.common.PagingSourceProvider
 import social.firefly.core.usecase.mastodon.status.SaveStatusToDatabase
 
-class TrendingStatusRemoteMediator(
-    override val localSource: TrendingStatusLocalSource,
-    override val remoteSource: TrendingStatusRemoteSource,
-) : FfRemoteMediator<Status, TrendingStatusWrapper>()
-
-class TrendingStatusLocalSource(
+class TrendingStatusPager(
     private val databaseDelegate: DatabaseDelegate,
     private val saveStatusToDatabase: SaveStatusToDatabase,
     private val trendingStatusRepository: TrendingStatusRepository,
-) : FFLocalSource<Status> {
+): FfPager<Status, TrendingStatusWrapper> {
+    override fun map(dbo: TrendingStatusWrapper): Status {
+        return dbo.status.toExternalModel()
+    }
+
+    override suspend fun getRemotely(limit: Int, offset: Int): List<Status> {
+        return trendingStatusRepository.getRemotely(limit, offset)
+    }
+
     override suspend fun saveLocally(currentPage: List<PageItem<Status>>) {
         databaseDelegate.withTransaction {
             saveStatusToDatabase(currentPage.map { it.item })
             trendingStatusRepository.saveLocally(currentPage)
         }
     }
+
+    override fun pagingSource(): PagingSource<Int, TrendingStatusWrapper> =
+        trendingStatusRepository.pagingSource()
+}
+
+class TrendingStatusLocalSource(
+    private val databaseDelegate: DatabaseDelegate,
+    private val saveStatusToDatabase: SaveStatusToDatabase,
+    private val trendingStatusRepository: TrendingStatusRepository,
+) : FFLocalSource<Status, TrendingStatusWrapper> {
+    override suspend fun saveLocally(currentPage: List<PageItem<Status>>) {
+        databaseDelegate.withTransaction {
+            saveStatusToDatabase(currentPage.map { it.item })
+            trendingStatusRepository.saveLocally(currentPage)
+        }
+    }
+
+    fun pagingSource(): PagingSource<Int, TrendingStatusWrapper> =
+        trendingStatusRepository.pagingSource()
 }
 
 class TrendingStatusRemoteSource(private val trendingStatusRepository: TrendingStatusRepository) :
@@ -44,31 +70,3 @@ class TrendingStatusRemoteSource(private val trendingStatusRepository: TrendingS
     }
 }
 
-class TrendingStatusPagingDataFlow(
-    private val localSource: TrendingStatusLocalSource,
-    private val remoteSource: TrendingStatusRemoteSource,
-    private val repository: TrendingStatusRepository,
-) {
-    @ExperimentalPagingApi
-    fun pagingDataFlow(
-        pageSize: Int = 40,
-        initialLoadSize: Int = 40,
-    ): Flow<PagingData<Status>> =
-        Pager(
-            config =
-            PagingConfig(
-                pageSize = pageSize,
-                initialLoadSize = initialLoadSize,
-            ),
-            remoteMediator = TrendingStatusRemoteMediator(
-                localSource = localSource,
-                remoteSource = remoteSource,
-            ),
-        ) {
-            repository.pagingSource()
-        }.flow.map { pagingData ->
-            pagingData.map {
-                it.status.toExternalModel()
-            }
-        }
-}
