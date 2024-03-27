@@ -1,4 +1,4 @@
-package social.firefly.core.repository.paging.common
+package social.firefly.core.repository.common
 
 import androidx.paging.PagingSource
 

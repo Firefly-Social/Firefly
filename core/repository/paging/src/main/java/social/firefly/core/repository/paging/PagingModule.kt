@@ -99,8 +99,5 @@ val pagingModule = module {
     }
 
     factoryOf(::TrendingHashtagsRemoteMediator)
-//    factoryOf(::TrendingStatusRemoteMediator)
     factoryOf(::TrendingStatusPager)
-    factoryOf(::TrendingStatusRemoteSource)
-    factoryOf(::TrendingStatusLocalSource)
 }

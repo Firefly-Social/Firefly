@@ -20,6 +20,7 @@ class TrendingStatusPager(
     private val saveStatusToDatabase: SaveStatusToDatabase,
     private val trendingStatusRepository: TrendingStatusRepository,
 ): FfPager<Status, TrendingStatusWrapper> {
+
     override fun map(dbo: TrendingStatusWrapper): Status {
         return dbo.status.toExternalModel()
     }
@@ -38,27 +39,3 @@ class TrendingStatusPager(
     override fun pagingSource(): PagingSource<Int, TrendingStatusWrapper> =
         trendingStatusRepository.pagingSource()
 }
-
-class TrendingStatusLocalSource(
-    private val databaseDelegate: DatabaseDelegate,
-    private val saveStatusToDatabase: SaveStatusToDatabase,
-    private val trendingStatusRepository: TrendingStatusRepository,
-) : FFLocalSource<Status, TrendingStatusWrapper> {
-    override suspend fun saveLocally(currentPage: List<PageItem<Status>>) {
-        databaseDelegate.withTransaction {
-            saveStatusToDatabase(currentPage.map { it.item })
-            trendingStatusRepository.saveLocally(currentPage)
-        }
-    }
-
-    fun pagingSource(): PagingSource<Int, TrendingStatusWrapper> =
-        trendingStatusRepository.pagingSource()
-}
-
-class TrendingStatusRemoteSource(private val trendingStatusRepository: TrendingStatusRepository) :
-    FFRemoteSource<Status> {
-    override suspend fun getRemotely(limit: Int, offset: Int): List<Status> {
-        return trendingStatusRepository.getRemotely(limit, offset)
-    }
-}
-

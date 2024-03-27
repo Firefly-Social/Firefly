@@ -16,7 +16,7 @@ import timber.log.Timber
  */
 @OptIn(ExperimentalPagingApi::class)
 class FfRemoteMediator<T : Any, DBO : Any>(
-    private val localSource: FFLocalSource<T, DBO>,
+    private val localSource: FFLocalSource<T>,
     private val remoteSource: FFRemoteSource<T>,
 ) : RemoteMediator<Int, DBO>() {
     private var nextPositionIndex = 0

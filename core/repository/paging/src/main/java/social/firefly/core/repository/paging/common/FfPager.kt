@@ -13,8 +13,10 @@ import social.firefly.core.model.Status
 import social.firefly.core.repository.common.FFLocalSource
 import social.firefly.core.repository.common.FFRemoteSource
 import social.firefly.core.repository.common.PageItem
+import social.firefly.core.repository.common.PagingSourceProvider
 
-interface FfPager<T : Any, DBO: Any>:  FFLocalSource<T, DBO>, FFRemoteSource<T>, PagingSourceProvider<DBO> {
+interface FfPager<T : Any, DBO: Any>:  FFLocalSource<T>, FFRemoteSource<T>,
+    PagingSourceProvider<DBO> {
 
     fun map(dbo: DBO): T
 
