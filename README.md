@@ -4,9 +4,11 @@ A [Mastodon](https://joinmastodon.org/) client for Android, implemented with Jet
 - [Download an APK](https://github.com/Firefly-Social/Firefly/releases) from our latest pre-release
 - Build and install from source using Android Studio
 
-| Feed                                                | Profile                                                | Search                                                | New Post                                                |
-|-----------------------------------------------------|--------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------|
-| <img src="assets/feed_screenshot.png" height="600"> | <img src="assets/profile_screenshot.png" height="600"> | <img src="assets/search_screenshot.png" height="600"> | <img src="assets/new_post_screenshot.png" height="600"> |
+| Feed                                                    | Profile                                                   |
+|---------------------------------------------------------|-----------------------------------------------------------|
+| <img src="assets/feed_screenshot.png" height="600">     | <img src="assets/profile_screenshot.png" height="600">    |
+| Search                                                  | New Post                                                  |
+| <img src="assets/search_screenshot.png" height="600">   | <img src="assets/new_post_screenshot.png" height="600">   |
 
 ## Features Roadmap
 - Custom emojis
