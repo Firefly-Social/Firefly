@@ -6,7 +6,7 @@ A [Mastodon](https://joinmastodon.org/) client for Android, implemented with Jet
 
 |Feed|Profile|Search|
 |--|--|--|
-|![](assets/feed_screenshot.png)|![](assets/profile_screenshot.png)|![](assets/search_screenshot.png)|
+|<img src="assets/feed_screenshot.png" height="600">|<img src="assets/profile_screenshot.png" height="600">|<img src="assets/search_screenshot.png" height="600">|
 
 ## Features Roadmap
 - Custom emojis
