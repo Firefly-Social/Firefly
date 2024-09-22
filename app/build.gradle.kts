@@ -20,7 +20,7 @@ android {
     namespace = "social.firefly"
 
     defaultConfig {
-        applicationId = "org.mozilla.social"
+        applicationId = "social.firefly"
         versionCode = 1
         versionName = "0.1.0"
 

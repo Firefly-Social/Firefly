@@ -217,19 +217,6 @@ private fun LoginBox(
             style = FfTheme.typography.bodyMedium,
         )
         Spacer(modifier = Modifier.height(24.dp))
-        FfButton(
-            modifier = Modifier.fillMaxWidth(),
-            enabled = !uiState.isLoading,
-            onClick = { loginInteractions.onSignInClicked() },
-        ) {
-            if (uiState.isLoading) {
-                FfCircularProgressIndicator(
-                    modifier = Modifier.size(20.dp),
-                )
-            } else {
-                MediumTextLabel(text = stringResource(id = R.string.sign_in_button))
-            }
-        }
         Spacer(modifier = Modifier.height(FfSpacing.sm))
         FfButtonSecondary(
             modifier = Modifier.fillMaxWidth(),
@@ -237,16 +224,6 @@ private fun LoginBox(
             enabled = !uiState.isLoading,
         ) {
             MediumTextLabel(text = stringResource(id = R.string.choose_server_option))
-        }
-        if (BuildConfig.DEBUG) {
-            Spacer(modifier = Modifier.height(FfSpacing.sm))
-            FfButtonSecondary(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { loginInteractions.onSignInToStagingClicked() },
-                enabled = !uiState.isLoading,
-            ) {
-                MediumTextLabel(text = stringResource(id = R.string.sign_in_staging_button))
-            }
         }
     }
 }
