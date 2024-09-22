@@ -3,7 +3,7 @@
     <string name="tab_for_you">For You</string>
     <string name="tab_local">Local</string>
     <string name="tab_federated">Federated</string>
-    <string name="mozilla" translatable="false">Mozilla</string>
+    <string name="firefly">Firefly</string>
     <string name="scroll_to_top_content_description">scroll to top</string>
 
     <string name="empty_home_title">Welcome to the Fediverse!</string>

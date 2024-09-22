@@ -160,10 +160,10 @@ private fun TitleBar(
         modifier = Modifier.graphicsLayer {
             this.alpha = alpha
         },
-        text = stringResource(id = R.string.mozilla),
+        text = stringResource(id = R.string.firefly),
         fontSize = 24.sp,
         fontWeight = FontWeight.W700,
-        fontFamily = FfFonts.zillaSlab,
+        fontFamily = FfFonts.petiteFormalScript,
     )
 }
 

@@ -6,13 +6,6 @@ import coil.ImageLoaderFactory
 import coil.decode.ImageDecoderDecoder
 import coil.decode.VideoFrameDecoder
 import coil.memory.MemoryCache
-import io.sentry.SentryLevel
-import io.sentry.android.core.SentryAndroid
-import io.sentry.android.timber.SentryTimberIntegration
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -49,7 +42,6 @@ class MainApplication : Application(), ImageLoaderFactory {
 
     private lateinit var authCredentialObserver: AuthCredentialObserver
     private val analytics: AppAnalytics by inject()
-    private val appPreferencesDatastore: AppPreferencesDatastore by inject()
 
     override fun onCreate() {
         super.onCreate()

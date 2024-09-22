@@ -28,7 +28,7 @@
     <string name="remove_account">Remove account</string>
 
     <string name="data_collection_and_use">Data collection and use</string>
-    <string name="data_collection_title">Help improve Mozilla Social</string>
+    <string name="data_collection_title">Help improve Firefly</string>
     <string name="data_collection_description">Allow automatic crash reporting.  Crash reports include stack traces, device information, breadcrumbs, and other information that helps us determine the cause of the crash.  Changes will be applied upon app restart.</string>
 
     <string name="sign_out">Sign out of all accounts</string>

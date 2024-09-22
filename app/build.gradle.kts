@@ -14,6 +14,7 @@ val keystorePropertiesFile = rootProject.file("secrets/keystore.properties")
 val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
 
 android {
     namespace = "social.firefly"
