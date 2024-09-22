@@ -22,7 +22,7 @@ platform :android do
     end
 
     set_github_release(
-        repository_name: "MozillaSocial/mozilla-social-android",
+        repository_name: "Firefly-Social/Firefly",
         api_bearer: options[:token],
         name: options[:name],
         tag_name: options[:tag],

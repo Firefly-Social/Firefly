@@ -1,12 +1,19 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("social.firefly.android.application")
     id("social.firefly.android.application.compose")
     alias(libs.plugins.about.libraries.plugin)
     id("social.firefly.android.application.secrets")
-    alias(libs.plugins.sentry)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.googleServices)
 }
+
+val keystorePropertiesFile = rootProject.file("secrets/keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     namespace = "social.firefly"
@@ -22,12 +29,22 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String?
+            keyPassword = keystoreProperties["keyPassword"] as String?
+            storeFile = (keystoreProperties["storeFile"] as String?)?.let { file(it) }
+            storePassword = keystoreProperties["storePassword"] as String?
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFile("proguard-rules.pro")
             matchingFallbacks += "release"
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isDefault = true
@@ -131,13 +148,4 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
-}
-
-sentry {
-    org.set("mozilla")
-    projectName.set("moso-android")
-
-    // this will upload your source code to Sentry to show it as part of the stack traces
-    // disable if you don't want to expose your sources
-    includeSourceContext.set(true)
 }
