@@ -8,9 +8,4 @@ fun Project.configureSecrets() {
             buildConfig = true
         }
     }
-
-    secrets {
-        propertiesFileName = "secrets/secret.properties"
-        defaultPropertiesFileName = "secrets/secret.default.properties"
-    }
 }
