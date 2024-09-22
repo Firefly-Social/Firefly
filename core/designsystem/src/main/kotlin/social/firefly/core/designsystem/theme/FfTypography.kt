@@ -48,9 +48,6 @@ val Typography =
         ),
     )
 
-/**
- * A custom typography for Mozilla Social for Android.
- */
 class FfTypography(
     val displayLarge: TextStyle,
     val displayMedium: TextStyle,

@@ -122,13 +122,13 @@ class Login(
     }
 
     companion object {
-        const val CLIENT_NAME = "Mozilla Social Android"
-        const val REDIRECT_URI = "mozsoc://auth"
+        const val CLIENT_NAME = "Firefly"
+        const val REDIRECT_URI = "firefly://auth"
         const val SCOPES = "read write push"
         const val AUTHORIZATION_CODE = "authorization_code"
         const val HTTPS = "https"
         const val OAUTH_AUTHORIZE = "oauth/authorize"
-        const val AUTH_SCHEME = "mozsoc://auth"
+        const val AUTH_SCHEME = "firefly://auth"
         const val RESPONSE_TYPE_QUERY_PARAM = "response_type"
         const val CODE = "code"
         const val REDIRECT_URI_QUERY_PARAM = "redirect_uri"

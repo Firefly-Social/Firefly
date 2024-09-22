@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.about.libraries.plugin)
     id("social.firefly.android.application.secrets")
     alias(libs.plugins.baselineprofile)
-    alias(libs.plugins.googleServices)
 }
 
 val keystorePropertiesFile = rootProject.file("secrets/keystore.properties")
