@@ -55,40 +55,14 @@ class MainApplication : Application(), ImageLoaderFactory {
         super.onCreate()
         initializeAppVersion()
         initializeKoin()
-        initializeTimberAndSentry()
+        initializeTimber()
         initializeAnalytics()
         initializeAuthCredentialInterceptor()
     }
 
-    private fun initializeTimberAndSentry() {
-        CoroutineScope(Dispatchers.Default).launch {
-            if (appPreferencesDatastore.allowAnalytics.first()) {
-                SentryAndroid.init(this@MainApplication) { options ->
-                    options.apply {
-                        setDiagnosticLevel(SentryLevel.ERROR)
-                        dsn = BuildConfig.sentryDsn
-                        isDebug = BuildConfig.DEBUG
-                        environment = BuildConfig.BUILD_TYPE
-                        isEnableUserInteractionTracing = true
-                        isAttachScreenshot = false
-                        isAttachViewHierarchy = false
-                        sampleRate = 1.0
-                        profilesSampleRate = 1.0
-                        if (!BuildConfig.DEBUG) {
-                            addIntegration(
-                                SentryTimberIntegration(
-                                    minEventLevel = SentryLevel.ERROR,
-                                    minBreadcrumbLevel = SentryLevel.INFO
-                                )
-                            )
-                        } else {
-                            Timber.plant(Timber.DebugTree())
-                        }
-                    }
-                }
-            } else if (BuildConfig.DEBUG) {
-                Timber.plant(Timber.DebugTree())
-            }
+    private fun initializeTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
     }
 

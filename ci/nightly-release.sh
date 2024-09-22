@@ -6,8 +6,10 @@ set -e
 RELEASE_VERSION_CODE=$1
 GITHUB_TOKEN=$2
 
-echo "Initializing secrets…"
-source "secrets/secret-environment-variables.sh"
+if [[ ! -f "$KEY_STORE" ]]; then
+  echo "Secrets not decrypted"
+  exit 1
+fi
 
 echo "Bumping version code to ${RELEASE_VERSION_CODE}…"
 ci/set-version-code.sh "$RELEASE_VERSION_CODE"
