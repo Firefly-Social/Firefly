@@ -31,7 +31,6 @@ import social.firefly.feature.settings.settingsModule
 import social.firefly.feature.thread.threadModule
 import social.firefly.feature.feed.feedModule
 import social.firefly.feature.search.searchModule
-import social.firefly.core.datastore.AppPreferencesDatastore
 import social.firefly.core.push.pushModule
 import social.firefly.core.ui.chooseAccount.chooseAccountModule
 import social.firefly.feature.bookmarks.bookmarksModule

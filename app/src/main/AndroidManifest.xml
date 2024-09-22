@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:host="auth"
-                    android:scheme="mozsoc"/>
+                    android:scheme="firefly"/>
             </intent-filter>
             <!-- Allow other apps to share stuff with us -->
             <intent-filter>

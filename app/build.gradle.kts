@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.about.libraries.plugin)
     id("social.firefly.android.application.secrets")
     alias(libs.plugins.baselineprofile)
-    alias(libs.plugins.googleServices)
 }
 
 val keystorePropertiesFile = rootProject.file("secrets/keystore.properties")
@@ -20,7 +19,7 @@ android {
     namespace = "social.firefly"
 
     defaultConfig {
-        applicationId = "org.mozilla.social"
+        applicationId = "social.firefly"
         versionCode = 1
         versionName = "0.1.0"
 

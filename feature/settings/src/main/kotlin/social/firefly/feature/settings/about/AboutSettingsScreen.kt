@@ -214,8 +214,8 @@ fun AboutSettingsScreenPreview() {
                     administeredBy =
                     AccountQuickViewUiState(
                         accountId = "",
-                        displayName = "Mozilla Social",
-                        webFinger = "@firefly",
+                        displayName = "Name",
+                        webFinger = "firefly",
                         avatarUrl = "",
                     ),
                     contactEmail = "support@firefly-firefly.zendesk.com",
