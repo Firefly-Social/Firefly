@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "org.mozilla.social.baselineprofile"
+    namespace = "social.firefly.baselineprofile"
     targetProjectPath = ":app"
 
     // This code creates the gradle managed device used to generate baseline profiles.

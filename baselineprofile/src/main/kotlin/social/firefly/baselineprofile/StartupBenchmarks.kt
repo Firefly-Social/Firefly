@@ -1,4 +1,4 @@
-package org.mozilla.social.baselineprofile
+package social.firefly.baselineprofile
 
 import androidx.benchmark.macro.BaselineProfileMode
 import androidx.benchmark.macro.CompilationMode
