@@ -6,6 +6,8 @@ set -e
 RELEASE_VERSION_CODE=$1
 GITHUB_TOKEN=$2
 
+KEY_STORE="secrets/firefly.jks"
+
 if [[ ! -f "$KEY_STORE" ]]; then
   echo "Secrets not decrypted"
   exit 1
