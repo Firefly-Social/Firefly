@@ -4,6 +4,7 @@ name: nightly
 on:
   schedule:
     - cron: '0 7 * * *'
+  workflow_dispatch:
 
 # Cancel in-progress/pending daily release workflows if a new one starts.
 # When we merge PRs one after another quickly, we only need one release with the latest code.
