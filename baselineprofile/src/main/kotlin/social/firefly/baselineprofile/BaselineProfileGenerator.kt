@@ -1,4 +1,4 @@
-package org.mozilla.social.baselineprofile
+package social.firefly.baselineprofile
 
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4

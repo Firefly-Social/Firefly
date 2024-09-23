@@ -11,5 +11,6 @@ if [[ -z "$GPG_KEY" ]]; then
   GPG_KEY="$REPLY"
 fi
 
+decrypt "secret.properties"
 decrypt "keystore.properties"
 decrypt "firefly.jks"
