@@ -62,6 +62,7 @@ internal fun MetaData(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun OverflowMenu(
     post: MainPostCardUiState,
