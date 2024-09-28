@@ -3,7 +3,6 @@ package social.firefly.core.ui.postcard
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,10 +16,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import social.firefly.common.utils.StringFactory
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.TransparentNoTouchOverlay
 import social.firefly.core.ui.common.text.MediumTextLabel
 import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.postcard.components.Avatar
 import social.firefly.core.ui.postcard.components.BottomRow
 import social.firefly.core.ui.postcard.components.DepthLines
@@ -35,85 +34,83 @@ fun PostCard(
     post: PostCardUiState,
     postCardInteractions: PostCardInteractions,
 ) {
-    NoRipple {
-        Box(modifier = modifier) {
-            Layout(
-                content = {
-                    DepthLines(
-                        depthLinesUiState = post.depthLinesUiState
-                    )
-                    DepthLinesExpandButton(
-                        postCardUiState = post,
+    Box(modifier = modifier) {
+        Layout(
+            content = {
+                DepthLines(
+                    depthLinesUiState = post.depthLinesUiState
+                )
+                DepthLinesExpandButton(
+                    postCardUiState = post,
+                    postCardInteractions = postCardInteractions,
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(end = 8.dp, bottom = 8.dp, top = 8.dp)
+                        .noRippleClickable {
+                            if (post.isClickable) {
+                                postCardInteractions.onPostCardClicked(post.mainPostCardUiState.statusId)
+                            }
+                        },
+                ) {
+                    post.topRowMetaDataUiState?.let {
+                        TopRowMetaData(
+                            topRowMetaDataUiState = it,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                    Post(
+                        post = post.mainPostCardUiState,
+                        showViewMoreReplies = post.depthLinesUiState?.showViewMoreRepliesText
+                            ?: false,
                         postCardInteractions = postCardInteractions,
                     )
-                    Column(
-                        modifier = Modifier
-                            .padding(end = 8.dp, bottom = 8.dp, top = 8.dp)
-                            .clickable {
-                                if (post.isClickable) {
-                                    postCardInteractions.onPostCardClicked(post.mainPostCardUiState.statusId)
-                                }
-                            },
-                    ) {
-                        post.topRowMetaDataUiState?.let {
-                            TopRowMetaData(
-                                topRowMetaDataUiState = it,
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
-                        Post(
-                            post = post.mainPostCardUiState,
-                            showViewMoreReplies = post.depthLinesUiState?.showViewMoreRepliesText
-                                ?: false,
-                            postCardInteractions = postCardInteractions,
-                        )
-                    }
-                },
-            ) {
-                (depthLinesMeasureable,
-                    depthLinesExpandButtonMeasureable,
-                    postContentMeasureable),
-                constraints ->
-
-                val postContentPlaceable = postContentMeasureable.measure(
-                    constraints.copy(
-                        maxWidth = constraints.maxWidth - depthLinesMeasureable.minIntrinsicWidth(0)
-                    )
-                )
-                val depthLinesPlaceable = depthLinesMeasureable.measure(
-                    constraints.copy(
-                        minHeight = postContentPlaceable.height,
-                        maxHeight = postContentPlaceable.height,
-                    )
-                )
-                val depthLinesExpandButtonPlaceable = depthLinesExpandButtonMeasureable.measure(constraints)
-                layout(
-                    width = constraints.maxWidth,
-                    height = postContentPlaceable.height,
-                ) {
-                    depthLinesPlaceable.place(
-                        x = 0,
-                        y = 0,
-                    )
-                    postContentPlaceable.place(
-                        x = depthLinesPlaceable.width,
-                        y = 0,
-                    )
-                    depthLinesExpandButtonPlaceable.place(
-                        x = 1 + depthLinesPlaceable.width - depthLinesExpandButtonPlaceable.width / 2,
-                        y = postContentPlaceable.height - depthLinesExpandButtonPlaceable.height
-                    )
                 }
-            }
+            },
+        ) {
+            (depthLinesMeasureable,
+                depthLinesExpandButtonMeasureable,
+                postContentMeasureable),
+            constraints ->
 
-            AnimatedVisibility(
-                modifier = Modifier.matchParentSize(),
-                visible = post.mainPostCardUiState.isBeingDeleted,
-                enter = fadeIn(),
-                exit = fadeOut(),
+            val postContentPlaceable = postContentMeasureable.measure(
+                constraints.copy(
+                    maxWidth = constraints.maxWidth - depthLinesMeasureable.minIntrinsicWidth(0)
+                )
+            )
+            val depthLinesPlaceable = depthLinesMeasureable.measure(
+                constraints.copy(
+                    minHeight = postContentPlaceable.height,
+                    maxHeight = postContentPlaceable.height,
+                )
+            )
+            val depthLinesExpandButtonPlaceable = depthLinesExpandButtonMeasureable.measure(constraints)
+            layout(
+                width = constraints.maxWidth,
+                height = postContentPlaceable.height,
             ) {
-                TransparentNoTouchOverlay()
+                depthLinesPlaceable.place(
+                    x = 0,
+                    y = 0,
+                )
+                postContentPlaceable.place(
+                    x = depthLinesPlaceable.width,
+                    y = 0,
+                )
+                depthLinesExpandButtonPlaceable.place(
+                    x = 1 + depthLinesPlaceable.width - depthLinesExpandButtonPlaceable.width / 2,
+                    y = postContentPlaceable.height - depthLinesExpandButtonPlaceable.height
+                )
             }
+        }
+
+        AnimatedVisibility(
+            modifier = Modifier.matchParentSize(),
+            visible = post.mainPostCardUiState.isBeingDeleted,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            TransparentNoTouchOverlay()
         }
     }
 }

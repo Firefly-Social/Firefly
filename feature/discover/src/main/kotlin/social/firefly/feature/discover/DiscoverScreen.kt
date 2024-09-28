@@ -1,6 +1,5 @@
 package social.firefly.feature.discover
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -31,7 +30,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
 import social.firefly.core.designsystem.theme.FfSpacing
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.FfSurface
 import social.firefly.core.ui.common.UiConstants
 import social.firefly.core.ui.common.appbar.FfTopBar
@@ -44,6 +42,7 @@ import social.firefly.core.ui.common.tabs.FfTab
 import social.firefly.core.ui.common.tabs.FfTabRow
 import social.firefly.core.ui.common.text.MediumTextLabel
 import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.postcard.PostCardInteractions
 import social.firefly.core.ui.postcard.PostCardUiState
 import social.firefly.core.ui.postcard.postListContent
@@ -105,18 +104,16 @@ private fun DiscoverScreen(
                     onSearch = {},
                     readOnly = true,
                 )
-                NoRipple {
-                    // invisible box that intercepts clicks
-                    val searchField = stringResource(id = R.string.search_field)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable { discoverInteractions.onSearchBarClicked() }
-                            .semantics {
-                                contentDescription = searchField
-                            }
-                    )
-                }
+                // invisible box that intercepts clicks
+                val searchField = stringResource(id = R.string.search_field)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .noRippleClickable { discoverInteractions.onSearchBarClicked() }
+                        .semantics {
+                            contentDescription = searchField
+                        }
+                )
             }
             MainContent(
                 uiState = uiState,

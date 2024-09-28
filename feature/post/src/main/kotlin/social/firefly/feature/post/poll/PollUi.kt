@@ -2,7 +2,6 @@ package social.firefly.feature.post.poll
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,13 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.FfCheckBox
 import social.firefly.core.ui.common.button.FfButtonSecondary
 import social.firefly.core.ui.common.divider.FfDivider
 import social.firefly.core.ui.common.text.FfTextField
 import social.firefly.core.ui.common.text.SmallTextLabel
 import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.feature.post.R
 import social.firefly.feature.post.NewPostViewModel
 
@@ -196,18 +195,16 @@ private fun HideUntilEndCheckbox(
     pollUiState: PollUiState,
     pollInteractions: PollInteractions,
 ) {
-    NoRipple {
-        Row(
-            modifier = Modifier
-                .clickable { pollInteractions.onHideCountUntilEndClicked() },
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            FfCheckBox(
-                checked = pollUiState.hideTotals,
-                onCheckedChange = { pollInteractions.onHideCountUntilEndClicked() },
-            )
-            SmallTextLabel(text = stringResource(id = R.string.poll_option_hide_results))
-        }
+    Row(
+        modifier = Modifier
+            .noRippleClickable { pollInteractions.onHideCountUntilEndClicked() },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        FfCheckBox(
+            checked = pollUiState.hideTotals,
+            onCheckedChange = { pollInteractions.onHideCountUntilEndClicked() },
+        )
+        SmallTextLabel(text = stringResource(id = R.string.poll_option_hide_results))
     }
 }
 

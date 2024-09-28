@@ -2,12 +2,10 @@ package social.firefly.core.ui.poll
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import social.firefly.common.utils.StringFactory
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.FfSurface
 import social.firefly.core.ui.common.button.FfButton
+import social.firefly.core.ui.common.utils.noRippleClickable
 
 @Composable
 fun Poll(
@@ -159,58 +157,56 @@ private fun PollOptionText(
 ) {
     // split into a separate modifier so clicks are not consumed if the user can't vote.
     val clickModifier = if (pollUiState.canVote) {
-        Modifier.clickable {
+        Modifier.noRippleClickable {
             onOptionSelected(optionIndex)
         }
     } else Modifier
 
-    NoRipple {
+    Row(
+        modifier =
+        Modifier
+            .fillMaxWidth()
+            .height(height)
+            .then(clickModifier),
+    ) {
         Row(
             modifier =
             Modifier
-                .fillMaxWidth()
-                .height(height)
-                .then(clickModifier),
+                .align(Alignment.CenterVertically)
+                .weight(1f),
         ) {
-            Row(
+            Text(
                 modifier =
                 Modifier
+                    .padding(
+                        start = 12.dp,
+                    )
                     .align(Alignment.CenterVertically)
                     .weight(1f),
-            ) {
-                Text(
+                text = pollOptionUiState.title,
+                style = FfTheme.typography.labelMedium,
+            )
+            if (userVotes.value.contains(optionIndex)) {
+                Icon(
                     modifier =
                     Modifier
-                        .padding(
-                            start = 12.dp,
-                        )
                         .align(Alignment.CenterVertically)
-                        .weight(1f),
-                    text = pollOptionUiState.title,
-                    style = FfTheme.typography.labelMedium,
+                        .padding(horizontal = 8.dp),
+                    painter = FfIcons.check(),
+                    contentDescription = "",
                 )
-                if (userVotes.value.contains(optionIndex)) {
-                    Icon(
-                        modifier =
-                        Modifier
-                            .align(Alignment.CenterVertically)
-                            .padding(horizontal = 8.dp),
-                        painter = FfIcons.check(),
-                        contentDescription = "",
-                    )
-                }
             }
+        }
 
-            if (pollUiState.showResults) {
-                Text(
-                    modifier =
-                    Modifier
-                        .padding(8.dp)
-                        .align(Alignment.CenterVertically),
-                    text = pollOptionUiState.voteInfo.build(LocalContext.current),
-                    style = FfTheme.typography.labelMedium,
-                )
-            }
+        if (pollUiState.showResults) {
+            Text(
+                modifier =
+                Modifier
+                    .padding(8.dp)
+                    .align(Alignment.CenterVertically),
+                text = pollOptionUiState.voteInfo.build(LocalContext.current),
+                style = FfTheme.typography.labelMedium,
+            )
         }
     }
 }

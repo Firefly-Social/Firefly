@@ -1,6 +1,5 @@
 package social.firefly.feature.post
 
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,12 +26,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -56,7 +53,6 @@ import social.firefly.common.utils.buildAnnotatedStringForAccountsAndHashtags
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfSpacing
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoIndication
 import social.firefly.core.model.ImageState
 import social.firefly.core.model.StatusVisibility
 import social.firefly.core.ui.common.TransparentNoTouchOverlay
@@ -70,6 +66,7 @@ import social.firefly.core.ui.common.text.FfTextFieldNoBorder
 import social.firefly.core.ui.common.text.SmallTextLabel
 import social.firefly.core.ui.common.transparentTextFieldColors
 import social.firefly.core.ui.common.utils.getWindowHeightClass
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.feature.post.bottombar.BottomBar
 import social.firefly.feature.post.bottombar.BottomBarState
 import social.firefly.feature.post.bottombar.VisibilityDropDownButton
@@ -360,86 +357,75 @@ private fun MainBox(
     pollInteractions: PollInteractions,
     contentWarningInteractions: ContentWarningInteractions,
 ) {
-    val localIndication = LocalIndication.current
-    // disable ripple on click for the background
-    CompositionLocalProvider(
-        LocalIndication provides NoIndication,
+    val keyboard = LocalSoftwareKeyboardController.current
+
+    val textFieldFocusRequester = remember { FocusRequester() }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .noRippleClickable {
+                keyboard?.show()
+            },
     ) {
-        val keyboard = LocalSoftwareKeyboardController.current
-
-        val textFieldFocusRequester = remember { FocusRequester() }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clickable {
-                    keyboard?.show()
-                },
-        ) {
-            // re-enable ripple
-            CompositionLocalProvider(
-                LocalIndication provides localIndication,
-            ) {
-                LazyColumn {
-                    item {
-                        InReplyToText(inReplyToAccountName = statusUiState.inReplyToAccountName)
-                    }
-                    statusUiState.contentWarningText?.let {
-                        item {
-                            ContentWarningEntry(
-                                statusUiState.contentWarningText,
-                                contentWarningInteractions
-                            )
-                        }
-                    }
-
-                    item {
-                        val highlightColor = FfTheme.colors.textLink
-                        FfTextFieldNoBorder(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .focusRequester(textFieldFocusRequester)
-                                .padding(start = 16.dp, end = 16.dp, bottom = 6.dp),
-                            value = statusUiState.statusText,
-                            onValueChange = { statusInteractions.onStatusTextUpdated(it) },
-                            placeholder = {
-                                Text(
-                                    text = stringResource(id = R.string.new_post_text_field_label),
-                                )
-                            },
-                            visualTransformation = {
-                                TransformedText(
-                                    buildAnnotatedStringForAccountsAndHashtags(
-                                        it.text,
-                                        SpanStyle(
-                                            color = highlightColor,
-                                        ),
-                                    ),
-                                    OffsetMapping.Identity,
-                                )
-                            },
-                        )
-                        LaunchedEffect(Unit) {
-                            textFieldFocusRequester.requestFocus()
-                        }
-                    }
-
-                    pollUiState?.let {
-                        item {
-                            Poll(
-                                modifier = Modifier.padding(16.dp),
-                                pollUiState = pollUiState,
-                                pollInteractions = pollInteractions,
-                            )
-                        }
-                    }
-
-                    items(imageStates.size) { index ->
-                        AttachmentMediaBox(
-                            imageState = imageStates[index],
-                            mediaInteractions = mediaInteractions,
-                        )
-                    }
+        LazyColumn {
+            item {
+                InReplyToText(inReplyToAccountName = statusUiState.inReplyToAccountName)
+            }
+            statusUiState.contentWarningText?.let {
+                item {
+                    ContentWarningEntry(
+                        statusUiState.contentWarningText,
+                        contentWarningInteractions
+                    )
                 }
+            }
+
+            item {
+                val highlightColor = FfTheme.colors.textLink
+                FfTextFieldNoBorder(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(textFieldFocusRequester)
+                        .padding(start = 16.dp, end = 16.dp, bottom = 6.dp),
+                    value = statusUiState.statusText,
+                    onValueChange = { statusInteractions.onStatusTextUpdated(it) },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.new_post_text_field_label),
+                        )
+                    },
+                    visualTransformation = {
+                        TransformedText(
+                            buildAnnotatedStringForAccountsAndHashtags(
+                                it.text,
+                                SpanStyle(
+                                    color = highlightColor,
+                                ),
+                            ),
+                            OffsetMapping.Identity,
+                        )
+                    },
+                )
+                LaunchedEffect(Unit) {
+                    textFieldFocusRequester.requestFocus()
+                }
+            }
+
+            pollUiState?.let {
+                item {
+                    Poll(
+                        modifier = Modifier.padding(16.dp),
+                        pollUiState = pollUiState,
+                        pollInteractions = pollInteractions,
+                    )
+                }
+            }
+
+            items(imageStates.size) { index ->
+                AttachmentMediaBox(
+                    imageState = imageStates[index],
+                    mediaInteractions = mediaInteractions,
+                )
             }
         }
     }

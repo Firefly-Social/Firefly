@@ -30,7 +30,6 @@ import androidx.compose.ui.window.PopupProperties
 import kotlinx.coroutines.delay
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.utils.PreviewTheme
 
 @Suppress("MagicNumber")
