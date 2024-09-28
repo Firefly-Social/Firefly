@@ -407,16 +407,37 @@ private fun OverflowMenu(
             if (isUsersProfile) {
                 FfDropDownItem(
                     text = stringResource(id = R.string.bookmarks_option),
+                    icon = {
+                        Icon(
+                            modifier = Modifier.size(FfIcons.Sizes.small),
+                            painter = FfIcons.bookmark(),
+                            contentDescription = null
+                        )
+                    },
                     expanded = overflowMenuExpanded,
                     onClick = { overflowInteractions.onOverflowBookmarksClicked() }
                 )
                 FfDropDownItem(
                     text = stringResource(id = R.string.favorites_option),
+                    icon = {
+                        Icon(
+                            modifier = Modifier.size(FfIcons.Sizes.small),
+                            painter = FfIcons.heart(),
+                            contentDescription = null
+                        )
+                    },
                     expanded = overflowMenuExpanded,
                     onClick = { overflowInteractions.onOverflowFavoritesClicked() }
                 )
                 FfDropDownItem(
                     text = stringResource(id = R.string.followed_hash_tags_option),
+                    icon = {
+                        Icon(
+                            modifier = Modifier.size(FfIcons.Sizes.small),
+                            painter = FfIcons.hash(),
+                            contentDescription = null
+                        )
+                    },
                     expanded = overflowMenuExpanded,
                     onClick = { overflowInteractions.onOverflowFollowedHashTagsClicked() }
                 )
@@ -424,6 +445,13 @@ private fun OverflowMenu(
 
             FfDropDownItem(
                 text = stringResource(R.string.share_option),
+                icon = {
+                    Icon(
+                        modifier = Modifier.size(FfIcons.Sizes.small),
+                        painter = FfIcons.share(),
+                        contentDescription = null
+                    )
+                },
                 expanded = overflowMenuExpanded,
                 onClick = {
                     overflowInteractions.onOverflowShareClicked()
@@ -449,6 +477,13 @@ private fun OverflowMenu(
                             id = social.firefly.core.ui.common.R.string.unmute_user,
                             account.username,
                         ),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.speakerSimpleHigh(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = { overflowInteractions.onOverflowUnmuteClicked() },
                     )
@@ -458,6 +493,13 @@ private fun OverflowMenu(
                             id = social.firefly.core.ui.common.R.string.mute_user,
                             account.username,
                         ),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.speakerSimpleSlash(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = { muteDialog.open() },
                     )
@@ -469,6 +511,13 @@ private fun OverflowMenu(
                             id = social.firefly.core.ui.common.R.string.unblock_user,
                             account.username,
                         ),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.plus(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = { overflowInteractions.onOverflowUnblockClicked() },
                     )
@@ -478,6 +527,13 @@ private fun OverflowMenu(
                             id = social.firefly.core.ui.common.R.string.block_user,
                             account.username,
                         ),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.x(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = { blockDialog.open() },
                     )
@@ -488,6 +544,13 @@ private fun OverflowMenu(
                         id = social.firefly.core.ui.common.R.string.report_user,
                         account.username,
                     ),
+                    icon = {
+                        Icon(
+                            modifier = Modifier.size(FfIcons.Sizes.small),
+                            painter = FfIcons.warning(),
+                            contentDescription = null
+                        )
+                    },
                     expanded = overflowMenuExpanded,
                     onClick = { overflowInteractions.onOverflowReportClicked() },
                 )
@@ -499,6 +562,13 @@ private fun OverflowMenu(
                                 id = social.firefly.core.ui.common.R.string.unblock_domain,
                                 account.domain,
                             ),
+                            icon = {
+                                Icon(
+                                    modifier = Modifier.size(FfIcons.Sizes.small),
+                                    painter = FfIcons.plusCircle(),
+                                    contentDescription = null
+                                )
+                            },
                             expanded = overflowMenuExpanded,
                             onClick = { overflowInteractions.onOverflowUnblockDomainClicked() },
                         )
@@ -508,6 +578,13 @@ private fun OverflowMenu(
                                 id = social.firefly.core.ui.common.R.string.block_domain,
                                 account.domain,
                             ),
+                            icon = {
+                                Icon(
+                                    modifier = Modifier.size(FfIcons.Sizes.small),
+                                    painter = FfIcons.xCircle(),
+                                    contentDescription = null
+                                )
+                            },
                             expanded = overflowMenuExpanded,
                             onClick = { blockDomainDialog.open() },
                         )

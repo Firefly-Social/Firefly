@@ -98,6 +98,13 @@ private fun OverflowMenu(
         dropDownMenuContent = {
             FfDropDownItem(
                 text = StringFactory.resource(resId = R.string.copy_text).build(context),
+                icon = {
+                    Icon(
+                        modifier = Modifier.size(FfIcons.Sizes.small),
+                        painter = FfIcons.copy(),
+                        contentDescription = null
+                    )
+                },
                 expanded = overflowMenuExpanded,
                 onClick = {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -113,11 +120,25 @@ private fun OverflowMenu(
                 OverflowDropDownType.USER -> {
                     FfDropDownItem(
                         text = StringFactory.resource(resId = R.string.edit_post).build(context),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.pencilSimple(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = { postCardInteractions.onOverflowEditClicked(post.statusId) },
                     )
                     FfDropDownItem(
                         text = StringFactory.resource(resId = R.string.delete_post).build(context),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.trash(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = { deleteStatusDialog.open() }
                     )
@@ -128,6 +149,13 @@ private fun OverflowMenu(
                             R.string.mute_user,
                             post.username
                         ).build(context),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.speakerSimpleSlash(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = { muteDialog.open() },
                     )
@@ -136,6 +164,13 @@ private fun OverflowMenu(
                             R.string.block_user,
                             post.username
                         ).build(context),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.x(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = { blockDialog.open() },
                     )
@@ -144,6 +179,13 @@ private fun OverflowMenu(
                             R.string.report_user,
                             post.username
                         ).build(context),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(FfIcons.Sizes.small),
+                                painter = FfIcons.warning(),
+                                contentDescription = null
+                            )
+                        },
                         expanded = overflowMenuExpanded,
                         onClick = {
                             postCardInteractions.onOverflowReportClicked(
@@ -159,6 +201,13 @@ private fun OverflowMenu(
                                 R.string.block_domain,
                                 post.domain
                             ).build(context),
+                            icon = {
+                                Icon(
+                                    modifier = Modifier.size(FfIcons.Sizes.small),
+                                    painter = FfIcons.xCircle(),
+                                    contentDescription = null
+                                )
+                            },
                             expanded = overflowMenuExpanded,
                             onClick = { blockDomainDialog.open() }
                         )

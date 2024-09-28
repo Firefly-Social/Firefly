@@ -23,15 +23,14 @@ fun FfDropDownItem(
     DropdownMenuItem(
         text = {
             Row {
-                Spacer(modifier = Modifier.width(8.dp))
                 icon?.let {
                     Box(
                         modifier = Modifier.align(Alignment.CenterVertically)
                     ) {
                         icon()
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
                 }
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(text = text)
             }
         },

@@ -77,6 +77,9 @@ object FfIcons {
     fun connect() = painterResource(id = R.drawable.connect)
 
     @Composable
+    fun copy() = painterResource(id = R.drawable.copy)
+
+    @Composable
     fun downloadSimple() = painterResource(id = R.drawable.download_simple)
 
     @Composable
@@ -161,6 +164,9 @@ object FfIcons {
     fun pause() = painterResource(id = R.drawable.pause)
 
     @Composable
+    fun pencilSimple() = painterResource(id = R.drawable.pencil_simple)
+
+    @Composable
     fun play() = painterResource(id = R.drawable.play)
 
     @Composable
@@ -183,6 +189,12 @@ object FfIcons {
 
     @Composable
     fun share() = painterResource(id = R.drawable.share)
+
+    @Composable
+    fun speakerSimpleHigh() = painterResource(id = R.drawable.speaker_simple_high)
+
+    @Composable
+    fun speakerSimpleSlash() = painterResource(id = R.drawable.speaker_simple_slash)
 
     @Composable
     fun speakerX() = painterResource(id = R.drawable.speaker_x)
@@ -210,6 +222,9 @@ object FfIcons {
 
     @Composable
     fun x() = painterResource(id = R.drawable.x)
+
+    @Composable
+    fun xCircle() = painterResource(R.drawable.x_circle)
 
     // Material- avoid using these, and instead use the drawable based resources
     @Composable
