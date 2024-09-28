@@ -6,10 +6,11 @@ import org.unifiedpush.android.connector.UnifiedPush
 import org.unifiedpush.android.connector.ui.SelectDistributorDialogBuilder
 import org.unifiedpush.android.connector.ui.UnifiedPushFunctions
 
+@Suppress("UnusedParameter")
 object PushRegistration {
 
     fun register(
-//        context: Context,
+        context: Context,
     ) {
         //TODO mastodon backends don't send to ntfy.sh for some reason
         // maybe related to https://github.com/mastodon/mastodon/issues/26078
