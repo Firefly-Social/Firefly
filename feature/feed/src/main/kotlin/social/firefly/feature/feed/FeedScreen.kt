@@ -59,6 +59,7 @@ import social.firefly.core.designsystem.font.FfFonts
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.designsystem.theme.ThemeOption
+import social.firefly.core.push.unifiedPush.PushRegistration
 import social.firefly.core.ui.common.FfSurface
 import social.firefly.core.ui.common.UiConstants
 import social.firefly.core.ui.common.appbar.FfTopBar
@@ -96,6 +97,7 @@ internal fun FeedScreen(viewModel: FeedViewModel = koinViewModel()) {
 
     LaunchedEffect(Unit) {
         viewModel.onScreenViewed()
+        PushRegistration.register(context)
     }
 }
 
