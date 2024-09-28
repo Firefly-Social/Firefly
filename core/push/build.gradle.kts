@@ -1,5 +1,6 @@
 plugins {
     id("social.firefly.android.library")
+    id("social.firefly.android.library.compose")
     alias(libs.plugins.kotlinx.serialization)
 }
 
@@ -13,10 +14,8 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:accounts"))
 
-    implementation(platform(libs.firebase))
-    implementation(libs.firebase.messaging)
-
     implementation(libs.unifiedPush.androidConnector)
+    implementation(libs.unifiedPush.androidConnector.ui)
     implementation(libs.jakewharton.timber)
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutines.android)
