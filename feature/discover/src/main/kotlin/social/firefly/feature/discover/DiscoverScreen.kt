@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,7 +31,6 @@ import org.koin.androidx.compose.koinViewModel
 import social.firefly.core.designsystem.theme.FfSpacing
 import social.firefly.core.ui.common.FfSurface
 import social.firefly.core.ui.common.UiConstants
-import social.firefly.core.ui.common.appbar.FfTopBar
 import social.firefly.core.ui.hashtagcard.HashTagInteractions
 import social.firefly.core.ui.hashtagcard.hashTagListItems
 import social.firefly.core.ui.hashtagcard.quickview.HashTagQuickViewUiState
@@ -65,7 +63,6 @@ internal fun DiscoverScreen(viewModel: DiscoverViewModel = koinViewModel()) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DiscoverScreen(
     uiState: DiscoverUiState,
@@ -88,14 +85,12 @@ private fun DiscoverScreen(
                     .fillMaxWidth()
                     .height(IntrinsicSize.Max),
             ) {
-                // Adding an empty top bar ensure the search bar will align with the
-                // search bar on the search screen
-                FfTopBar(title = { })
                 FfSearchBar(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.CenterEnd)
                         .padding(
+                            top = 11.dp, // align this search bar with the search bar on the search screen
                             end = FfSpacing.md,
                             start = FfSpacing.md,
                         ),
