@@ -10,13 +10,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.toSpannable
 import social.firefly.core.model.Mention
 
-fun String.htmlToSpannable(
-    mentions: List<Mention>,
-    linkColor: Color,
-    onLinkClick: (url: String) -> Unit,
-    onHashTagClicked: (hashTag: String) -> Unit,
-    onAccountClicked: (accountName: String) -> Unit,
-): Spannable {
+fun String.htmlToSpannable(): Spannable {
     // the html must be wrapped in a <p> tag in order for it to be parsed by HtmlCompat.fromHtml
     val html = if (!startsWith("<p>")) {
         "<p>$this</p>"
@@ -28,6 +22,16 @@ fun String.htmlToSpannable(
     return HtmlCompat.fromHtml(html, 0)
         .trim('\n')
         .toSpannable()
+}
+
+fun String.htmlToClickableSpannable(
+    mentions: List<Mention>,
+    linkColor: Color,
+    onLinkClick: (url: String) -> Unit,
+    onHashTagClicked: (hashTag: String) -> Unit,
+    onAccountClicked: (accountName: String) -> Unit,
+): Spannable {
+    return htmlToSpannable()
         .apply {
             val urlSpans = getSpans(0, length, URLSpan::class.java)
             urlSpans.forEach { span ->
