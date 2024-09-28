@@ -34,7 +34,7 @@ fun HtmlContent(
     clickableLinks: Boolean = true,
 ) {
     val textContent = remember(htmlText) {
-        val spannable = htmlText.reduceHtmlLinks().htmlToSpannable(
+        val spannable = htmlText.reduceHtmlLinks().htmlToClickableSpannable(
             mentions = mentions,
             linkColor = linkColor,
             onLinkClick = htmlContentInteractions::onLinkClicked,

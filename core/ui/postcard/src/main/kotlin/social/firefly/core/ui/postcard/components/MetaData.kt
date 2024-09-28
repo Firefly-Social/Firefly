@@ -1,5 +1,8 @@
 package social.firefly.core.ui.postcard.components
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -10,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import social.firefly.common.utils.StringFactory
 import social.firefly.core.designsystem.icon.FfIcons
@@ -21,6 +25,7 @@ import social.firefly.core.ui.common.dialog.muteAccountConfirmationDialog
 import social.firefly.core.ui.common.dropdown.FfDropDownItem
 import social.firefly.core.ui.common.dropdown.FfIconButtonDropDownMenu
 import social.firefly.core.ui.common.loading.FfCircularProgressIndicator
+import social.firefly.core.ui.htmlcontent.htmlToSpannable
 import social.firefly.core.ui.postcard.MainPostCardUiState
 import social.firefly.core.ui.postcard.OverflowDropDownType
 import social.firefly.core.ui.postcard.PostCardInteractions
@@ -57,6 +62,7 @@ internal fun MetaData(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun OverflowMenu(
     post: MainPostCardUiState,
@@ -90,6 +96,19 @@ private fun OverflowMenu(
     FfIconButtonDropDownMenu(
         expanded = overflowMenuExpanded,
         dropDownMenuContent = {
+            FfDropDownItem(
+                text = StringFactory.resource(resId = R.string.copy_text).build(context),
+                expanded = overflowMenuExpanded,
+                onClick = {
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newHtmlText(
+                        StringFactory.resource(resId = R.string.copied_text_label).build(context),
+                        post.postContentUiState.statusTextHtml.htmlToSpannable(),
+                        post.postContentUiState.statusTextHtml,
+                    )
+                    clipboard.setPrimaryClip(clip)
+                },
+            )
             when (post.overflowDropDownType) {
                 OverflowDropDownType.USER -> {
                     FfDropDownItem(

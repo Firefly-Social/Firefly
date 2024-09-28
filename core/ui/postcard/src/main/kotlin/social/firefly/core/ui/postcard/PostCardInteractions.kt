@@ -1,6 +1,5 @@
 package social.firefly.core.ui.postcard
 
-import social.firefly.core.model.Attachment
 import social.firefly.core.ui.htmlcontent.HtmlContentInteractions
 import social.firefly.core.ui.poll.PollInteractions
 
