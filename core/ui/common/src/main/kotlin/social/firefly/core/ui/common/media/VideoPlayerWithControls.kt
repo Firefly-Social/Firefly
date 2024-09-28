@@ -6,7 +6,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,10 +39,10 @@ import androidx.media3.ui.PlayerView
 import kotlinx.coroutines.delay
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.R
 import social.firefly.core.ui.common.loading.FfLinearProgressIndicator
 import social.firefly.core.ui.common.text.SmallTextLabel
+import social.firefly.core.ui.common.utils.noRippleClickable
 import timber.log.Timber
 import kotlin.math.roundToLong
 
@@ -102,15 +101,13 @@ fun VideoPlayer(
             }
         }
 
-        NoRipple {
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .clickable {
-                        onClick()
-                    },
-            )
-        }
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .noRippleClickable {
+                    onClick()
+                },
+        )
 
         AnimatedVisibility(
             modifier = Modifier.align(Alignment.BottomCenter),

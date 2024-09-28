@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.text.MediumTextLabel
 import social.firefly.core.ui.common.text.SmallTextLabel
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.notifications.cards.FavoriteNotificationContent
 import social.firefly.core.ui.notifications.cards.FollowRequestNotificationContent
 import social.firefly.core.ui.notifications.cards.MentionNotificationContent
@@ -49,7 +48,7 @@ fun NotificationCard(
     Box(modifier = modifier) {
         when (uiState) {
             is NotificationUiState.Favorite -> NotificationCard(
-                modifier = Modifier.clickable {
+                modifier = Modifier.noRippleClickable {
                     notificationInteractions.onFavoritedCardClicked(uiState.statusId)
                 },
                 uiState = uiState,
@@ -63,7 +62,7 @@ fun NotificationCard(
             }
 
             is NotificationUiState.Follow -> NotificationCard(
-                modifier = Modifier.clickable {
+                modifier = Modifier.noRippleClickable {
                     notificationInteractions.onFollowCardClicked(uiState.accountId)
                 },
                 uiState = uiState,
@@ -72,7 +71,7 @@ fun NotificationCard(
             ) {}
 
             is NotificationUiState.FollowRequest -> NotificationCard(
-                modifier = Modifier.clickable {
+                modifier = Modifier.noRippleClickable {
                     notificationInteractions.onFollowRequestCardClicked(uiState.accountId)
                 },
                 uiState = uiState,
@@ -86,7 +85,7 @@ fun NotificationCard(
             }
 
             is NotificationUiState.Mention -> NotificationCard(
-                modifier = Modifier.clickable {
+                modifier = Modifier.noRippleClickable {
                     notificationInteractions.onMentionClicked(uiState.statusId)
                 },
                 uiState = uiState,
@@ -100,7 +99,7 @@ fun NotificationCard(
             }
 
             is NotificationUiState.NewStatus -> NotificationCard(
-                modifier = Modifier.clickable {
+                modifier = Modifier.noRippleClickable {
                     notificationInteractions.onNewStatusClicked(uiState.statusId)
                 },
                 uiState = uiState,
@@ -114,7 +113,7 @@ fun NotificationCard(
             }
 
             is NotificationUiState.PollEnded -> NotificationCard(
-                modifier = Modifier.clickable {
+                modifier = Modifier.noRippleClickable {
                     notificationInteractions.onPollEndedClicked(uiState.statusId)
                 },
                 uiState = uiState,
@@ -128,7 +127,7 @@ fun NotificationCard(
             }
 
             is NotificationUiState.Repost -> NotificationCard(
-                modifier = Modifier.clickable {
+                modifier = Modifier.noRippleClickable {
                     notificationInteractions.onRepostClicked(uiState.statusId)
                 },
                 uiState = uiState,
@@ -142,7 +141,7 @@ fun NotificationCard(
             }
 
             is NotificationUiState.StatusUpdated -> NotificationCard(
-                modifier = Modifier.clickable {
+                modifier = Modifier.noRippleClickable {
                     notificationInteractions.onStatusUpdatedCardClicked(uiState.statusId)
                 },
                 uiState = uiState,
@@ -166,27 +165,25 @@ private fun NotificationCard(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    NoRipple {
-        Row(
-            modifier = modifier,
-        ) {
-            Avatar(
-                avatarUrl = uiState.avatarUrl,
-                size = 48.dp,
-                accountId = uiState.accountId,
-                accountName = uiState.accountName,
-                notificationTypeIcon = notificationTypeIcon,
-                notificationInteractions = notificationInteractions,
+    Row(
+        modifier = modifier,
+    ) {
+        Avatar(
+            avatarUrl = uiState.avatarUrl,
+            size = 48.dp,
+            accountId = uiState.accountId,
+            accountName = uiState.accountName,
+            notificationTypeIcon = notificationTypeIcon,
+            notificationInteractions = notificationInteractions,
+        )
+        Spacer(modifier = Modifier.padding(start = 8.dp))
+        Column {
+            NotificationMetaData(
+                modifier = Modifier
+                    .heightIn(min = 48.dp),
+                uiState = uiState,
             )
-            Spacer(modifier = Modifier.padding(start = 8.dp))
-            Column {
-                NotificationMetaData(
-                    modifier = Modifier
-                        .heightIn(min = 48.dp),
-                    uiState = uiState,
-                )
-                content()
-            }
+            content()
         }
     }
 }

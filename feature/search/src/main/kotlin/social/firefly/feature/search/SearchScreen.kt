@@ -53,7 +53,6 @@ import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfRadius
 import social.firefly.core.designsystem.theme.FfSpacing
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.navigation.navigationModule
 import social.firefly.core.ui.accountfollower.AccountFollower
 import social.firefly.core.ui.accountfollower.AccountFollowerUiState
@@ -71,6 +70,7 @@ import social.firefly.core.ui.common.search.FfSearchBar
 import social.firefly.core.ui.common.tabs.FfTab
 import social.firefly.core.ui.common.tabs.FfTabRow
 import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.hashtagcard.HashTagInteractions
 import social.firefly.core.ui.hashtagcard.HashTagInteractionsNoOp
 import social.firefly.core.ui.postcard.PostCard
@@ -78,7 +78,6 @@ import social.firefly.core.ui.postcard.PostCardInteractions
 import social.firefly.core.ui.postcard.PostCardInteractionsNoOp
 import social.firefly.core.ui.postcard.PostCardUiState
 import social.firefly.core.ui.postcard.postListContent
-import social.firefly.feature.search.R
 
 @Composable
 internal fun SearchScreen(
@@ -393,36 +392,34 @@ private fun TopAccounts(
             key = { searchResultUiState.accountUiStates[it].quickViewUiState.accountId },
         ) { index ->
             val item = searchResultUiState.accountUiStates[index]
-            NoRipple {
-                AccountQuickViewBox( 
-                    modifier = Modifier
-                        .padding(FfSpacing.md)
-                        .border(
-                            width = 1.dp,
-                            color = FfTheme.colors.borderPrimary,
-                            shape = RoundedCornerShape(FfRadius.lg_16_dp)
+            AccountQuickViewBox(
+                modifier = Modifier
+                    .padding(FfSpacing.md)
+                    .border(
+                        width = 1.dp,
+                        color = FfTheme.colors.borderPrimary,
+                        shape = RoundedCornerShape(FfRadius.lg_16_dp)
+                    )
+                    .noRippleClickable {
+                        searchInteractions.onAccountClicked(item.quickViewUiState.accountId)
+                    }
+                    .width(256.dp)
+                    .padding(FfSpacing.md),
+                uiState = item.quickViewUiState,
+                buttonSlot = {
+                    if (item.followButtonVisible) {
+                        FollowingButton(
+                            onButtonClicked = {
+                                searchInteractions.onFollowClicked(
+                                    item.quickViewUiState.accountId,
+                                    item.followStatus
+                                )
+                            },
+                            followStatus = item.followStatus
                         )
-                        .clickable {
-                            searchInteractions.onAccountClicked(item.quickViewUiState.accountId)
-                        }
-                        .width(256.dp)
-                        .padding(FfSpacing.md),
-                    uiState = item.quickViewUiState,
-                    buttonSlot = {
-                        if (item.followButtonVisible) {
-                            FollowingButton(
-                                onButtonClicked = {
-                                    searchInteractions.onFollowClicked(
-                                        item.quickViewUiState.accountId,
-                                        item.followStatus
-                                    )
-                                },
-                                followStatus = item.followStatus
-                            )
-                        }
-                    },
-                )
-            }
+                    }
+                },
+            )
         }
     }
 
@@ -456,7 +453,7 @@ private fun AccountsList(
                         },
                         modifier = Modifier
                             .padding(FfSpacing.md)
-                            .clickable {
+                            .noRippleClickable {
                                 searchInteractions.onAccountClicked(
                                     accountId = uiState.accountQuickViewUiState.accountId
                                 )

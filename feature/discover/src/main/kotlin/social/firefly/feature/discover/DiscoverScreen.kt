@@ -1,6 +1,5 @@
 package social.firefly.feature.discover
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,10 +29,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
 import social.firefly.core.designsystem.theme.FfSpacing
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.ui.common.FfSurface
 import social.firefly.core.ui.common.UiConstants
-import social.firefly.core.ui.common.appbar.FfTopBar
 import social.firefly.core.ui.hashtagcard.HashTagInteractions
 import social.firefly.core.ui.hashtagcard.hashTagListItems
 import social.firefly.core.ui.hashtagcard.quickview.HashTagQuickViewUiState
@@ -44,6 +40,7 @@ import social.firefly.core.ui.common.tabs.FfTab
 import social.firefly.core.ui.common.tabs.FfTabRow
 import social.firefly.core.ui.common.text.MediumTextLabel
 import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.postcard.PostCardInteractions
 import social.firefly.core.ui.postcard.PostCardUiState
 import social.firefly.core.ui.postcard.postListContent
@@ -66,7 +63,6 @@ internal fun DiscoverScreen(viewModel: DiscoverViewModel = koinViewModel()) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DiscoverScreen(
     uiState: DiscoverUiState,
@@ -89,14 +85,12 @@ private fun DiscoverScreen(
                     .fillMaxWidth()
                     .height(IntrinsicSize.Max),
             ) {
-                // Adding an empty top bar ensure the search bar will align with the
-                // search bar on the search screen
-                FfTopBar(title = { })
                 FfSearchBar(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.CenterEnd)
                         .padding(
+                            top = 11.dp, // align this search bar with the search bar on the search screen
                             end = FfSpacing.md,
                             start = FfSpacing.md,
                         ),
@@ -105,18 +99,16 @@ private fun DiscoverScreen(
                     onSearch = {},
                     readOnly = true,
                 )
-                NoRipple {
-                    // invisible box that intercepts clicks
-                    val searchField = stringResource(id = R.string.search_field)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable { discoverInteractions.onSearchBarClicked() }
-                            .semantics {
-                                contentDescription = searchField
-                            }
-                    )
-                }
+                // invisible box that intercepts clicks
+                val searchField = stringResource(id = R.string.search_field)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .noRippleClickable { discoverInteractions.onSearchBarClicked() }
+                        .semantics {
+                            contentDescription = searchField
+                        }
+                )
             }
             MainContent(
                 uiState = uiState,

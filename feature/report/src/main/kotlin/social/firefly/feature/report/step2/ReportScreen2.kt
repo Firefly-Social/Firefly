@@ -1,7 +1,6 @@
 package social.firefly.feature.report.step2
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,7 +32,6 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import social.firefly.common.Resource
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.model.InstanceRule
 import social.firefly.core.ui.common.FfCheckBox
 import social.firefly.core.ui.common.FfSurface
@@ -43,6 +41,7 @@ import social.firefly.core.ui.common.divider.FfDivider
 import social.firefly.core.ui.common.error.GenericError
 import social.firefly.core.ui.common.loading.MaxSizeLoading
 import social.firefly.core.ui.common.loading.FfCircularProgressIndicator
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.feature.report.R
 import social.firefly.feature.report.ReportDataBundle
 import social.firefly.feature.report.ReportType
@@ -236,67 +235,65 @@ private fun SelectableStatusCard(
 ) {
     val context = LocalContext.current
 
-    NoRipple {
-        Row(
+    Row(
+        modifier =
+        Modifier
+            .padding(start = 8.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
+            .noRippleClickable { reportInteractions.onStatusClicked(uiState.statusId) },
+    ) {
+        FfCheckBox(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            checked = uiState.checked,
+            onCheckedChange = { reportInteractions.onStatusClicked(uiState.statusId) },
+        )
+
+        AsyncImage(
             modifier =
             Modifier
-                .padding(start = 8.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
-                .clickable { reportInteractions.onStatusClicked(uiState.statusId) },
+                .size(36.dp)
+                .clip(CircleShape)
+                .background(FfTheme.colors.layer2)
+                .align(Alignment.CenterVertically),
+            model = uiState.avatarUrl,
+            contentDescription = "",
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Column(
+            modifier = Modifier.align(Alignment.CenterVertically),
         ) {
-            FfCheckBox(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                checked = uiState.checked,
-                onCheckedChange = { reportInteractions.onStatusClicked(uiState.statusId) },
-            )
-
-            AsyncImage(
-                modifier =
-                Modifier
-                    .size(36.dp)
-                    .clip(CircleShape)
-                    .background(FfTheme.colors.layer2)
-                    .align(Alignment.CenterVertically),
-                model = uiState.avatarUrl,
-                contentDescription = "",
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Column(
-                modifier = Modifier.align(Alignment.CenterVertically),
-            ) {
-                Row {
-                    Column(
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Text(
-                            text = uiState.userName,
-                            style = FfTheme.typography.labelMedium,
-                            fontWeight = FontWeight.W600,
-                        )
-                        Text(
-                            text = "@${uiState.handle}",
-                            style = FfTheme.typography.bodySmall,
-                            color = FfTheme.colors.textSecondary,
-                        )
-                    }
+            Row {
+                Column(
+                    modifier = Modifier.weight(1f),
+                ) {
                     Text(
-                        text = uiState.postTimeSince.build(context),
+                        text = uiState.userName,
+                        style = FfTheme.typography.labelMedium,
+                        fontWeight = FontWeight.W600,
+                    )
+                    Text(
+                        text = "@${uiState.handle}",
                         style = FfTheme.typography.bodySmall,
                         color = FfTheme.colors.textSecondary,
                     )
                 }
-
-                social.firefly.core.ui.htmlcontent.HtmlContent(
-                    mentions = emptyList(),
-                    htmlText = uiState.htmlStatusText,
-                    htmlContentInteractions =
-                    object :
-                        social.firefly.core.ui.htmlcontent.HtmlContentInteractions {},
-                    maximumLineCount = 2,
-                    clickableLinks = false,
+                Text(
+                    text = uiState.postTimeSince.build(context),
+                    style = FfTheme.typography.bodySmall,
+                    color = FfTheme.colors.textSecondary,
                 )
             }
+
+            social.firefly.core.ui.htmlcontent.HtmlContent(
+                mentions = emptyList(),
+                htmlText = uiState.htmlStatusText,
+                htmlContentInteractions =
+                object :
+                    social.firefly.core.ui.htmlcontent.HtmlContentInteractions {},
+                maximumLineCount = 2,
+                clickableLinks = false,
+            )
         }
     }
 }

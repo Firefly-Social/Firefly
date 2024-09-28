@@ -34,7 +34,6 @@ import org.koin.compose.KoinApplication
 import org.koin.core.parameter.parametersOf
 import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.designsystem.theme.ThemeOption
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.model.InstanceRule
 import social.firefly.core.navigation.navigationModule
 import social.firefly.core.ui.common.FfCheckBox
@@ -45,6 +44,7 @@ import social.firefly.core.ui.common.button.FfButton
 import social.firefly.core.ui.common.button.FfRadioButton
 import social.firefly.core.ui.common.divider.FfDivider
 import social.firefly.core.ui.common.text.FfTextField
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.feature.report.R
 import social.firefly.feature.report.ReportDataBundle
 import social.firefly.feature.report.ReportTarget
@@ -276,29 +276,27 @@ private fun SelectableReportType(
     reportInteractions: ReportScreen1Interactions,
     content: @Composable () -> Unit,
 ) {
-    NoRipple {
-        Row(
+    Row(
+        modifier =
+        Modifier
+            .padding(4.dp)
+            .noRippleClickable { reportInteractions.onReportTypeSelected(reportType) },
+    ) {
+        FfRadioButton(
             modifier =
             Modifier
-                .padding(4.dp)
-                .clickable { reportInteractions.onReportTypeSelected(reportType) },
-        ) {
-            FfRadioButton(
-                modifier =
-                Modifier
-                    .size(20.dp),
-                selected = selectedReportType == reportType,
-                onClick = { reportInteractions.onReportTypeSelected(reportType) },
+                .size(20.dp),
+            selected = selectedReportType == reportType,
+            onClick = { reportInteractions.onReportTypeSelected(reportType) },
+        )
+        Spacer(modifier = Modifier.padding(4.dp))
+        Column {
+            Text(
+                text = title,
+                style = FfTheme.typography.bodyMedium,
+                fontWeight = FontWeight.W700,
             )
-            Spacer(modifier = Modifier.padding(4.dp))
-            Column {
-                Text(
-                    text = title,
-                    style = FfTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.W700,
-                )
-                content()
-            }
+            content()
         }
     }
 }

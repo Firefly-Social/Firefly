@@ -47,6 +47,7 @@ import social.firefly.core.ui.common.pullrefresh.rememberPullRefreshState
 import social.firefly.core.ui.common.tabs.FfTab
 import social.firefly.core.ui.common.tabs.FfTabRow
 import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.core.ui.common.utils.noRippleClickable
 
 @Composable
 internal fun FollowersScreen(
@@ -191,7 +192,7 @@ private fun FollowersList(
                         },
                         modifier = Modifier
                             .padding(FfSpacing.md)
-                            .clickable {
+                            .noRippleClickable {
                                 followersInteractions
                                     .onAccountClicked(
                                         accountId = uiState.accountQuickViewUiState.accountId

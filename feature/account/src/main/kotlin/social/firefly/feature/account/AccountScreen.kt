@@ -11,7 +11,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -64,7 +63,6 @@ import social.firefly.common.Resource
 import social.firefly.common.utils.DateTimeFormatters
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.designsystem.utils.NoRipple
 import social.firefly.core.model.AccountTimelineType
 import social.firefly.core.navigation.navigationModule
 import social.firefly.core.ui.common.FfSurface
@@ -87,6 +85,7 @@ import social.firefly.core.ui.common.tabs.FfTab
 import social.firefly.core.ui.common.tabs.FfTabRow
 import social.firefly.core.ui.common.text.SmallTextLabel
 import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.htmlcontent.HtmlContent
 import social.firefly.core.ui.htmlcontent.HtmlContentInteractions
 import social.firefly.core.ui.postcard.PostCardInteractions
@@ -529,29 +528,27 @@ private fun UserFollow(
     account: AccountUiState,
     accountInteractions: AccountInteractions,
 ) {
-    NoRipple {
-        Row(
-            modifier =
-            Modifier
-                .padding(8.dp),
-        ) {
-            Counter(
-                value = account.followersCount.toString(),
-                label = stringResource(id = R.string.followers),
-                onClick = { accountInteractions.onFollowersClicked() },
-            )
-            Spacer(modifier = Modifier.width(24.dp))
-            Counter(
-                value = account.followingCount.toString(),
-                label = stringResource(id = R.string.following),
-                onClick = { accountInteractions.onFollowingClicked() },
-            )
-            Spacer(modifier = Modifier.width(24.dp))
-            Counter(
-                value = account.statusesCount.toString(),
-                label = stringResource(id = R.string.posts),
-            )
-        }
+    Row(
+        modifier =
+        Modifier
+            .padding(8.dp),
+    ) {
+        Counter(
+            value = account.followersCount.toString(),
+            label = stringResource(id = R.string.followers),
+            onClick = { accountInteractions.onFollowersClicked() },
+        )
+        Spacer(modifier = Modifier.width(24.dp))
+        Counter(
+            value = account.followingCount.toString(),
+            label = stringResource(id = R.string.following),
+            onClick = { accountInteractions.onFollowingClicked() },
+        )
+        Spacer(modifier = Modifier.width(24.dp))
+        Counter(
+            value = account.statusesCount.toString(),
+            label = stringResource(id = R.string.posts),
+        )
     }
 }
 
@@ -565,7 +562,7 @@ private fun Counter(
     Column(
         modifier =
         modifier
-            .clickable { onClick() },
+            .noRippleClickable { onClick() },
     ) {
         Text(
             text = value,
@@ -588,93 +585,91 @@ private fun UserBio(
     var expanded by remember { mutableStateOf(false) }
     val bioIsBlank by remember(account.bio) { mutableStateOf(account.bio.isBlank()) }
 
-    NoRipple {
-        Box(
-            modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp, end = 8.dp)
-                .clickable { expanded = !expanded },
-        ) {
-            val animationDuration = 150
+    Box(
+        modifier =
+        modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp)
+            .noRippleClickable { expanded = !expanded },
+    ) {
+        val animationDuration = 150
 
-            AnimatedContent(
-                modifier =
-                Modifier
-                    .padding(end = 32.dp),
-                targetState = expanded,
-                label = "",
-                transitionSpec = {
-                    // expanding
-                    if (targetState) {
-                        EnterTransition.None togetherWith ExitTransition.None using
-                                SizeTransform { _, _ ->
-                                    keyframes {
-                                        durationMillis = animationDuration
-                                    }
+        AnimatedContent(
+            modifier =
+            Modifier
+                .padding(end = 32.dp),
+            targetState = expanded,
+            label = "",
+            transitionSpec = {
+                // expanding
+                if (targetState) {
+                    EnterTransition.None togetherWith ExitTransition.None using
+                            SizeTransform { _, _ ->
+                                keyframes {
+                                    durationMillis = animationDuration
                                 }
-                    } else { // shrinking
-                        fadeIn(animationSpec = tween(0, 0)) togetherWith
-                                fadeOut(animationSpec = tween(animationDuration)) using
-                                SizeTransform { _, _ ->
-                                    keyframes {
-                                        durationMillis = animationDuration
-                                    }
+                            }
+                } else { // shrinking
+                    fadeIn(animationSpec = tween(0, 0)) togetherWith
+                            fadeOut(animationSpec = tween(animationDuration)) using
+                            SizeTransform { _, _ ->
+                                keyframes {
+                                    durationMillis = animationDuration
                                 }
-                    }
-                },
-            ) { targetState ->
-                Column {
+                            }
+                }
+            },
+        ) { targetState ->
+            Column {
+                if (!bioIsBlank) {
+                    HtmlContent(
+                        mentions = emptyList(),
+                        htmlText = account.bio,
+                        htmlContentInteractions = htmlContentInteractions,
+                        maximumLineCount = if (targetState) Int.MAX_VALUE else BIO_MAX_LINES_NOT_EXPANDED,
+                    )
+                }
+                if (targetState || bioIsBlank) {
                     if (!bioIsBlank) {
-                        HtmlContent(
-                            mentions = emptyList(),
-                            htmlText = account.bio,
-                            htmlContentInteractions = htmlContentInteractions,
-                            maximumLineCount = if (targetState) Int.MAX_VALUE else BIO_MAX_LINES_NOT_EXPANDED,
-                        )
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
-                    if (targetState || bioIsBlank) {
-                        if (!bioIsBlank) {
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
-                        account.fields.forEach { field ->
-                            UserLabel(
-                                label = field.name,
-                                text = field.value,
-                                htmlContentInteractions = htmlContentInteractions,
-                            )
-                        }
+                    account.fields.forEach { field ->
                         UserLabel(
-                            icon = FfIcons.userJoin(),
-                            label = "",
-                            text =
-                            stringResource(
-                                id = R.string.joined_date,
-                                DateTimeFormatters.standard.format(account.joinDate.toJavaLocalDateTime()),
-                            ),
+                            label = field.name,
+                            text = field.value,
                             htmlContentInteractions = htmlContentInteractions,
                         )
                     }
+                    UserLabel(
+                        icon = FfIcons.userJoin(),
+                        label = "",
+                        text =
+                        stringResource(
+                            id = R.string.joined_date,
+                            DateTimeFormatters.standard.format(account.joinDate.toJavaLocalDateTime()),
+                        ),
+                        htmlContentInteractions = htmlContentInteractions,
+                    )
                 }
             }
+        }
 
-            if (!bioIsBlank) {
-                val rotatedDegrees = 180f
+        if (!bioIsBlank) {
+            val rotatedDegrees = 180f
 
-                val rotation: Float by animateFloatAsState(
-                    targetValue = if (expanded) rotatedDegrees else 0f,
-                    animationSpec = tween(animationDuration),
-                    label = "",
-                )
-                Icon(
-                    modifier =
-                    Modifier
-                        .rotate(rotation)
-                        .align(Alignment.TopEnd),
-                    painter = FfIcons.caret(),
-                    contentDescription = null,
-                )
-            }
+            val rotation: Float by animateFloatAsState(
+                targetValue = if (expanded) rotatedDegrees else 0f,
+                animationSpec = tween(animationDuration),
+                label = "",
+            )
+            Icon(
+                modifier =
+                Modifier
+                    .rotate(rotation)
+                    .align(Alignment.TopEnd),
+                painter = FfIcons.caret(),
+                contentDescription = null,
+            )
         }
     }
 }
