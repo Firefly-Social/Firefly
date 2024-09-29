@@ -13,6 +13,7 @@ import android.text.style.ImageSpan
 import android.text.style.QuoteSpan
 import android.text.style.URLSpan
 import android.view.View
+import android.widget.TextView
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.text.HtmlCompat
@@ -39,13 +40,10 @@ fun String.htmlToSpannable(): Spannable {
 
 fun String.htmlToClickableSpannable(
     mentions: List<Mention>,
-    emojis: List<Emoji>,
-    emojiSize: Int,
     linkColor: Color,
     onLinkClick: (url: String) -> Unit,
     onHashTagClicked: (hashTag: String) -> Unit,
     onAccountClicked: (accountName: String) -> Unit,
-    context: Context,
 ): Spannable {
     return htmlToSpannable()
         .apply {
@@ -59,7 +57,6 @@ fun String.htmlToClickableSpannable(
             editBlockQuoteSpans(
                 color = linkColor,
             )
-            applyEmojis(emojis, context, emojiSize)
         }
 }
 
@@ -169,6 +166,7 @@ fun Spannable.applyEmojis(
     emojis: List<Emoji>,
     context: Context,
     emojiSize: Int,
+    textView: TextView,
 ) {
     val emojiPattern = Regex(":\\w+:")
     val matches = emojiPattern.findAll(this)
@@ -197,6 +195,7 @@ fun Spannable.applyEmojis(
 
                         // Replace the emoji text in the Spannable with the ImageSpan
                         setSpan(imageSpan, matchedStart, matchedEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        textView.text = this@applyEmojis
                     }
 
                     override fun onError(error: Drawable?) {

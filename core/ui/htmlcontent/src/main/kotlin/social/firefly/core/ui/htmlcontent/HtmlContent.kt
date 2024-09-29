@@ -37,7 +37,6 @@ fun HtmlContent(
     linkColor: Color = FfTheme.colors.textLink,
     clickableLinks: Boolean = true,
 ) {
-    val localContext = LocalContext.current
     val emojiSize = with(LocalDensity.current) {
         textStyle.fontSize.toPx().toInt()
     }
@@ -45,13 +44,10 @@ fun HtmlContent(
     val textContent = remember(htmlText) {
         val spannable = htmlText.reduceHtmlLinks().htmlToClickableSpannable(
             mentions = mentions,
-            emojis = emojis,
-            emojiSize = emojiSize,
             linkColor = linkColor,
             onLinkClick = htmlContentInteractions::onLinkClicked,
             onHashTagClicked = htmlContentInteractions::onHashTagClicked,
             onAccountClicked = htmlContentInteractions::onAccountClicked,
-            context = localContext,
         )
         mutableStateOf(
             spannable,
@@ -82,8 +78,15 @@ fun HtmlContent(
             }
         },
         update = { textView ->
-            textView.text = textContent.value
+            val textContentSpannable = textContent.value
+            textView.text = textContentSpannable
             textView.maxLines = maximumLineCount
+            textContentSpannable.applyEmojis(
+                emojis = emojis,
+                context = textView.context,
+                emojiSize = emojiSize,
+                textView = textView,
+            )
 
             // Add ellipsize manually
             // setting textView.ellipsize = TextUtils.TruncateAt.END doesn't seem to work.
