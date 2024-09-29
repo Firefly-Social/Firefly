@@ -6,22 +6,25 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
@@ -44,37 +47,39 @@ fun HtmlContent(
     linkColor: Color = FfTheme.colors.textLink,
     clickableLinks: Boolean = true,
 ) {
-    val density = LocalDensity.current
-    val emojiSize by remember {
-        val size = with(density) {
-            textStyle.fontSize.toPx().toInt()
-        }
-        mutableIntStateOf(size)
-    }
-
-    val context = LocalContext.current
-
     val annotatedString by remember(htmlText) {
-        var annotatedString = htmlText.reduceHtmlLinks().htmlToSpannable().toAnnotatedString(
+        val annotatedString = htmlText.reduceHtmlLinks().htmlToSpannable().toAnnotatedString(
             mentions = mentions,
+            emojis = emojis,
             linkColor = linkColor,
             onLinkClick = htmlContentInteractions::onLinkClicked,
             onHashTagClicked = htmlContentInteractions::onHashTagClicked,
             onAccountClicked = htmlContentInteractions::onAccountClicked,
             clickableLinks = clickableLinks,
         )
-//        applyEmojis(
-//            emojis = emojis,
-//            context = context,
-//            emojiSize = emojiSize,
-//            spannable = annotatedString,
-//        ) {
-//            annotatedString = it
-//        }
         mutableStateOf(annotatedString)
     }
 
     val sections = getTextSections(annotatedString)
+
+    // inline content for emojis
+    val inlineContent: Map<String, InlineTextContent> = emojis.associateBy(
+        keySelector = { ":${it.shortCode}:" }
+    ) { emoji ->
+        InlineTextContent(
+            placeholder = Placeholder(
+                width = textStyle.fontSize.value.sp,
+                height = textStyle.fontSize.value.sp,
+                placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+            )
+        ) {
+            AsyncImage(
+                modifier = Modifier.size(textStyle.fontSize.value.dp),
+                contentDescription = emoji.shortCode,
+                model = emoji.url
+            )
+        }
+    }
 
     Column(
         modifier = modifier,
@@ -87,6 +92,7 @@ fun HtmlContent(
                     color = textColor,
                     style = textStyle,
                     maxLines = maximumLineCount,
+                    inlineContent = inlineContent,
                 )
             } else {
                 Text(
@@ -95,6 +101,7 @@ fun HtmlContent(
                     style = textStyle,
                     maxLines = maximumLineCount,
                     overflow = TextOverflow.Ellipsis,
+                    inlineContent = inlineContent,
                 )
             }
         }
@@ -107,13 +114,13 @@ fun QuoteBlock(
     maxLines: Int = Int.MAX_VALUE,
     style: TextStyle = FfTheme.typography.bodyMedium,
     color: Color = FfTheme.colors.textPrimary,
+    inlineContent: Map<String, InlineTextContent>,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
     ) {
-        // Vertical line to represent the quote
         VerticalDivider(
             thickness = 4.dp,
             color = FfTheme.colors.textLink
@@ -124,10 +131,15 @@ fun QuoteBlock(
             color = color,
             style = style,
             maxLines = maxLines,
+            inlineContent = inlineContent,
         )
     }
 }
 
+/**
+ * There will be multiple text sections if the text has quote blocks.  The quote blocks
+ * need to be manually rendered.
+ */
 private fun getTextSections(
     annotatedString: AnnotatedString,
 ): List<AnnotatedString.Range<String>> {
