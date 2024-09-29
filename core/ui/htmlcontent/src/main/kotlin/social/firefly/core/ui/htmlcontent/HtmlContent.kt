@@ -10,10 +10,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.doOnNextLayout
 import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
 import kotlin.math.min
 
@@ -25,6 +28,7 @@ import kotlin.math.min
 fun HtmlContent(
     modifier: Modifier = Modifier,
     mentions: List<Mention> = emptyList(),
+    emojis: List<Emoji> = emptyList(),
     htmlText: String,
     htmlContentInteractions: HtmlContentInteractions,
     maximumLineCount: Int = Int.MAX_VALUE,
@@ -33,13 +37,21 @@ fun HtmlContent(
     linkColor: Color = FfTheme.colors.textLink,
     clickableLinks: Boolean = true,
 ) {
+    val localContext = LocalContext.current
+    val emojiSize = with(LocalDensity.current) {
+        textStyle.fontSize.toPx().toInt()
+    }
+
     val textContent = remember(htmlText) {
         val spannable = htmlText.reduceHtmlLinks().htmlToClickableSpannable(
             mentions = mentions,
+            emojis = emojis,
+            emojiSize = emojiSize,
             linkColor = linkColor,
             onLinkClick = htmlContentInteractions::onLinkClicked,
             onHashTagClicked = htmlContentInteractions::onHashTagClicked,
             onAccountClicked = htmlContentInteractions::onAccountClicked,
+            context = localContext,
         )
         mutableStateOf(
             spannable,

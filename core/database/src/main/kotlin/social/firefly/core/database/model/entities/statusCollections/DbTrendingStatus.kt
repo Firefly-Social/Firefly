@@ -8,7 +8,6 @@ import androidx.room.Relation
 import social.firefly.core.database.model.entities.DatabaseStatus
 import social.firefly.core.database.model.wrappers.StatusWrapper
 
-
 @Entity(
     tableName = "trendingStatuses",
     foreignKeys = [
