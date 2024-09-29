@@ -3,16 +3,28 @@ package social.firefly.core.ui.htmlcontent
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.text.Spannable
 import android.text.TextPaint
+import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.text.style.QuoteSpan
+import android.text.style.StyleSpan
 import android.text.style.URLSpan
+import android.text.style.UnderlineSpan
 import android.view.View
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
 import androidx.core.text.HtmlCompat
 import androidx.core.text.toSpannable
 import coil.request.ImageRequest
@@ -34,6 +46,88 @@ fun String.htmlToSpannable(): Spannable {
     return HtmlCompat.fromHtml(html, 0)
         .trim('\n')
         .toSpannable()
+}
+
+object Tags {
+    const val MENTION = "mention"
+    const val HASH_TAG = "hashTag"
+    const val LINK = "link"
+    const val QUOTE = "quote"
+}
+
+fun Spannable.toAnnotatedString(
+    mentions: List<Mention>,
+    linkColor: Color,
+    onLinkClick: (url: String) -> Unit,
+    onHashTagClicked: (hashTag: String) -> Unit,
+    onAccountClicked: (accountName: String) -> Unit,
+    clickableLinks: Boolean,
+): AnnotatedString = buildAnnotatedString {
+    val spannable = this@toAnnotatedString
+    val spans = getSpans(0, spannable.length, Any::class.java)
+    spans.forEach { span ->
+        val start = getSpanStart(span)
+        val end = getSpanEnd(span)
+        val spanText = spannable.substring(start, end)
+
+        when (span) {
+            is URLSpan -> {
+                addStyle(SpanStyle(color = linkColor), start, end)
+                if (clickableLinks) {
+                    when {
+                        spanText.startsWith("@") -> addLink(
+                            clickable = LinkAnnotation.Clickable(
+                                tag = Tags.MENTION,
+                            ) {
+                                val mentionAccountId = mentions.find {
+                                    // check the user name and the domain
+                                    it.acct.substringBeforeLast("@") == spanText.substringAfter("@")
+                                            && span.url.contains(it.acct.substringAfter("@"))
+                                }?.accountId
+
+                                mentionAccountId?.let {
+                                    onAccountClicked(it)
+                                }
+                            },
+                            start = start,
+                            end = end,
+                        )
+
+                        spanText.startsWith("#") -> addLink(
+                            clickable = LinkAnnotation.Clickable(
+                                tag = Tags.HASH_TAG,
+                            ) {
+                                onHashTagClicked(spanText.substringAfter("#"))
+                            },
+                            start = start,
+                            end = end,
+                        )
+
+                        else -> addLink(
+                            clickable = LinkAnnotation.Clickable(
+                                tag = Tags.LINK,
+                            ) {
+                                onLinkClick(span.url)
+                            },
+                            start = start,
+                            end = end,
+                        )
+                    }
+                }
+            }
+            is QuoteSpan -> {
+                addStringAnnotation(
+                    tag = Tags.QUOTE,
+                    annotation = spanText,
+                    start = start,
+                    end = end,
+                )
+            }
+        }
+    }
+
+    // Finally, append the text content
+    append(spannable)
 }
 
 fun String.htmlToClickableSpannable(
