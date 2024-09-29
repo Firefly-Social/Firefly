@@ -35,6 +35,7 @@ fun Account.toUiState(relationship: Relationship) =
         isBlocked = relationship.isBlocking,
         isDomainBlocked = relationship.isDomainBlocking,
         joinDate = createdAt.toLocalDateTime(TimeZone.currentSystemDefault()),
+        emojis = emojis,
     )
 
 fun Field.toUiState() =

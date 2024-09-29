@@ -58,6 +58,7 @@ fun PostContent(
         ) {
             HtmlContent(
                 mentions = uiState.mentions,
+                emojis = uiState.emojis,
                 htmlText = uiState.statusTextHtml,
                 htmlContentInteractions = postCardInteractions,
                 maximumLineCount = if (uiState.onlyShowPreviewOfText) {

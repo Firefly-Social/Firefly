@@ -86,6 +86,7 @@ fun Status.toPostContentUiState(
     statusTextHtml = content,
     mediaAttachments = mediaAttachments,
     mentions = mentions,
+    emojis = emojis,
     previewCard = card?.toPreviewCard(),
     contentWarning = contentWarningOverride ?: contentWarningText,
     onlyShowPreviewOfText = onlyShowPreviewOfText,

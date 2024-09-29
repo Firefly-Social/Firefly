@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 import social.firefly.core.model.AccountTimelineType
+import social.firefly.core.model.Emoji
 import social.firefly.core.ui.common.following.FollowStatus
 import social.firefly.core.ui.postcard.PostCardUiState
 
@@ -27,6 +28,7 @@ data class AccountUiState(
     val isBlocked: Boolean,
     val isDomainBlocked: Boolean,
     val joinDate: LocalDateTime,
+    val emojis: List<Emoji>,
 )
 
 data class AccountFieldUiState(

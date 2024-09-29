@@ -4,6 +4,7 @@ import kotlinx.datetime.Instant
 import social.firefly.common.utils.StringFactory
 import social.firefly.common.utils.timeSinceNow
 import social.firefly.core.model.Attachment
+import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
 import social.firefly.core.ui.poll.PollUiState
 
@@ -43,6 +44,7 @@ data class PostContentUiState(
     val statusTextHtml: String,
     val mediaAttachments: List<Attachment>,
     val mentions: List<Mention>,
+    val emojis: List<Emoji> = emptyList(),
     val previewCard: PreviewCard?,
     val contentWarning: String,
     val onlyShowPreviewOfText: Boolean = false,
@@ -107,6 +109,7 @@ internal val postCardUiStatePreview = MainPostCardUiState(
         statusTextHtml = "<p><span class=\"h-card\"><a href=\"https://mozilla.social/@obez\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>obez</span></a></span> This is a text status.  Here is the text and that is all I have to say about that.</p>",
         mediaAttachments = emptyList(),
         mentions = emptyList(),
+        emojis = emptyList(),
         previewCard = null,
         contentWarning = "",
     ),

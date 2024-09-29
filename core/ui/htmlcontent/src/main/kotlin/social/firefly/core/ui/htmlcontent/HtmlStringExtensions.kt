@@ -1,10 +1,13 @@
 package social.firefly.core.ui.htmlcontent
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.text.Spannable
 import android.text.TextPaint
+import android.text.style.ImageSpan
 import android.text.style.QuoteSpan
 import android.text.style.URLSpan
 import android.view.View
@@ -12,7 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.text.HtmlCompat
 import androidx.core.text.toSpannable
+import coil.request.ImageRequest
+import coil.target.Target
+import social.firefly.core.image.EmojiImageLoader
+import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
+import timber.log.Timber
 
 fun String.htmlToSpannable(): Spannable {
     // the html must be wrapped in a <p> tag in order for it to be parsed by HtmlCompat.fromHtml
@@ -50,7 +58,7 @@ fun String.htmlToClickableSpannable(
         }
 }
 
-fun Spannable.editUrlSpans(
+private fun Spannable.editUrlSpans(
     mentions: List<Mention>,
     linkColor: Color,
     onLinkClick: (url: String) -> Unit,
@@ -100,7 +108,7 @@ fun Spannable.editUrlSpans(
     }
 }
 
-fun Spannable.editBlockQuoteSpans(
+private fun Spannable.editBlockQuoteSpans(
     color: Color,
     stripeWidth: Int = 10,
     gapWidth: Int = 50
@@ -149,6 +157,55 @@ fun Spannable.editBlockQuoteSpans(
             flags,
         )
         removeSpan(span)
+    }
+}
+
+fun applyEmojis(
+    emojis: List<Emoji>,
+    context: Context,
+    emojiSize: Int,
+    spannable: Spannable,
+    onReady: (Spannable) -> Unit,
+) {
+    emojis.forEach { emoji ->
+        val emojiPattern = Regex(":${emoji.shortCode}:")
+        val matches = emojiPattern.findAll(spannable)
+        val emojiUrl = emoji.url
+
+        matches.toList().reversed().forEach { matchResult ->
+            val matchedStart = matchResult.range.first
+            val matchedEnd = matchResult.range.last + 1
+
+            // Load the emoji image from the URL using Coil
+            val imageLoader = EmojiImageLoader.imageLoader(context)
+            val request = ImageRequest.Builder(context)
+                .data(emojiUrl)
+                .target(object : Target {
+                    override fun onSuccess(result: Drawable) {
+                        // Resize the drawable
+                        result.setBounds(0, 0, emojiSize, emojiSize)
+
+                        // Create an ImageSpan using the loaded Drawable
+                        val imageSpan = ImageSpan(result, ImageSpan.ALIGN_CENTER)
+
+                        // Replace the emoji text in the Spannable with the ImageSpan
+                        spannable.setSpan(
+                            imageSpan,
+                            matchedStart,
+                            matchedEnd,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        onReady(spannable)
+                    }
+
+                    override fun onError(error: Drawable?) {
+                        Timber.e("emoji loading error")
+                    }
+                })
+                .build()
+
+            imageLoader.enqueue(request)
+        }
     }
 }
 
