@@ -163,15 +163,15 @@ private fun Spannable.editBlockQuoteSpans(
     }
 }
 
-fun Spannable.applyEmojis(
+fun TextView.applyEmojis(
     emojis: List<Emoji>,
     context: Context,
     emojiSize: Int,
-    textView: TextView,
 ) {
+    val spannable = text as Spannable
     emojis.forEach { emoji ->
         val emojiPattern = Regex(":${emoji.shortCode}:")
-        val matches = emojiPattern.findAll(this)
+        val matches = emojiPattern.findAll(spannable)
         val emojiUrl = emoji.url
 
         matches.toList().reversed().forEach { matchResult ->
@@ -191,13 +191,13 @@ fun Spannable.applyEmojis(
                         val imageSpan = ImageSpan(result, ImageSpan.ALIGN_CENTER)
 
                         // Replace the emoji text in the Spannable with the ImageSpan
-                        setSpan(
+                        spannable.setSpan(
                             imageSpan,
                             matchedStart,
                             matchedEnd,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
-                        textView.text = this@applyEmojis
+                        text = spannable
                     }
 
                     override fun onError(error: Drawable?) {

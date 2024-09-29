@@ -83,11 +83,10 @@ fun HtmlContent(
         update = { textView ->
             textView.text = textContent
             textView.maxLines = maximumLineCount
-            textContent.applyEmojis(
+            textView.applyEmojis(
                 emojis = emojis,
                 context = textView.context,
                 emojiSize = emojiSize,
-                textView = textView,
             )
 
             // Add ellipsize manually
