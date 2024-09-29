@@ -21,6 +21,7 @@ import androidx.core.text.toSpannable
 import coil.Coil
 import coil.request.ImageRequest
 import coil.target.Target
+import social.firefly.core.image.EmojiImageLoader
 import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
 
@@ -60,7 +61,7 @@ fun String.htmlToClickableSpannable(
         }
 }
 
-fun Spannable.editUrlSpans(
+private fun Spannable.editUrlSpans(
     mentions: List<Mention>,
     linkColor: Color,
     onLinkClick: (url: String) -> Unit,
@@ -110,7 +111,7 @@ fun Spannable.editUrlSpans(
     }
 }
 
-fun Spannable.editBlockQuoteSpans(
+private fun Spannable.editBlockQuoteSpans(
     color: Color,
     stripeWidth: Int = 10,
     gapWidth: Int = 50
@@ -182,7 +183,7 @@ fun Spannable.applyEmojis(
         // If a URL exists for the emoji, proceed with the replacement
         if (emojiUrl != null) {
             // Load the emoji image from the URL using Coil
-            val imageLoader = Coil.imageLoader(context)
+            val imageLoader = EmojiImageLoader.imageLoader(context)
             val request = ImageRequest.Builder(context)
                 .data(emojiUrl)
                 .target(object : Target {
@@ -191,7 +192,7 @@ fun Spannable.applyEmojis(
                         result.setBounds(0, 0, emojiSize, emojiSize)
 
                         // Create an ImageSpan using the loaded Drawable
-                        val imageSpan = ImageSpan(result, ImageSpan.ALIGN_BASELINE)
+                        val imageSpan = ImageSpan(result, ImageSpan.ALIGN_CENTER)
 
                         // Replace the emoji text in the Spannable with the ImageSpan
                         setSpan(imageSpan, matchedStart, matchedEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)

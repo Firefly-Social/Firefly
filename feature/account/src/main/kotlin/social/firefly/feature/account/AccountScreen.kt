@@ -704,6 +704,7 @@ private fun UserBio(
                         htmlText = account.bio,
                         htmlContentInteractions = htmlContentInteractions,
                         maximumLineCount = if (targetState) Int.MAX_VALUE else BIO_MAX_LINES_NOT_EXPANDED,
+                        emojis = account.emojis,
                     )
                 }
                 if (targetState || bioIsBlank) {
@@ -783,8 +784,7 @@ private fun UserLabel(
         }
 
         HtmlContent(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .weight(1f),
             mentions = emptyList(),
             htmlText = text,
@@ -831,6 +831,7 @@ fun AccountScreenPreview() {
                         LocalDate(2023, 7, 3),
                         LocalTime(0, 0, 0),
                     ),
+                    emojis = emptyList(),
                 ),
             ),
             closeButtonVisible = true,

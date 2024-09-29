@@ -15,7 +15,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.doOnNextLayout
+import org.koin.androidx.compose.get
+import org.koin.compose.koinInject
 import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.image.EmojiImageLoader
 import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
 import kotlin.math.min
