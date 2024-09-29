@@ -24,6 +24,7 @@ import coil.target.Target
 import social.firefly.core.image.EmojiImageLoader
 import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
+import timber.log.Timber
 
 fun String.htmlToSpannable(): Spannable {
     // the html must be wrapped in a <p> tag in order for it to be parsed by HtmlCompat.fromHtml
@@ -163,12 +164,13 @@ private fun Spannable.editBlockQuoteSpans(
     }
 }
 
-fun TextView.applyEmojis(
+fun applyEmojis(
     emojis: List<Emoji>,
     context: Context,
     emojiSize: Int,
+    spannable: Spannable,
+    onReady: (Spannable) -> Unit,
 ) {
-    val spannable = text as Spannable
     emojis.forEach { emoji ->
         val emojiPattern = Regex(":${emoji.shortCode}:")
         val matches = emojiPattern.findAll(spannable)
@@ -184,7 +186,7 @@ fun TextView.applyEmojis(
                 .data(emojiUrl)
                 .target(object : Target {
                     override fun onSuccess(result: Drawable) {
-                        // Resize the drawable if needed
+                        // Resize the drawable
                         result.setBounds(0, 0, emojiSize, emojiSize)
 
                         // Create an ImageSpan using the loaded Drawable
@@ -197,16 +199,15 @@ fun TextView.applyEmojis(
                             matchedEnd,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
-                        text = spannable
+                        onReady(spannable)
                     }
 
                     override fun onError(error: Drawable?) {
-                        // Handle the error if necessary
+                        Timber.e("emoji loading error")
                     }
                 })
                 .build()
 
-            // Execute the request to load the image
             imageLoader.enqueue(request)
         }
     }

@@ -13,4 +13,5 @@ dependencies {
     implementation(project(":core:image"))
 
     implementation(libs.coil)
+    implementation(libs.jakewharton.timber)
 }
