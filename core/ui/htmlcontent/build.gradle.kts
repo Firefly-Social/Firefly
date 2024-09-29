@@ -13,6 +13,4 @@ dependencies {
     implementation(project(":core:image"))
 
     implementation(libs.coil)
-    implementation(libs.koin.core)
-    implementation(libs.koin.androidx.compose)
 }

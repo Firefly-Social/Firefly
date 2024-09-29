@@ -169,19 +169,15 @@ fun Spannable.applyEmojis(
     emojiSize: Int,
     textView: TextView,
 ) {
-    val emojiPattern = Regex(":\\w+:")
-    val matches = emojiPattern.findAll(this)
+    emojis.forEach { emoji ->
+        val emojiPattern = Regex(":${emoji.shortCode}:")
+        val matches = emojiPattern.findAll(this)
+        val emojiUrl = emoji.url
 
-    matches.toList().reversed().forEach { matchResult ->
-        val emojiText = matchResult.value // e.g., ":smile:"
-        val matchedStart = matchResult.range.first
-        val matchedEnd = matchResult.range.last + 1
+        matches.toList().reversed().forEach { matchResult ->
+            val matchedStart = matchResult.range.first
+            val matchedEnd = matchResult.range.last + 1
 
-        // Find the URL corresponding to this emoji text
-        val emojiUrl = emojis.find { ":${it.shortCode}:" == emojiText }?.url
-
-        // If a URL exists for the emoji, proceed with the replacement
-        if (emojiUrl != null) {
             // Load the emoji image from the URL using Coil
             val imageLoader = EmojiImageLoader.imageLoader(context)
             val request = ImageRequest.Builder(context)
@@ -195,7 +191,12 @@ fun Spannable.applyEmojis(
                         val imageSpan = ImageSpan(result, ImageSpan.ALIGN_CENTER)
 
                         // Replace the emoji text in the Spannable with the ImageSpan
-                        setSpan(imageSpan, matchedStart, matchedEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        setSpan(
+                            imageSpan,
+                            matchedStart,
+                            matchedEnd,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
                         textView.text = this@applyEmojis
                     }
 

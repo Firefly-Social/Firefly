@@ -5,20 +5,18 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.widget.TextView
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.doOnNextLayout
-import org.koin.androidx.compose.get
-import org.koin.compose.koinInject
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.image.EmojiImageLoader
 import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
 import kotlin.math.min
@@ -40,11 +38,7 @@ fun HtmlContent(
     linkColor: Color = FfTheme.colors.textLink,
     clickableLinks: Boolean = true,
 ) {
-    val emojiSize = with(LocalDensity.current) {
-        textStyle.fontSize.toPx().toInt()
-    }
-
-    val textContent = remember(htmlText) {
+    val textContent by remember(htmlText) {
         val spannable = htmlText.reduceHtmlLinks().htmlToClickableSpannable(
             mentions = mentions,
             linkColor = linkColor,
@@ -52,9 +46,15 @@ fun HtmlContent(
             onHashTagClicked = htmlContentInteractions::onHashTagClicked,
             onAccountClicked = htmlContentInteractions::onAccountClicked,
         )
-        mutableStateOf(
-            spannable,
-        )
+        mutableStateOf(spannable)
+    }
+
+    val density = LocalDensity.current
+    val emojiSize by remember {
+        val size = with(density) {
+            textStyle.fontSize.toPx().toInt()
+        }
+        mutableIntStateOf(size)
     }
 
     AndroidView(
@@ -81,10 +81,9 @@ fun HtmlContent(
             }
         },
         update = { textView ->
-            val textContentSpannable = textContent.value
-            textView.text = textContentSpannable
+            textView.text = textContent
             textView.maxLines = maximumLineCount
-            textContentSpannable.applyEmojis(
+            textContent.applyEmojis(
                 emojis = emojis,
                 context = textView.context,
                 emojiSize = emojiSize,
