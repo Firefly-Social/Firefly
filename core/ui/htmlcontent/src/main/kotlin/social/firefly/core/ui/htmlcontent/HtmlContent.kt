@@ -6,12 +6,10 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.widget.TextView
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -52,7 +50,7 @@ fun HtmlContent(
 
     val context = LocalContext.current
 
-    val textContent by remember(htmlText) {
+    val spannable by remember(htmlText) {
         var spannable = htmlText.reduceHtmlLinks().htmlToClickableSpannable(
             mentions = mentions,
             linkColor = linkColor,
@@ -77,7 +75,7 @@ fun HtmlContent(
         textStyle = textStyle,
         textColor = textColor,
         clickableLinks = clickableLinks,
-        spannable = textContent,
+        spannable = spannable,
     )
 }
 
@@ -121,19 +119,26 @@ private fun HtmlAndroidTextView(
             // Add ellipsize manually
             // setting textView.ellipsize = TextUtils.TruncateAt.END doesn't seem to work.
             textView.doOnNextLayout {
-                textView.layout?.let { layout ->
-                    val textViewLineCount = textView.lineCount
-                    if (textViewLineCount > maximumLineCount) {
-                        val indexOfLastChar = layout.getLineEnd(maximumLineCount - 1)
-                        val indexToEndAt = indexOfLastChar - min(3, indexOfLastChar)
-                        val spanned = textView.text.subSequence(0, indexToEndAt).trim() as? Spanned
-                        textView.text =
-                            SpannableStringBuilder()
-                                .append(spanned)
-                                .append("…")
-                    }
-                }
+                addEllipsize(textView, maximumLineCount)
             }
         },
     )
+}
+
+private fun addEllipsize(
+    textView: TextView,
+    maximumLineCount: Int,
+) {
+    textView.layout?.let { layout ->
+        val textViewLineCount = textView.lineCount
+        if (textViewLineCount > maximumLineCount) {
+            val indexOfLastChar = layout.getLineEnd(maximumLineCount - 1)
+            val indexToEndAt = indexOfLastChar - min(3, indexOfLastChar)
+            val spanned = textView.text.subSequence(0, indexToEndAt).trim() as? Spanned
+            textView.text =
+                SpannableStringBuilder()
+                    .append(spanned)
+                    .append("…")
+        }
+    }
 }
