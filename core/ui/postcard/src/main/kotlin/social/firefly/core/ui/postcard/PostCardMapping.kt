@@ -71,6 +71,7 @@ private fun Status.toMainPostCardUiState(
     },
     shouldShowUnbookmarkConfirmation = shouldShowUnbookmarkConfirmation,
     shouldShowUnfavoriteConfirmation = shouldShowUnfavoriteConfirmation,
+    accountEmojis = account.emojis,
 )
 
 fun Status.toPostContentUiState(
