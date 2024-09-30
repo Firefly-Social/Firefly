@@ -28,11 +28,6 @@ class NavigationDestinationTest {
     }
 
     @Test
-    fun accountFullRoute() {
-        assertThat(NavigationDestination.Account.fullRoute).isEqualTo("account?accountId={accountId}")
-    }
-
-    @Test
     fun navigateToEditAccount() {
         navController.navigateToEditAccount()
 

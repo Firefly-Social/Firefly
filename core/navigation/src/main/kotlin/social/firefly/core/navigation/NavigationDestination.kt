@@ -3,28 +3,18 @@ package social.firefly.core.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import social.firefly.core.model.Attachment
 
 /**
  * Represents a top-level Navigation destination
  */
+@Serializable
 sealed class NavigationDestination(
     val route: String,
 ) {
-    data class Account(val accountId: String) : NavigationDestination(route = ROUTE) {
+    @Serializable
+    data class Account(val accountId: String) : NavigationDestination(route = "") {
         fun NavController.navigateToAccount(navOptions: NavOptions? = null) {
-            navigate(route(accountIdValue = accountId), navOptions)
-        }
-
-        companion object {
-            private const val ROUTE = "account"
-            const val NAV_PARAM_ACCOUNT_ID = "accountId"
-            val fullRoute: String = route("{$NAV_PARAM_ACCOUNT_ID}")
-
-            private fun route(accountIdValue: String) =
-                "$ROUTE?$NAV_PARAM_ACCOUNT_ID=$accountIdValue"
+            navigate(this@Account, navOptions)
         }
     }
 
