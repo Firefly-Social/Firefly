@@ -2,6 +2,7 @@ package social.firefly.feature.report.step2
 
 import social.firefly.common.utils.StringFactory
 import social.firefly.common.utils.timeSinceNow
+import social.firefly.core.model.Emoji
 import social.firefly.core.model.Status
 
 data class ReportStatusUiState(
@@ -12,6 +13,7 @@ data class ReportStatusUiState(
     val htmlStatusText: String,
     val postTimeSince: StringFactory,
     val checked: Boolean,
+    val emojis: List<Emoji>,
 )
 
 fun Status.toReportStatusUiState(): ReportStatusUiState =
@@ -23,4 +25,5 @@ fun Status.toReportStatusUiState(): ReportStatusUiState =
         htmlStatusText = content,
         postTimeSince = createdAt.timeSinceNow(),
         checked = false,
+        emojis = account.emojis,
     )

@@ -41,6 +41,7 @@ import social.firefly.core.ui.common.divider.FfDivider
 import social.firefly.core.ui.common.error.GenericError
 import social.firefly.core.ui.common.loading.MaxSizeLoading
 import social.firefly.core.ui.common.loading.FfCircularProgressIndicator
+import social.firefly.core.ui.common.text.EmojiText
 import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.htmlcontent.HtmlContent
 import social.firefly.core.ui.htmlcontent.HtmlContentInteractions
@@ -269,8 +270,9 @@ private fun SelectableStatusCard(
                 Column(
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text(
+                    EmojiText(
                         text = uiState.userName,
+                        emojis = uiState.emojis,
                         style = FfTheme.typography.labelMedium,
                         fontWeight = FontWeight.W600,
                     )
