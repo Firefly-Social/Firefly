@@ -109,6 +109,13 @@ fun Spannable.toAnnotatedString(
 
     // Finally, append the text content
     val text = spannable.toString()
+    appendTextAndEmojis(text, emojis)
+}
+
+fun AnnotatedString.Builder.appendTextAndEmojis(
+    text: String,
+    emojis: List<Emoji>,
+) {
     var currentIndex = 0
 
     // Regex pattern to match emoji shortcodes like :smile:
