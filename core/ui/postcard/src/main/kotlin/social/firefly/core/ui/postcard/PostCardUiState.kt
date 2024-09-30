@@ -36,6 +36,7 @@ data class MainPostCardUiState(
     val overflowDropDownType: OverflowDropDownType,
     val shouldShowUnfavoriteConfirmation: Boolean,
     val shouldShowUnbookmarkConfirmation: Boolean,
+    val accountEmojis: List<Emoji>,
 )
 
 data class PostContentUiState(
@@ -116,4 +117,5 @@ internal val postCardUiStatePreview = MainPostCardUiState(
     overflowDropDownType = OverflowDropDownType.USER,
     shouldShowUnfavoriteConfirmation = false,
     shouldShowUnbookmarkConfirmation = false,
+    accountEmojis = emptyList(),
 )

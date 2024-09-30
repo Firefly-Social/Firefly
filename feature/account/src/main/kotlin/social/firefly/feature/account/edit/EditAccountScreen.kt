@@ -163,6 +163,7 @@ private fun LoadedState(
             headerUrl = uiState.headerUrl,
             avatarUrl = uiState.avatarUrl,
             displayName = uiState.topBarTitle,
+            accountEmojis = uiState.accountEmojis,
             handle = uiState.handle,
             avatarOverlay = {
                 EditImageOverlay(
@@ -366,6 +367,7 @@ private fun PreviewEditAccountScreen() {
                         lockChecked = false,
                         botChecked = false,
                         fields = listOf(),
+                        accountEmojis = emptyList(),
                     ),
                 ),
                 editAccountInteractions = object : EditAccountInteractions {},

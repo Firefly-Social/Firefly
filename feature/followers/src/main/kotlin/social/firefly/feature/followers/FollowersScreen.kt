@@ -223,6 +223,7 @@ private fun FollowersScreenPreview() {
                                 displayName = "Person",
                                 webFinger = "person",
                                 avatarUrl = "",
+                                emojis = emptyList(),
                             ),
                             followStatus = FollowStatus.NOT_FOLLOWING,
                             bioHtml = "",

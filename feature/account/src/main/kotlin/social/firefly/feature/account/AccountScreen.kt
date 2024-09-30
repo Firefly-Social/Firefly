@@ -158,6 +158,7 @@ private fun AccountScreen(
                 is Resource.Loaded<AccountUiState> -> {
                     FfCloseableTopAppBar(
                         title = uiState.data.displayName,
+                        emojis = uiState.data.emojis,
                         showCloseButton = closeButtonVisible,
                         actions = {
                             SettingsTopBarActions(
@@ -291,6 +292,7 @@ private fun MainAccount(
         headerUrl = account.headerUrl,
         avatarUrl = account.avatarUrl,
         displayName = account.displayName,
+        accountEmojis = account.emojis,
         handle = "@${account.webFinger}",
         rightSideContent = {
             val buttonModifier = Modifier
@@ -672,8 +674,7 @@ private fun UserBio(
         val animationDuration = 150
 
         AnimatedContent(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .padding(end = 32.dp),
             targetState = expanded,
             label = "",

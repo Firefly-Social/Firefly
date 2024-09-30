@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import social.firefly.common.utils.StringFactory
 import social.firefly.core.designsystem.icon.FfIcons
@@ -25,6 +24,7 @@ import social.firefly.core.ui.common.dialog.muteAccountConfirmationDialog
 import social.firefly.core.ui.common.dropdown.FfDropDownItem
 import social.firefly.core.ui.common.dropdown.FfIconButtonDropDownMenu
 import social.firefly.core.ui.common.loading.FfCircularProgressIndicator
+import social.firefly.core.ui.common.text.EmojiText
 import social.firefly.core.ui.htmlcontent.htmlToSpannable
 import social.firefly.core.ui.postcard.MainPostCardUiState
 import social.firefly.core.ui.postcard.OverflowDropDownType
@@ -45,8 +45,9 @@ internal fun MetaData(
         Column(
             modifier = Modifier.weight(1f),
         ) {
-            Text(
+            EmojiText(
                 text = post.username,
+                emojis = post.accountEmojis,
                 style = FfTheme.typography.labelMedium,
             )
             Text(

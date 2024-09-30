@@ -8,4 +8,5 @@ fun Account.toQuickViewUiState(): AccountQuickViewUiState =
         displayName = displayName,
         webFinger = acct,
         avatarUrl = avatarUrl,
+        emojis = emojis,
     )

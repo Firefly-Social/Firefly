@@ -13,6 +13,7 @@ fun DetailedAccountWrapper.toAccountFollowerUiState(
             displayName = account.displayName,
             webFinger = account.acct,
             avatarUrl = account.avatarUrl,
+            emojis = account.emojis,
         ),
         followStatus = when {
             relationship.hasPendingFollowRequest -> FollowStatus.PENDING_REQUEST

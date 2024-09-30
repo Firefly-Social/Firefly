@@ -41,7 +41,10 @@ import social.firefly.core.ui.common.divider.FfDivider
 import social.firefly.core.ui.common.error.GenericError
 import social.firefly.core.ui.common.loading.MaxSizeLoading
 import social.firefly.core.ui.common.loading.FfCircularProgressIndicator
+import social.firefly.core.ui.common.text.EmojiText
 import social.firefly.core.ui.common.utils.noRippleClickable
+import social.firefly.core.ui.htmlcontent.HtmlContent
+import social.firefly.core.ui.htmlcontent.HtmlContentInteractions
 import social.firefly.feature.report.R
 import social.firefly.feature.report.ReportDataBundle
 import social.firefly.feature.report.ReportType
@@ -267,8 +270,9 @@ private fun SelectableStatusCard(
                 Column(
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text(
+                    EmojiText(
                         text = uiState.userName,
+                        emojis = uiState.emojis,
                         style = FfTheme.typography.labelMedium,
                         fontWeight = FontWeight.W600,
                     )
@@ -285,12 +289,10 @@ private fun SelectableStatusCard(
                 )
             }
 
-            social.firefly.core.ui.htmlcontent.HtmlContent(
+            HtmlContent(
                 mentions = emptyList(),
                 htmlText = uiState.htmlStatusText,
-                htmlContentInteractions =
-                object :
-                    social.firefly.core.ui.htmlcontent.HtmlContentInteractions {},
+                htmlContentInteractions = object : HtmlContentInteractions {},
                 maximumLineCount = 2,
                 clickableLinks = false,
             )

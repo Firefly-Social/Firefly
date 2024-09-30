@@ -1,6 +1,6 @@
 package social.firefly.core.ui.common.divider
 
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,7 +14,7 @@ fun FfDivider(
     thickness: Dp = FfDividerDefaults.Thickness,
     color: Color = FfDividerDefaults.color,
 ) {
-    Divider(modifier, thickness, color)
+    HorizontalDivider(modifier, thickness, color)
 }
 
 object FfDividerDefaults {
