@@ -19,6 +19,8 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.model.Emoji
+import social.firefly.core.ui.common.text.EmojiText
 import kotlin.math.max
 
 @Composable
@@ -27,6 +29,7 @@ internal fun Header(
     headerUrl: String,
     avatarUrl: String,
     displayName: String,
+    accountEmojis: List<Emoji>,
     handle: String,
     rightSideContent: @Composable () -> Unit = {},
     avatarOverlay: @Composable () -> Unit = {},
@@ -86,7 +89,11 @@ internal fun Header(
             rightSideContent = rightSideContent,
         )
 
-        UserInfo(displayName = displayName, handle = handle)
+        UserInfo(
+            displayName = displayName,
+            handle = handle,
+            accountEmojis = accountEmojis,
+        )
     }
 }
 
@@ -94,15 +101,16 @@ internal fun Header(
 private fun UserInfo(
     displayName: String,
     handle: String,
+    accountEmojis: List<Emoji>,
 ) {
     Column(
-        modifier =
-        Modifier
+        modifier = Modifier
             .padding(start = 8.dp, top = 8.dp)
             .fillMaxWidth(),
     ) {
-        Text(
+        EmojiText(
             text = displayName,
+            emojis = accountEmojis,
             style = FfTheme.typography.titleLarge,
         )
         Text(

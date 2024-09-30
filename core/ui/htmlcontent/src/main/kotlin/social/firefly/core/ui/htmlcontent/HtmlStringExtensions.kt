@@ -13,6 +13,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.toSpannable
 import social.firefly.core.model.Emoji
 import social.firefly.core.model.Mention
+import social.firefly.core.ui.common.emoji.appendTextAndEmojis
 
 fun String.htmlToSpannable(): Spannable {
     // the html must be wrapped in a <p> tag in order for it to be parsed by HtmlCompat.fromHtml
@@ -110,39 +111,6 @@ fun Spannable.toAnnotatedString(
     // Finally, append the text content
     val text = spannable.toString()
     appendTextAndEmojis(text, emojis)
-}
-
-fun AnnotatedString.Builder.appendTextAndEmojis(
-    text: String,
-    emojis: List<Emoji>,
-) {
-    var currentIndex = 0
-
-    // Regex pattern to match emoji shortcodes like :smile:
-    val regex = Regex(":[a-zA-Z0-9_+-]+:")
-
-    regex.findAll(text).forEach { matchResult ->
-        // Append the text before the emoji
-        append(text.substring(currentIndex, matchResult.range.first))
-
-        // Emoji shortcode (e.g., :smile:)
-        val emojiCode = matchResult.value
-
-        // Add an inline content for the emoji if it's in the emojiMap
-        if (emojis.find { ":${it.shortCode}:" == emojiCode } != null) {
-            appendInlineContent(emojiCode, emojiCode)
-        } else {
-            // Append the original shortcode if no emoji is found
-            append(emojiCode)
-        }
-
-        currentIndex = matchResult.range.last + 1
-    }
-
-    // Append any remaining text after the last match
-    if (currentIndex < text.length) {
-        append(text.substring(currentIndex))
-    }
 }
 
 @Suppress("MaxLineLength")

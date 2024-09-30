@@ -24,8 +24,10 @@ import org.koin.compose.koinInject
 import social.firefly.core.designsystem.R
 import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.core.model.Emoji
 import social.firefly.core.navigation.usecases.PopNavBackstack
 import social.firefly.core.ui.common.divider.FfDivider
+import social.firefly.core.ui.common.text.EmojiText
 
 /**
  * Top app bar which defaults to showing an X button which defaults to popping the navigation
@@ -47,6 +49,7 @@ fun FfCloseableTopAppBar(
     actions: @Composable () -> Unit = {},
     showDivider: Boolean = false,
     colors: TopAppBarColors = FfTopBarDefaults.colors(),
+    emojis: List<Emoji>? = null,
 ) {
     FfTopBar(
         modifier = modifier,
@@ -56,6 +59,7 @@ fun FfCloseableTopAppBar(
         actions = actions,
         showDivider = showDivider,
         colors = colors,
+        emojis = emojis,
     )
 }
 
@@ -70,12 +74,18 @@ fun FfTopBar(
     showDivider: Boolean = true,
     colors: TopAppBarColors = FfTopBarDefaults.colors(),
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    emojis: List<Emoji>? = null,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
         FfTopBar(
-            title = { TopBarTitle(title = title) },
+            title = {
+                TopBarTitle(
+                    title = title,
+                    emojis = emojis,
+                )
+            },
             navigationIcon = {
                 icon?.let {
                     TopBarIconButton(
@@ -96,12 +106,24 @@ fun FfTopBar(
 }
 
 @Composable
-private fun TopBarTitle(title: String) {
-    Text(
-        text = title,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Medium,
-    )
+private fun TopBarTitle(
+    title: String,
+    emojis: List<Emoji>? = null,
+) {
+    if (emojis != null) {
+        EmojiText(
+            text = title,
+            emojis = emojis,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+        )
+    } else {
+        Text(
+            text = title,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

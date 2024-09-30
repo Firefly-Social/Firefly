@@ -2,6 +2,7 @@ package social.firefly.feature.account.edit
 
 import androidx.core.text.HtmlCompat
 import social.firefly.core.model.Account
+import social.firefly.core.model.Emoji
 
 data class EditAccountUiState(
     val topBarTitle: String,
@@ -14,6 +15,7 @@ data class EditAccountUiState(
     val lockChecked: Boolean,
     val botChecked: Boolean,
     val fields: List<EditAccountUiStateField>,
+    val accountEmojis: List<Emoji>,
 )
 
 data class EditAccountUiStateField(
@@ -33,8 +35,7 @@ fun Account.toUiState(): EditAccountUiState {
         bioCharacterCount = bio.length,
         lockChecked = isLocked,
         botChecked = isBot ?: false,
-        fields =
-        fields?.map {
+        fields = fields?.map {
             EditAccountUiStateField(
                 label = it.name,
                 content = HtmlCompat.fromHtml(it.value, 0).toString(),
@@ -46,5 +47,6 @@ fun Account.toUiState(): EditAccountUiState {
         } ?: listOf(
             EditAccountUiStateField("", ""),
         ),
+        accountEmojis = emojis,
     )
 }
