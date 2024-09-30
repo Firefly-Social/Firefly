@@ -54,6 +54,7 @@ private fun AccountFollowerPreview() {
                     displayName = "name",
                     webFinger = "webfinger",
                     avatarUrl = "url",
+                    emojis = emptyList(),
                 ),
                 followStatus = FollowStatus.FOLLOWING,
                 bioHtml = "Engineer at mozilla",

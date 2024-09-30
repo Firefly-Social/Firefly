@@ -21,6 +21,7 @@ import coil.compose.AsyncImage
 import social.firefly.core.designsystem.theme.FfSpacing
 import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.ui.common.button.FfButton
+import social.firefly.core.ui.common.text.EmojiText
 import social.firefly.core.ui.common.text.LargeTextBody
 import social.firefly.core.ui.common.text.MediumTextBody
 import social.firefly.core.ui.common.utils.PreviewTheme
@@ -44,10 +45,12 @@ fun AccountQuickView(
                         .weight(1f)
                         .align(Alignment.CenterVertically)
                 ) {
-                    LargeTextBody(
+                    EmojiText(
                         text = uiState.displayName,
+                        emojis = uiState.emojis,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
+                        style = FfTheme.typography.bodyLarge,
                     )
                     MediumTextBody(
                         text = "@${uiState.webFinger}",
@@ -91,10 +94,12 @@ fun AccountQuickViewBox(
         Spacer(modifier = Modifier.width(FfSpacing.sm))
 
         Column {
-            LargeTextBody(
+            EmojiText(
                 text = uiState.displayName,
+                emojis = uiState.emojis,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                style = FfTheme.typography.bodyLarge,
             )
             MediumTextBody(
                 text = "@${uiState.webFinger}",
@@ -135,6 +140,7 @@ private fun AccountQuickViewPreview() {
                 displayName = "name",
                 webFinger = "webfinger",
                 avatarUrl = "url",
+                emojis = emptyList(),
             ),
         )
     }
@@ -151,6 +157,7 @@ private fun AccountQuickViewPreview2() {
                 displayName = "really long name really long name really long name",
                 webFinger = "webfinger",
                 avatarUrl = "url",
+                emojis = emptyList(),
             ),
             buttonSlot = {
                 FfButton(onClick = { /*TODO*/ }) {
@@ -172,6 +179,7 @@ private fun AccountQuickViewPreview3() {
                 displayName = "really long name really long name really long name",
                 webFinger = "webfinger",
                 avatarUrl = "url",
+                emojis = emptyList(),
             ),
             buttonSlot = {
                 FfButton(onClick = { /*TODO*/ }) {
@@ -198,6 +206,7 @@ private fun AccountQuickViewBoxPreview() {
                 displayName = "name",
                 webFinger = "webfingerThatIsReallyLong@lalalalala",
                 avatarUrl = "url",
+                emojis = emptyList(),
             ),
             buttonSlot = {
                 FfButton(onClick = { /*TODO*/ }) {

@@ -217,6 +217,7 @@ fun AboutSettingsScreenPreview() {
                         displayName = "Name",
                         webFinger = "firefly",
                         avatarUrl = "",
+                        emojis = emptyList(),
                     ),
                     contactEmail = "support@firefly-firefly.zendesk.com",
                     extendedDescription =
