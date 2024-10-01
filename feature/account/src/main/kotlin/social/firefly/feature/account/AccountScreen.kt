@@ -477,7 +477,7 @@ private fun OverflowMenu(
                     FfDropDownItem(
                         text = stringResource(
                             id = social.firefly.core.ui.common.R.string.unmute_user,
-                            account.username,
+                            account.displayName,
                         ),
                         icon = {
                             Icon(
@@ -486,6 +486,7 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
+                        emojis = account.emojis,
                         expanded = overflowMenuExpanded,
                         onClick = { overflowInteractions.onOverflowUnmuteClicked() },
                     )
@@ -493,7 +494,7 @@ private fun OverflowMenu(
                     FfDropDownItem(
                         text = stringResource(
                             id = social.firefly.core.ui.common.R.string.mute_user,
-                            account.username,
+                            account.displayName,
                         ),
                         icon = {
                             Icon(
@@ -502,6 +503,7 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
+                        emojis = account.emojis,
                         expanded = overflowMenuExpanded,
                         onClick = { muteDialog.open() },
                     )
@@ -511,7 +513,7 @@ private fun OverflowMenu(
                     FfDropDownItem(
                         text = stringResource(
                             id = social.firefly.core.ui.common.R.string.unblock_user,
-                            account.username,
+                            account.displayName,
                         ),
                         icon = {
                             Icon(
@@ -520,6 +522,7 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
+                        emojis = account.emojis,
                         expanded = overflowMenuExpanded,
                         onClick = { overflowInteractions.onOverflowUnblockClicked() },
                     )
@@ -527,7 +530,7 @@ private fun OverflowMenu(
                     FfDropDownItem(
                         text = stringResource(
                             id = social.firefly.core.ui.common.R.string.block_user,
-                            account.username,
+                            account.displayName,
                         ),
                         icon = {
                             Icon(
@@ -536,6 +539,7 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
+                        emojis = account.emojis,
                         expanded = overflowMenuExpanded,
                         onClick = { blockDialog.open() },
                     )
@@ -544,7 +548,7 @@ private fun OverflowMenu(
                 FfDropDownItem(
                     text = stringResource(
                         id = social.firefly.core.ui.common.R.string.report_user,
-                        account.username,
+                        account.displayName,
                     ),
                     icon = {
                         Icon(
@@ -553,6 +557,7 @@ private fun OverflowMenu(
                             contentDescription = null
                         )
                     },
+                    emojis = account.emojis,
                     expanded = overflowMenuExpanded,
                     onClick = { overflowInteractions.onOverflowReportClicked() },
                 )

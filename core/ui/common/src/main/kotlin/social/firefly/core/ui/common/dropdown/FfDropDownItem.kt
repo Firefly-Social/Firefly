@@ -12,11 +12,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import social.firefly.core.model.Emoji
+import social.firefly.core.ui.common.text.EmojiText
 
 @Composable
 fun FfDropDownItem(
     text: String,
     icon: (@Composable () -> Unit)? = null,
+    emojis: List<Emoji>? = null,
     expanded: MutableState<Boolean>,
     onClick: () -> Unit,
 ) {
@@ -31,7 +34,14 @@ fun FfDropDownItem(
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                Text(text = text)
+                if (emojis != null) {
+                    EmojiText(
+                        text = text,
+                        emojis = emojis
+                    )
+                } else {
+                    Text(text = text)
+                }
             }
         },
         onClick = {
