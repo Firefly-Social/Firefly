@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import social.firefly.common.utils.StringFactory
 import social.firefly.core.designsystem.icon.FfIcons
@@ -54,6 +55,8 @@ internal fun MetaData(
                 text = "${post.postTimeSince.build(context)} - @${post.accountName}",
                 style = FfTheme.typography.bodyMedium,
                 color = FfTheme.colors.textSecondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
         OverflowMenu(
