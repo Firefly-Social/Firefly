@@ -157,6 +157,7 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
+                        emojis = post.accountEmojis,
                         expanded = overflowMenuExpanded,
                         onClick = { muteDialog.open() },
                     )
@@ -172,6 +173,7 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
+                        emojis = post.accountEmojis,
                         expanded = overflowMenuExpanded,
                         onClick = { blockDialog.open() },
                     )
@@ -187,6 +189,7 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
+                        emojis = post.accountEmojis,
                         expanded = overflowMenuExpanded,
                         onClick = {
                             postCardInteractions.onOverflowReportClicked(
