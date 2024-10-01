@@ -1,5 +1,6 @@
 package social.firefly.core.usecase.mastodon.auth
 
+import androidx.navigation.navOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
@@ -100,7 +101,14 @@ class Login(
             withContext(Dispatchers.IO) {
                 databaseDelegate.clearAllTables()
             }
-            navigateTo(NavigationDestination.Tabs)
+            navigateTo(
+                NavigationDestination.Tabs,
+                navOptions = navOptions {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                }
+            )
         } catch (exception: Exception) {
             showSnackbar(
                 text = StringFactory.resource(R.string.error_signing_in),

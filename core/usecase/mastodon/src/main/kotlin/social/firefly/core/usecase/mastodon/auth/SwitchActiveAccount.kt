@@ -1,5 +1,6 @@
 package social.firefly.core.usecase.mastodon.auth
 
+import androidx.navigation.navOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import social.firefly.core.accounts.AccountsManager
@@ -26,6 +27,13 @@ class SwitchActiveAccount(
         withContext(Dispatchers.IO) {
             databaseDelegate.clearAllTables()
         }
-        navigateTo(NavigationDestination.Tabs)
+        navigateTo(
+            NavigationDestination.Tabs,
+            navOptions = navOptions {
+                popUpTo(0) {
+                    inclusive = true
+                }
+            }
+        )
     }
 }

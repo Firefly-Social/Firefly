@@ -8,7 +8,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import kotlinx.coroutines.CompletableDeferred
@@ -28,12 +27,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import social.firefly.common.utils.StringFactory
-import social.firefly.core.navigation.AuthNavigationDestination
 import social.firefly.core.navigation.BottomBarNavigationDestination
 import social.firefly.core.navigation.Event
 import social.firefly.core.navigation.NavigationDestination
 import social.firefly.core.navigation.NavigationEventFlow
-import social.firefly.core.navigation.SettingsNavigationDestination
 import social.firefly.core.ui.common.snackbar.FfSnackbarHostState
 import social.firefly.core.ui.common.snackbar.SnackbarType
 import timber.log.Timber
@@ -82,8 +79,27 @@ class AppState(
             _tabbedNavControllerFlow.value = value
         }
 
-    // Use when navigating back from report screen 3.
-    private var reportDestination: NavigationDestination.ReportScreen1? = null
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val currentNavigationDestination: StateFlow<String?> =
+        mainNavController.currentBackStackEntryFlow.mapLatest { backStackEntry ->
+            backStackEntry.destination.route
+        }.stateIn(
+            coroutineScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = null,
+        )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    var currentBottomBarNavigationDestination: StateFlow<String?> =
+        tabbedNavControllerFlow.flatMapLatest { navHostController ->
+            navHostController?.currentBackStackEntryFlow?.mapLatest { backStackEntry ->
+                backStackEntry.destination.route
+            } ?: error("no matching nav destination")
+        }.stateIn(
+            coroutineScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialBottomBarDestination::class.qualifiedName,
+        )
 
     init {
         coroutineScope.launch(Dispatchers.Main) {
@@ -96,7 +112,7 @@ class AppState(
                 Timber.d("NAVIGATION consuming event $it")
                 when (it) {
                     is Event.NavigateToDestination -> {
-                        navigate(it.destination, it.navOptions)
+                        mainNavController.navigate(it.destination, it.navOptions)
                     }
 
                     is Event.NavigateToBottomBarDestination -> {
@@ -104,18 +120,15 @@ class AppState(
                     }
 
                     is Event.NavigateToSettingsDestination -> {
-                        navigateToSettingsDestination(it.destination, it.navOptions)
+                        mainNavController.navigate(it.destination, it.navOptions)
                     }
 
                     is Event.NavigateToLoginDestination -> {
-                        navigateToAuthDestination(it.destination, it.navOptions)
+                        mainNavController.navigate(it.destination, it.navOptions)
                     }
 
                     is Event.PopBackStack -> {
-                        popBackStack(
-                            popUpTo = it.popUpTo,
-                            inclusive = it.inclusive,
-                        )
+                        popBackStack()
                     }
 
                     is Event.OpenLink -> {
@@ -131,9 +144,7 @@ class AppState(
                     }
 
                     is Event.ExitReportFlow -> {
-                        reportDestination?.let { reportDestination ->
-                            mainNavController.popBackStack(reportDestination, true)
-                        }
+                        mainNavController.popBackStack<NavigationDestination.ReportScreen1>(inclusive = true)
                     }
                 }
             }
@@ -171,84 +182,8 @@ class AppState(
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val currentNavigationDestination: StateFlow<String?> =
-        mainNavController.currentBackStackEntryFlow.mapLatest { backStackEntry ->
-            backStackEntry.destination.route
-        }.stateIn(
-            coroutineScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = null,
-        )
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    var currentBottomBarNavigationDestination: StateFlow<String?> =
-        tabbedNavControllerFlow.flatMapLatest { navHostController ->
-            navHostController?.currentBackStackEntryFlow?.mapLatest { backStackEntry ->
-                backStackEntry.destination.route
-            } ?: error("no matching nav destination")
-        }.stateIn(
-            coroutineScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialBottomBarDestination::class.qualifiedName,
-        )
-
-    private fun clearBackstack() {
-        while (mainNavController.currentBackStack.value.isNotEmpty()) {
-            mainNavController.popBackStack()
-        }
-    }
-
-    private fun popBackStack(
-        popUpTo: NavigationDestination? = null,
-        inclusive: Boolean = false,
-    ) {
-        popUpTo?.let {
-            if (!mainNavController.popBackStack(popUpTo, inclusive)) tabbedNavController?.navigateUp()
-        }
+    private fun popBackStack() {
         if (!mainNavController.navigateUp()) tabbedNavController?.navigateUp()
-    }
-
-    @Suppress("CyclomaticComplexMethod")
-    private fun navigate(
-        navDestination: NavigationDestination,
-        navOptions: NavOptions?,
-    ) {
-        Timber.d("NAVIGATION consuming $navDestination")
-        with(navDestination) {
-            when (this) {
-                NavigationDestination.Auth -> {
-                    clearBackstack()
-                    mainNavController.navigate(navDestination, navOptions)
-                }
-
-                NavigationDestination.Tabs -> {
-                    clearBackstack()
-                    mainNavController.navigate(navDestination, navOptions)
-                }
-
-                is NavigationDestination.ReportScreen1 -> {
-                    reportDestination = navDestination as NavigationDestination.ReportScreen1
-                    mainNavController.navigate(navDestination, navOptions)
-                }
-
-                else -> mainNavController.navigate(navDestination, navOptions)
-            }
-        }
-    }
-
-    private fun navigateToSettingsDestination(
-        destination: SettingsNavigationDestination,
-        navOptions: NavOptions?,
-    ) {
-        mainNavController.navigate(destination, navOptions)
-    }
-
-    private fun navigateToAuthDestination(
-        destination: AuthNavigationDestination,
-        navOptions: NavOptions?,
-    ) {
-        mainNavController.navigate(destination, navOptions)
     }
 
     private fun navigateToBottomBarDestination(destination: BottomBarNavigationDestination) {
@@ -261,17 +196,18 @@ class AppState(
                 BottomBarNavigationDestination.Feed,
                 false,
             )
+        } else {
+            tabbedNavController?.navigate(
+                destination,
+                navOptions {
+                    popUpTo(BottomBarNavigationDestination.Feed) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                },
+            )
         }
-        val navOptions =
-            navOptions {
-                popUpTo(BottomBarNavigationDestination.Feed) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
-
-        tabbedNavController?.navigate(destination, navOptions)
     }
 
     companion object {
