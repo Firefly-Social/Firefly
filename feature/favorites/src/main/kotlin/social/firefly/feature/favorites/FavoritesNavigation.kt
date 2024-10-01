@@ -5,7 +5,7 @@ import androidx.navigation.compose.composable
 import social.firefly.core.navigation.NavigationDestination
 
 fun NavGraphBuilder.favoritesScreen() {
-    composable(route = NavigationDestination.Favorites.route) {
+    composable<NavigationDestination.Favorites> {
         FavoritesScreen()
     }
 }

@@ -34,17 +34,14 @@ import social.firefly.feature.report.R
 
 @Composable
 internal fun ReportScreen3(
-    onDoneClicked: () -> Unit,
-    onCloseClicked: () -> Unit,
     reportAccountId: String,
     reportAccountHandle: String,
     didUserReportAccount: Boolean,
     viewModel: ReportScreen3ViewModel =
         koinViewModel(parameters = {
             parametersOf(
-                onDoneClicked,
-                onCloseClicked,
                 reportAccountId,
+                didUserReportAccount,
             )
         }),
 ) {
@@ -77,7 +74,10 @@ private fun ReportScreen3(
                 .fillMaxHeight()
                 .systemBarsPadding(),
         ) {
-            FfCloseableTopAppBar(title = stringResource(id = R.string.report_screen_title))
+            FfCloseableTopAppBar(
+                title = stringResource(id = R.string.report_screen_title),
+                iconClickOverride = { reportInteractions.onCloseClicked() }
+            )
 
             TopContent(
                 reportAccountHandle = reportAccountHandle,

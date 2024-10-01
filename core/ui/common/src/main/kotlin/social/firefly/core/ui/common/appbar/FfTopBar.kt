@@ -46,6 +46,7 @@ fun FfCloseableTopAppBar(
     title: String = "",
     showCloseButton: Boolean = true,
     popBackstack: PopNavBackstack = koinInject(),
+    iconClickOverride: (() -> Unit)? = null,
     actions: @Composable () -> Unit = {},
     showDivider: Boolean = false,
     colors: TopAppBarColors = FfTopBarDefaults.colors(),
@@ -55,7 +56,13 @@ fun FfCloseableTopAppBar(
         modifier = modifier,
         title = title,
         icon = if (showCloseButton) FfIcons.backArrow() else null,
-        onIconClicked = { popBackstack() },
+        onIconClicked = {
+            if (iconClickOverride != null) {
+                iconClickOverride()
+            } else {
+                popBackstack()
+            }
+        },
         actions = actions,
         showDivider = showDivider,
         colors = colors,

@@ -1,4 +1,4 @@
-package social.firefly.feature.report
+package social.firefly.core.model
 
 enum class ReportType(
     val stringValue: String,

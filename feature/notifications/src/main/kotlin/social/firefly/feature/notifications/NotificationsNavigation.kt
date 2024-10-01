@@ -5,7 +5,7 @@ import androidx.navigation.compose.composable
 import social.firefly.core.navigation.BottomBarNavigationDestination
 
 fun NavGraphBuilder.notificationsScreen() {
-    composable(route = BottomBarNavigationDestination.Notifications.route) {
+    composable<BottomBarNavigationDestination.Notifications> {
         NotificationsScreen()
     }
 }

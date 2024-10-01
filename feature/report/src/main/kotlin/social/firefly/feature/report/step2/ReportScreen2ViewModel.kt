@@ -8,17 +8,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import social.firefly.common.Resource
 import social.firefly.core.model.InstanceRule
+import social.firefly.core.model.ReportType
+import social.firefly.core.navigation.NavigationDestination
+import social.firefly.core.navigation.usecases.NavigateTo
+import social.firefly.core.navigation.usecases.PopNavBackstack
 import social.firefly.core.repository.mastodon.AccountRepository
 import social.firefly.core.usecase.mastodon.report.Report
-import social.firefly.feature.report.ReportDataBundle
-import social.firefly.feature.report.ReportType
 import timber.log.Timber
 
 class ReportScreen2ViewModel(
     private val report: Report,
     private val accountRepository: AccountRepository,
-    private val onClose: () -> Unit,
-    private val onReportSubmitted: (bundle: ReportDataBundle.ReportDataBundleForScreen3) -> Unit,
+    private val navigateTo: NavigateTo,
+    private val popNavBackstack: PopNavBackstack,
     private val reportAccountId: String,
     private val reportAccountHandle: String,
     private val reportStatusId: String?,
@@ -80,13 +82,11 @@ class ReportScreen2ViewModel(
                     ruleViolations = checkedInstanceRules.map { it.id },
                     forward = sendToExternalServer,
                 )
-                onReportSubmitted(
-                    ReportDataBundle.ReportDataBundleForScreen3(
-                        reportAccountId = reportAccountId,
-                        reportAccountHandle = reportAccountHandle,
-                        didUserReportAccount = true,
-                    ),
-                )
+                navigateTo(NavigationDestination.ReportScreen3(
+                    reportAccountId = reportAccountId,
+                    reportAccountHandle = reportAccountHandle,
+                    didUserReportAccount = true,
+                ))
             } catch (e: Report.ReportFailedException) {
                 Timber.e(e)
                 _reportIsSending.update { false }
@@ -95,7 +95,7 @@ class ReportScreen2ViewModel(
     }
 
     override fun onCloseClicked() {
-        onClose()
+        popNavBackstack()
     }
 
     override fun onStatusClicked(statusId: String) {

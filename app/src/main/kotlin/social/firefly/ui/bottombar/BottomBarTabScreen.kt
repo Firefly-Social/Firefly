@@ -14,7 +14,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.koin.compose.koinInject
-import social.firefly.core.navigation.BottomBarNavigationDestination
 import social.firefly.core.navigation.NavigationDestination
 import social.firefly.core.navigation.usecases.NavigateTo
 import social.firefly.core.ui.common.divider.FfDivider
@@ -22,9 +21,7 @@ import social.firefly.navigation.BottomTabNavHost
 import social.firefly.ui.AppState
 
 fun NavGraphBuilder.bottomTabScreen(appState: AppState) {
-    composable(
-        route = NavigationDestination.Tabs.route,
-    ) {
+    composable<NavigationDestination.Tabs> {
         BottomBarTabScreen(appState = appState)
     }
 }
@@ -44,18 +41,17 @@ fun BottomBarTabScreen(appState: AppState) {
                 tabbedNavController = it,
             )
         }
-        currentDestination?.let {
-            BottomBar(
-                currentDestination = it,
-            )
-        }
+
+        BottomBar(
+            currentDestination = currentDestination,
+        )
     }
 }
 
 @Composable
 private fun BottomBar(
     modifier: Modifier = Modifier,
-    currentDestination: BottomBarNavigationDestination,
+    currentDestination: String?,
     navigateTo: NavigateTo = koinInject(),
 ) {
     Column(

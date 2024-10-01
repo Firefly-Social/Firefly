@@ -14,10 +14,12 @@ import social.firefly.feature.followedHashTags.followedHashTagsScreen
 import social.firefly.feature.followers.followersScreen
 import social.firefly.feature.hashtag.hashTagScreen
 import social.firefly.feature.media.mediaScreen
-import social.firefly.feature.report.reportFlow
 import social.firefly.feature.settings.settingsFlow
 import social.firefly.feature.thread.threadScreen
 import social.firefly.feature.post.newPostScreen
+import social.firefly.feature.report.step1.reportScreen1
+import social.firefly.feature.report.step2.reportScreen2
+import social.firefly.feature.report.step3.reportScreen3
 import social.firefly.feature.search.searchScreen
 import social.firefly.splash.splashScreen
 import social.firefly.ui.AppState
@@ -44,7 +46,9 @@ fun MainNavHost(
         followersScreen()
         newPostScreen()
         threadScreen()
-        reportFlow(navController = appState.mainNavController)
+        reportScreen1()
+        reportScreen2()
+        reportScreen3()
         hashTagScreen()
         bottomTabScreen(appState)
         editAccountScreen()

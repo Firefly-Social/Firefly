@@ -9,9 +9,7 @@ import androidx.navigation.compose.composable
 import social.firefly.core.navigation.BottomBarNavigationDestination
 
 fun NavGraphBuilder.myAccountScreen() {
-    composable(
-        route = BottomBarNavigationDestination.MyAccount.route,
-    ) {
+    composable<BottomBarNavigationDestination.MyAccount> {
         AccountScreen(
             accountId = null,
             windowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top),

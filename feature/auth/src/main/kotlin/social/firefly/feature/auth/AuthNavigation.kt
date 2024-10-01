@@ -9,9 +9,8 @@ import social.firefly.feature.auth.chooseServer.ChooseServerScreen
 import social.firefly.feature.auth.login.LoginScreen
 
 fun NavGraphBuilder.authFlow() {
-    navigation(
-        startDestination = AuthNavigationDestination.Login.route,
-        route = NavigationDestination.Auth.route,
+    navigation<NavigationDestination.Auth>(
+        startDestination = AuthNavigationDestination.Login
     ) {
         loginScreen()
         chooseServerScreen()
@@ -19,13 +18,13 @@ fun NavGraphBuilder.authFlow() {
 }
 
 fun NavGraphBuilder.loginScreen() {
-    composable(route = AuthNavigationDestination.Login.route) {
+    composable<AuthNavigationDestination.Login> {
         LoginScreen()
     }
 }
 
 fun NavGraphBuilder.chooseServerScreen() {
-    composable(route = AuthNavigationDestination.ChooseServer.route) {
+    composable<AuthNavigationDestination.ChooseServer> {
         ChooseServerScreen()
     }
 }

@@ -11,7 +11,6 @@ import org.koin.test.verify.verify
 import social.firefly.core.model.AccountTimelineType
 import social.firefly.core.analytics.FeedLocation
 import social.firefly.feature.followers.FollowType
-import social.firefly.feature.report.ReportType
 import social.firefly.featureModules
 import social.firefly.mainModule
 import kotlin.test.Test

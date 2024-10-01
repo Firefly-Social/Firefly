@@ -33,6 +33,7 @@ import org.koin.core.parameter.parametersOf
 import social.firefly.common.Resource
 import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.model.InstanceRule
+import social.firefly.core.model.ReportType
 import social.firefly.core.ui.common.FfCheckBox
 import social.firefly.core.ui.common.FfSurface
 import social.firefly.core.ui.common.appbar.FfCloseableTopAppBar
@@ -46,13 +47,9 @@ import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.htmlcontent.HtmlContent
 import social.firefly.core.ui.htmlcontent.HtmlContentInteractions
 import social.firefly.feature.report.R
-import social.firefly.feature.report.ReportDataBundle
-import social.firefly.feature.report.ReportType
 
 @Composable
 internal fun ReportScreen2(
-    onCloseClicked: () -> Unit,
-    onReportSubmitted: (bundle: ReportDataBundle.ReportDataBundleForScreen3) -> Unit,
     reportAccountId: String,
     reportAccountHandle: String,
     reportStatusId: String?,
@@ -63,8 +60,6 @@ internal fun ReportScreen2(
     viewModel: ReportScreen2ViewModel =
         koinViewModel(parameters = {
             parametersOf(
-                onCloseClicked,
-                onReportSubmitted,
                 reportAccountId,
                 reportAccountHandle,
                 reportStatusId,

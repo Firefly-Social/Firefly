@@ -45,13 +45,12 @@ class ChooseAccountDialogViewModel(
                             _isOpen.update { true }
                         } else {
                             navigateTo(
-                                NavigationDestination.NewPost(
-                                    navOptions = navOptions {
-                                        popUpTo(
-                                            NavigationDestination.Tabs.route
-                                        )
-                                    }
-                                )
+                                NavigationDestination.NewPost(),
+                                navOptions = navOptions {
+                                    popUpTo(
+                                        NavigationDestination.Tabs
+                                    )
+                                }
                             )
                         }
                     }
@@ -69,13 +68,12 @@ class ChooseAccountDialogViewModel(
         viewModelScope.launch {
             switchActiveAccount(accountId, domain)
             navigateTo(
-                NavigationDestination.NewPost(
-                    navOptions = navOptions {
-                        popUpTo(
-                            NavigationDestination.Tabs.route
-                        )
-                    }
-                )
+                NavigationDestination.NewPost(),
+                navOptions = navOptions {
+                    popUpTo(
+                        NavigationDestination.Tabs
+                    )
+                }
             )
         }
     }

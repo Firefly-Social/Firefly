@@ -4,7 +4,6 @@ import kotlinx.coroutines.launch
 import social.firefly.common.appscope.AppScope
 import social.firefly.core.analytics.FeedLocation
 import social.firefly.core.analytics.PostCardAnalytics
-import social.firefly.core.model.Attachment
 import social.firefly.core.navigation.NavigationDestination
 import social.firefly.core.navigation.usecases.NavigateTo
 import social.firefly.core.navigation.usecases.OpenLink
@@ -167,7 +166,7 @@ class PostCardDelegate(
         analytics.reportClicked(baseAnalyticsIdentifier)
 
         navigateTo(
-            NavigationDestination.Report(
+            NavigationDestination.ReportScreen1(
                 reportAccountId = accountId,
                 reportAccountHandle = accountHandle,
                 reportStatusId = statusId,

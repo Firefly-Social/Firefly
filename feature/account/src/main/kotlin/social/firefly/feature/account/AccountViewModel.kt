@@ -238,7 +238,7 @@ class AccountViewModel(
         analytics.overflowReportClicked()
         (uiState.value as? Resource.Loaded)?.data?.webFinger?.let { webFinger ->
             navigateTo(
-                NavigationDestination.Report(
+                NavigationDestination.ReportScreen1(
                     accountId,
                     webFinger,
                 ),

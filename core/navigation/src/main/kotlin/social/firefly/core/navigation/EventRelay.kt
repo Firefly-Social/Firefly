@@ -1,5 +1,6 @@
 package social.firefly.core.navigation
 
+import androidx.navigation.NavOptions
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import social.firefly.common.utils.StringFactory
@@ -13,20 +14,32 @@ class EventRelay {
     val navigationEvents: SharedFlow<Event>
         get() = _navigationEvents
 
-    fun emitEvent(navDestination: NavigationDestination) {
-        emitEvent(Event.NavigateToDestination(navDestination))
+    fun emitEvent(
+        navDestination: NavigationDestination,
+        navOptions: NavOptions? = null,
+    ) {
+        emitEvent(Event.NavigateToDestination(navDestination, navOptions))
     }
 
-    fun emitEvent(navDestination: BottomBarNavigationDestination) {
-        emitEvent(Event.NavigateToBottomBarDestination(navDestination))
+    fun emitEvent(
+        navDestination: BottomBarNavigationDestination,
+        navOptions: NavOptions? = null,
+    ) {
+        emitEvent(Event.NavigateToBottomBarDestination(navDestination, navOptions))
     }
 
-    fun emitEvent(navDestination: SettingsNavigationDestination) {
-        emitEvent(Event.NavigateToSettingsDestination(navDestination))
+    fun emitEvent(
+        navDestination: SettingsNavigationDestination,
+        navOptions: NavOptions? = null,
+    ) {
+        emitEvent(Event.NavigateToSettingsDestination(navDestination, navOptions))
     }
 
-    fun emitEvent(navDestination: AuthNavigationDestination) {
-        emitEvent(Event.NavigateToLoginDestination(navDestination))
+    fun emitEvent(
+        navDestination: AuthNavigationDestination,
+        navOptions: NavOptions? = null,
+    ) {
+        emitEvent(Event.NavigateToLoginDestination(navDestination, navOptions))
     }
 
     fun emitEvent(event: Event) {
@@ -36,23 +49,36 @@ class EventRelay {
 }
 
 sealed class Event {
-    data object PopBackStack : Event()
+    data class PopBackStack(
+        val popUpTo: NavigationDestination? = null,
+        val inclusive: Boolean = false,
+    ) : Event()
 
     data class OpenLink(val url: String) : Event()
 
     data class ShowSnackbar(val text: StringFactory, val isError: Boolean) : Event()
 
-    data class NavigateToDestination(val destination: NavigationDestination) :
-        Event()
+    data class NavigateToDestination(
+        val destination: NavigationDestination,
+        val navOptions: NavOptions? = null,
+    ) : Event()
 
-    data class NavigateToBottomBarDestination(val destination: BottomBarNavigationDestination) :
-        Event()
+    data class NavigateToBottomBarDestination(
+        val destination: BottomBarNavigationDestination,
+        val navOptions: NavOptions? = null,
+    ) : Event()
 
-    data class NavigateToSettingsDestination(val destination: SettingsNavigationDestination) :
-        Event()
+    data class NavigateToSettingsDestination(
+        val destination: SettingsNavigationDestination,
+        val navOptions: NavOptions? = null,
+    ) : Event()
 
-    data class NavigateToLoginDestination(val destination: AuthNavigationDestination) :
-        Event()
+    data class NavigateToLoginDestination(
+        val destination: AuthNavigationDestination,
+        val navOptions: NavOptions? = null,
+    ) : Event()
 
     data object ChooseAccountForSharing : Event()
+
+    data object ExitReportFlow : Event()
 }

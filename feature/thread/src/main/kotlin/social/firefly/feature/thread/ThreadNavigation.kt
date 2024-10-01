@@ -2,25 +2,16 @@ package social.firefly.feature.thread
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import social.firefly.core.navigation.NavigationDestination
 
 fun NavGraphBuilder.threadScreen() {
-    composable(
-        route = NavigationDestination.Thread.fullRoute,
-        arguments =
-        listOf(
-            navArgument(NavigationDestination.Thread.NAV_PARAM_STATUS_ID) {
-                nullable = true
-            },
-        ),
-    ) {
-        val threadStatusId: String? =
-            it.arguments?.getString(NavigationDestination.Thread.NAV_PARAM_STATUS_ID)
-        threadStatusId?.let {
-            ThreadScreen(
-                threadStatusId = threadStatusId,
-            )
-        }
+    composable<NavigationDestination.Thread> { backStackEntry ->
+        val threadStatusId: String =
+            backStackEntry.toRoute<NavigationDestination.Thread>().threadStatusId
+
+        ThreadScreen(
+            threadStatusId = threadStatusId,
+        )
     }
 }
