@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import social.firefly.common.utils.ffFadeIn
 import social.firefly.common.utils.ffFadeOut
+import social.firefly.core.navigation.NavigationDestination
 import social.firefly.feature.account.accountScreen
 import social.firefly.feature.account.edit.editAccountScreen
 import social.firefly.feature.auth.authFlow
@@ -23,7 +24,6 @@ import social.firefly.feature.report.step3.reportScreen3
 import social.firefly.feature.search.searchScreen
 import social.firefly.splash.splashScreen
 import social.firefly.ui.AppState
-import social.firefly.ui.bottombar.Routes
 import social.firefly.ui.bottombar.bottomTabScreen
 
 @Composable
@@ -34,7 +34,7 @@ fun MainNavHost(
     NavHost(
         modifier = modifier,
         navController = appState.mainNavController,
-        startDestination = Routes.SPLASH,
+        startDestination = NavigationDestination.Splash,
         enterTransition = { ffFadeIn() },
         exitTransition = { ffFadeOut() },
         popEnterTransition = { ffFadeIn() },

@@ -9,6 +9,9 @@ import social.firefly.core.model.ReportType
 @Serializable
 sealed class NavigationDestination {
     @Serializable
+    data object Splash : NavigationDestination()
+
+    @Serializable
     data class Account(val accountId: String) : NavigationDestination()
 
     @Serializable

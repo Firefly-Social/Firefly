@@ -7,10 +7,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import org.koin.androidx.compose.koinViewModel
-import social.firefly.ui.bottombar.Routes
+import social.firefly.core.navigation.NavigationDestination
 
 fun NavGraphBuilder.splashScreen() {
-    composable(route = Routes.SPLASH) {
+    composable<NavigationDestination.Splash> {
         SplashScreen()
     }
 }
