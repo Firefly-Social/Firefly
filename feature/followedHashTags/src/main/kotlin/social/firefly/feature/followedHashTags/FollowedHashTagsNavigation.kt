@@ -5,7 +5,7 @@ import androidx.navigation.compose.composable
 import social.firefly.core.navigation.NavigationDestination
 
 fun NavGraphBuilder.followedHashTagsScreen() {
-    composable(route = NavigationDestination.FollowedHashTags.route) {
+    composable<NavigationDestination.FollowedHashTags> {
         FollowedHashTagsScreen()
     }
 }

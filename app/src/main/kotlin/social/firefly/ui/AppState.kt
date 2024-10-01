@@ -8,6 +8,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import kotlinx.coroutines.CompletableDeferred
@@ -28,32 +29,11 @@ import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import social.firefly.common.utils.StringFactory
 import social.firefly.core.navigation.AuthNavigationDestination
-import social.firefly.core.navigation.AuthNavigationDestination.ChooseServer.navigateToChooseServerScreen
-import social.firefly.core.navigation.AuthNavigationDestination.Login.navigateToLoginScreen
 import social.firefly.core.navigation.BottomBarNavigationDestination
 import social.firefly.core.navigation.Event
 import social.firefly.core.navigation.NavigationDestination
-import social.firefly.core.navigation.NavigationDestination.Auth.navigateToAuthFlow
-import social.firefly.core.navigation.NavigationDestination.Bookmarks.navigateToBookmarks
-import social.firefly.core.navigation.NavigationDestination.EditAccount.navigateToEditAccount
-import social.firefly.core.navigation.NavigationDestination.Favorites.navigateToFavorites
-import social.firefly.core.navigation.NavigationDestination.FollowedHashTags.navigateToFollowedHashTags
-import social.firefly.core.navigation.NavigationDestination.Search.navigateToSearch
-import social.firefly.core.navigation.NavigationDestination.Settings.navigateToSettings
-import social.firefly.core.navigation.NavigationDestination.Tabs.navigateToTabs
 import social.firefly.core.navigation.NavigationEventFlow
 import social.firefly.core.navigation.SettingsNavigationDestination
-import social.firefly.core.navigation.SettingsNavigationDestination.AboutSettings.navigateToAboutSettings
-import social.firefly.core.navigation.SettingsNavigationDestination.AccountSettings.navigateToAccountSettings
-import social.firefly.core.navigation.SettingsNavigationDestination.AppearanceAndBehaviorOptions.navigateToAppearanceAndBehaviorOptions
-import social.firefly.core.navigation.SettingsNavigationDestination.BlockedDomains.navigateToBlockedDomains
-import social.firefly.core.navigation.SettingsNavigationDestination.BlockedUsersSettings.navigateToBlockedUsers
-import social.firefly.core.navigation.SettingsNavigationDestination.ContentPreferencesSettings.navigateToContentPreferencesSettings
-import social.firefly.core.navigation.SettingsNavigationDestination.DeveloperOptions.navigateToDeveloperOptions
-import social.firefly.core.navigation.SettingsNavigationDestination.MainSettings.navigateToMainSettings
-import social.firefly.core.navigation.SettingsNavigationDestination.MutedUsersSettings.navigateToMutedUsers
-import social.firefly.core.navigation.SettingsNavigationDestination.OpenSourceLicensesSettings.navigateToOpenSourceSettings
-import social.firefly.core.navigation.SettingsNavigationDestination.PrivacySettings.navigateToPrivacySettings
 import social.firefly.core.ui.common.snackbar.FfSnackbarHostState
 import social.firefly.core.ui.common.snackbar.SnackbarType
 import timber.log.Timber
@@ -102,6 +82,9 @@ class AppState(
             _tabbedNavControllerFlow.value = value
         }
 
+    // Use when navigating back from report screen 3.
+    private var reportDestination: NavigationDestination.ReportScreen1? = null
+
     init {
         coroutineScope.launch(Dispatchers.Main) {
             navigationEventFlow().onSubscription {
@@ -113,15 +96,26 @@ class AppState(
                 Timber.d("NAVIGATION consuming event $it")
                 when (it) {
                     is Event.NavigateToDestination -> {
-                        navigate(it.destination)
+                        navigate(it.destination, it.navOptions)
                     }
 
                     is Event.NavigateToBottomBarDestination -> {
                         navigateToBottomBarDestination(it.destination)
                     }
 
-                    Event.PopBackStack -> {
-                        popBackStack()
+                    is Event.NavigateToSettingsDestination -> {
+                        navigateToSettingsDestination(it.destination, it.navOptions)
+                    }
+
+                    is Event.NavigateToLoginDestination -> {
+                        navigateToAuthDestination(it.destination, it.navOptions)
+                    }
+
+                    is Event.PopBackStack -> {
+                        popBackStack(
+                            popUpTo = it.popUpTo,
+                            inclusive = it.inclusive,
+                        )
                     }
 
                     is Event.OpenLink -> {
@@ -132,16 +126,14 @@ class AppState(
                         showSnackbar(it.text, it.isError)
                     }
 
-                    is Event.NavigateToSettingsDestination -> {
-                        navigateToSettingsDestination(it.destination)
-                    }
-
-                    is Event.NavigateToLoginDestination -> {
-                        navigateToAuthDestination(it.destination)
-                    }
-
                     is Event.ChooseAccountForSharing -> {
                         // Handled in ChooseAccountDialogViewModel
+                    }
+
+                    is Event.ExitReportFlow -> {
+                        reportDestination?.let { reportDestination ->
+                            mainNavController.popBackStack(reportDestination, true)
+                        }
                     }
                 }
             }
@@ -180,11 +172,9 @@ class AppState(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val currentNavigationDestination: StateFlow<NavigationDestination?> =
+    val currentNavigationDestination: StateFlow<String?> =
         mainNavController.currentBackStackEntryFlow.mapLatest { backStackEntry ->
-            NavigationDestination::class.sealedSubclasses.firstOrNull {
-                it.objectInstance?.route == backStackEntry.destination.route
-            }?.objectInstance
+            backStackEntry.destination.route
         }.stateIn(
             coroutineScope,
             started = SharingStarted.WhileSubscribed(),
@@ -192,17 +182,15 @@ class AppState(
         )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val currentBottomBarNavigationDestination: StateFlow<BottomBarNavigationDestination?> =
+    var currentBottomBarNavigationDestination: StateFlow<String?> =
         tabbedNavControllerFlow.flatMapLatest { navHostController ->
             navHostController?.currentBackStackEntryFlow?.mapLatest { backStackEntry ->
-                BottomBarNavigationDestination::class.sealedSubclasses.firstOrNull {
-                    it.objectInstance?.route == backStackEntry.destination.route
-                }?.objectInstance
+                backStackEntry.destination.route
             } ?: error("no matching nav destination")
         }.stateIn(
             coroutineScope,
             started = SharingStarted.WhileSubscribed(),
-            initialBottomBarDestination,
+            initialBottomBarDestination::class.qualifiedName,
         )
 
     private fun clearBackstack() {
@@ -211,140 +199,56 @@ class AppState(
         }
     }
 
-    private fun popBackStack() {
+    private fun popBackStack(
+        popUpTo: NavigationDestination? = null,
+        inclusive: Boolean = false,
+    ) {
+        popUpTo?.let {
+            if (!mainNavController.popBackStack(popUpTo, inclusive)) tabbedNavController?.navigateUp()
+        }
         if (!mainNavController.navigateUp()) tabbedNavController?.navigateUp()
     }
 
     @Suppress("CyclomaticComplexMethod")
-    private fun navigate(navDestination: NavigationDestination) {
+    private fun navigate(
+        navDestination: NavigationDestination,
+        navOptions: NavOptions?,
+    ) {
         Timber.d("NAVIGATION consuming $navDestination")
         with(navDestination) {
             when (this) {
-                is NavigationDestination.Account -> {
-                    mainNavController.navigateToAccount()
-                }
-
                 NavigationDestination.Auth -> {
                     clearBackstack()
-                    mainNavController.navigateToAuthFlow()
-                }
-
-                NavigationDestination.Bookmarks -> {
-                    mainNavController.navigateToBookmarks()
-                }
-
-                NavigationDestination.EditAccount -> {
-                    mainNavController.navigateToEditAccount()
-                }
-
-                NavigationDestination.Favorites -> {
-                    mainNavController.navigateToFavorites()
-                }
-
-                NavigationDestination.FollowedHashTags -> {
-                    mainNavController.navigateToFollowedHashTags()
-                }
-
-                is NavigationDestination.Followers -> {
-                    mainNavController.navigateToFollowing()
-                }
-
-                is NavigationDestination.HashTag -> {
-                    mainNavController.navigateToHashTag()
-                }
-
-                is NavigationDestination.Media -> {
-                    mainNavController.navigateToMedia()
-                }
-
-                is NavigationDestination.NewPost -> {
-                    mainNavController.navigateToNewPost(
-                        navOptions = navOptions,
-                    )
-                }
-
-                is NavigationDestination.Report -> {
-                    mainNavController.navigateToReport()
-                }
-
-                NavigationDestination.Search -> {
-                    mainNavController.navigateToSearch()
-                }
-
-                NavigationDestination.Settings -> {
-                    mainNavController.navigateToSettings()
+                    mainNavController.navigate(navDestination, navOptions)
                 }
 
                 NavigationDestination.Tabs -> {
                     clearBackstack()
-                    mainNavController.navigateToTabs()
+                    mainNavController.navigate(navDestination, navOptions)
                 }
 
-                is NavigationDestination.Thread -> {
-                    mainNavController.navigateToThread()
+                is NavigationDestination.ReportScreen1 -> {
+                    reportDestination = navDestination as NavigationDestination.ReportScreen1
+                    mainNavController.navigate(navDestination, navOptions)
                 }
+
+                else -> mainNavController.navigate(navDestination, navOptions)
             }
         }
     }
 
-    private fun navigateToSettingsDestination(destination: SettingsNavigationDestination) {
-        when (destination) {
-            SettingsNavigationDestination.AboutSettings -> {
-                mainNavController.navigateToAboutSettings()
-            }
-
-            SettingsNavigationDestination.AccountSettings -> {
-                mainNavController.navigateToAccountSettings()
-            }
-
-            SettingsNavigationDestination.PrivacySettings -> {
-                mainNavController.navigateToPrivacySettings()
-            }
-
-            SettingsNavigationDestination.MainSettings -> {
-                mainNavController.navigateToMainSettings()
-            }
-
-            SettingsNavigationDestination.BlockedDomains -> {
-                mainNavController.navigateToBlockedDomains()
-            }
-
-            SettingsNavigationDestination.BlockedUsersSettings -> {
-                mainNavController.navigateToBlockedUsers()
-            }
-
-            SettingsNavigationDestination.ContentPreferencesSettings -> {
-                mainNavController.navigateToContentPreferencesSettings()
-            }
-
-            SettingsNavigationDestination.MutedUsersSettings -> {
-                mainNavController.navigateToMutedUsers()
-            }
-
-            SettingsNavigationDestination.OpenSourceLicensesSettings -> {
-                mainNavController.navigateToOpenSourceSettings()
-            }
-
-            SettingsNavigationDestination.DeveloperOptions -> {
-                mainNavController.navigateToDeveloperOptions()
-            }
-
-            SettingsNavigationDestination.AppearanceAndBehaviorOptions -> {
-                mainNavController.navigateToAppearanceAndBehaviorOptions()
-            }
-        }
+    private fun navigateToSettingsDestination(
+        destination: SettingsNavigationDestination,
+        navOptions: NavOptions?,
+    ) {
+        mainNavController.navigate(destination, navOptions)
     }
 
-    private fun navigateToAuthDestination(destination: AuthNavigationDestination) {
-        when (destination) {
-            AuthNavigationDestination.Login -> {
-                mainNavController.navigateToLoginScreen()
-            }
-
-            AuthNavigationDestination.ChooseServer -> {
-                mainNavController.navigateToChooseServerScreen()
-            }
-        }
+    private fun navigateToAuthDestination(
+        destination: AuthNavigationDestination,
+        navOptions: NavOptions?,
+    ) {
+        mainNavController.navigate(destination, navOptions)
     }
 
     private fun navigateToBottomBarDestination(destination: BottomBarNavigationDestination) {
@@ -354,20 +258,20 @@ class AppState(
         // of it.  If a new instance is started, we don't retain scroll position!
         if (destination == BottomBarNavigationDestination.Feed) {
             tabbedNavController?.popBackStack(
-                BottomBarNavigationDestination.Feed.route,
+                BottomBarNavigationDestination.Feed,
                 false,
             )
         }
         val navOptions =
             navOptions {
-                popUpTo(BottomBarNavigationDestination.Feed.route) {
+                popUpTo(BottomBarNavigationDestination.Feed) {
                     saveState = true
                 }
                 launchSingleTop = true
                 restoreState = true
             }
 
-        tabbedNavController?.navigate(destination.route, navOptions)
+        tabbedNavController?.navigate(destination, navOptions)
     }
 
     companion object {

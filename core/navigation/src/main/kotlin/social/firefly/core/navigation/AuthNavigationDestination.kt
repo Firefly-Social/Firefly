@@ -1,22 +1,13 @@
 package social.firefly.core.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
+import kotlinx.serialization.Serializable
 
-sealed class AuthNavigationDestination(val route: String) {
-    data object Login : AuthNavigationDestination(
-        route = "login",
-    ) {
-        fun NavController.navigateToLoginScreen(navOptions: NavOptions? = null) {
-            this.navigate(route, navOptions)
-        }
-    }
+@Serializable
+sealed class AuthNavigationDestination {
 
-    data object ChooseServer : AuthNavigationDestination(
-        route = "chooseServer",
-    ) {
-        fun NavController.navigateToChooseServerScreen(navOptions: NavOptions? = null) {
-            this.navigate(route, navOptions)
-        }
-    }
+    @Serializable
+    data object Login : AuthNavigationDestination()
+
+    @Serializable
+    data object ChooseServer : AuthNavigationDestination()
 }

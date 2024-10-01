@@ -5,9 +5,7 @@ import androidx.navigation.compose.composable
 import social.firefly.core.navigation.NavigationDestination
 
 fun NavGraphBuilder.editAccountScreen() {
-    composable(
-        route = NavigationDestination.EditAccount.route,
-    ) {
+    composable<NavigationDestination.EditAccount> {
         EditAccountScreen()
     }
 }

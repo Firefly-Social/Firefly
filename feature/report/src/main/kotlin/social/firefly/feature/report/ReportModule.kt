@@ -27,26 +27,26 @@ val reportModule =
             ReportScreen1ViewModel(
                 get(),
                 get(),
+                get(),
+                get(),
                 parametersHolder[0],
                 parametersHolder[1],
                 parametersHolder[2],
-                parametersHolder[3],
-                parametersHolder[4],
             )
         }
         viewModel { parametersHolder ->
             ReportScreen2ViewModel(
                 report = get(),
                 accountRepository = get(),
-                onClose = parametersHolder[0],
-                onReportSubmitted = parametersHolder[1],
-                reportAccountId = parametersHolder[2],
-                reportAccountHandle = parametersHolder[3],
-                reportStatusId = parametersHolder[4],
-                reportType = parametersHolder[5],
-                checkedInstanceRules = parametersHolder[6],
-                additionalText = parametersHolder[7],
-                sendToExternalServer = parametersHolder[8],
+                navigateTo = get(),
+                popNavBackstack = get(),
+                reportAccountId = parametersHolder[0],
+                reportAccountHandle = parametersHolder[1],
+                reportStatusId = parametersHolder[2],
+                reportType = parametersHolder[3],
+                checkedInstanceRules = parametersHolder[4],
+                additionalText = parametersHolder[5],
+                sendToExternalServer = parametersHolder[6],
             )
         }
         viewModel { parametersHolder ->
@@ -54,10 +54,11 @@ val reportModule =
                 unfollowAccount = get(),
                 blockAccount = get(),
                 muteAccount = get(),
+                popNavBackstack = get(),
+                eventRelay = get(),
                 getLoggedInUserAccountId = get(),
-                doneClicked = parametersHolder[0],
-                closeClicked = parametersHolder[1],
-                reportAccountId = parametersHolder[2],
+                reportAccountId = parametersHolder[0],
+                didUserReportAccount = parametersHolder[1],
             )
         }
     }

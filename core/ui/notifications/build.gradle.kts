@@ -22,4 +22,5 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
     implementation(libs.jakewharton.timber)
+    implementation(libs.androidx.navigation.compose)
 }

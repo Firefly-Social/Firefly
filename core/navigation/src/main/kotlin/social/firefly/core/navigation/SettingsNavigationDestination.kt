@@ -1,91 +1,40 @@
 package social.firefly.core.navigation
 
-import androidx.navigation.NavController
+import kotlinx.serialization.Serializable
 
-sealed class SettingsNavigationDestination(val route: String) {
-    data object MainSettings : SettingsNavigationDestination(
-        route = "mainSettings",
-    ) {
-        fun NavController.navigateToMainSettings() {
-            navigate(route = route)
-        }
-    }
+@Serializable
+sealed class SettingsNavigationDestination {
 
-    data object AccountSettings : SettingsNavigationDestination(
-        route = "accountSettings",
-    ) {
-        fun NavController.navigateToAccountSettings() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object MainSettings : SettingsNavigationDestination()
 
-    data object ContentPreferencesSettings : SettingsNavigationDestination(
-        route = "contentPreferencesSettings",
-    ) {
-        fun NavController.navigateToContentPreferencesSettings() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object AccountSettings : SettingsNavigationDestination()
 
-    data object BlockedDomains : SettingsNavigationDestination(
-        route = "blockedDomains",
-    ) {
-        fun NavController.navigateToBlockedDomains() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object ContentPreferencesSettings : SettingsNavigationDestination()
 
-    data object BlockedUsersSettings : SettingsNavigationDestination(
-        route = "blockedUsersSettings",
-    ) {
-        fun NavController.navigateToBlockedUsers() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object BlockedDomains : SettingsNavigationDestination()
 
-    data object MutedUsersSettings : SettingsNavigationDestination(route = "mutedUsersSettings") {
-        fun NavController.navigateToMutedUsers() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object BlockedUsersSettings : SettingsNavigationDestination()
 
-    data object PrivacySettings : SettingsNavigationDestination(
-        route = "privacySettings",
-    ) {
-        fun NavController.navigateToPrivacySettings() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object MutedUsersSettings : SettingsNavigationDestination()
 
-    data object AboutSettings : SettingsNavigationDestination(
-        route = "aboutSettings",
-    ) {
-        fun NavController.navigateToAboutSettings() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object PrivacySettings : SettingsNavigationDestination()
 
-    data object OpenSourceLicensesSettings : SettingsNavigationDestination(
-        route = "openSourceLicensesSettings",
-    ) {
-        fun NavController.navigateToOpenSourceSettings() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object AboutSettings : SettingsNavigationDestination()
 
-    data object DeveloperOptions : SettingsNavigationDestination(
-        route = "developerOptions",
-    ) {
-        fun NavController.navigateToDeveloperOptions() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object OpenSourceLicensesSettings : SettingsNavigationDestination()
 
-    data object AppearanceAndBehaviorOptions : SettingsNavigationDestination(
-        route = "appearanceAndBehaviorOptions",
-    ) {
-        fun NavController.navigateToAppearanceAndBehaviorOptions() {
-            navigate(route = route)
-        }
-    }
+    @Serializable
+    data object DeveloperOptions : SettingsNavigationDestination()
+
+    @Serializable
+    data object AppearanceAndBehaviorOptions : SettingsNavigationDestination()
 }

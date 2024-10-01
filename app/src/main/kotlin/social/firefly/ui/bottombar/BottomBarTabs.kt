@@ -114,7 +114,3 @@ enum class BottomBarTabs(
             },
     ),
 }
-
-object Routes {
-    const val SPLASH = "splash"
-}

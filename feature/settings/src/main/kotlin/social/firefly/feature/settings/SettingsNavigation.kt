@@ -17,9 +17,8 @@ import social.firefly.feature.settings.licenses.OpenSourceLicensesScreen
 import social.firefly.feature.settings.privacy.PrivacySettingsScreen
 
 fun NavGraphBuilder.settingsFlow() {
-    navigation(
-        startDestination = SettingsNavigationDestination.MainSettings.route,
-        route = NavigationDestination.Settings.route,
+    navigation<NavigationDestination.Settings>(
+        startDestination = SettingsNavigationDestination.MainSettings,
     ) {
         mainSettingsScreen()
         accountSettingsScreen()
@@ -36,67 +35,67 @@ fun NavGraphBuilder.settingsFlow() {
 }
 
 fun NavGraphBuilder.mainSettingsScreen() {
-    composable(route = SettingsNavigationDestination.MainSettings.route) {
+    composable<SettingsNavigationDestination.MainSettings> {
         SettingsScreen()
     }
 }
 
 fun NavGraphBuilder.accountSettingsScreen() {
-    composable(route = SettingsNavigationDestination.AccountSettings.route) {
+    composable<SettingsNavigationDestination.AccountSettings> {
         AccountSettingsScreen()
     }
 }
 
 fun NavGraphBuilder.contentPreferencesSettingsScreen() {
-    composable(route = SettingsNavigationDestination.ContentPreferencesSettings.route) {
+    composable<SettingsNavigationDestination.ContentPreferencesSettings> {
         ContentPreferencesSettingsScreen()
     }
 }
 
 fun NavGraphBuilder.mutedUsersSettingsScreen() {
-    composable(route = SettingsNavigationDestination.MutedUsersSettings.route) {
+    composable<SettingsNavigationDestination.MutedUsersSettings> {
         MutedUsersSettingsScreen()
     }
 }
 
 fun NavGraphBuilder.blockedDomainsScreen() {
-    composable(route = SettingsNavigationDestination.BlockedDomains.route) {
+    composable<SettingsNavigationDestination.BlockedDomains> {
         BlockedDomainsScreen()
     }
 }
 
 fun NavGraphBuilder.blockedUsersSettingsScreen() {
-    composable(route = SettingsNavigationDestination.BlockedUsersSettings.route) {
+    composable<SettingsNavigationDestination.BlockedUsersSettings> {
         BlockedUsersSettingsScreen()
     }
 }
 
 fun NavGraphBuilder.privacySettingsScreen() {
-    composable(route = SettingsNavigationDestination.PrivacySettings.route) {
+    composable<SettingsNavigationDestination.PrivacySettings> {
         PrivacySettingsScreen()
     }
 }
 
 fun NavGraphBuilder.aboutSettingsScreen() {
-    composable(route = SettingsNavigationDestination.AboutSettings.route) {
+    composable<SettingsNavigationDestination.AboutSettings> {
         AboutSettingsScreen()
     }
 }
 
 fun NavGraphBuilder.openSourceLicensesScreen() {
-    composable(route = SettingsNavigationDestination.OpenSourceLicensesSettings.route) {
+    composable<SettingsNavigationDestination.OpenSourceLicensesSettings> {
         OpenSourceLicensesScreen()
     }
 }
 
 fun NavGraphBuilder.developerOptionsScreen() {
-    composable(route = SettingsNavigationDestination.DeveloperOptions.route) {
+    composable<SettingsNavigationDestination.DeveloperOptions> {
         DeveloperOptionsScreen()
     }
 }
 
 fun NavGraphBuilder.appearanceAndBehaviorScreen() {
-    composable(route = SettingsNavigationDestination.AppearanceAndBehaviorOptions.route) {
+    composable<SettingsNavigationDestination.AppearanceAndBehaviorOptions> {
         AppearanceAndBehaviorScreen()
     }
 }

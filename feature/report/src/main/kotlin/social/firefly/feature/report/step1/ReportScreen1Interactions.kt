@@ -1,7 +1,7 @@
 package social.firefly.feature.report.step1
 
 import social.firefly.core.model.InstanceRule
-import social.firefly.feature.report.ReportType
+import social.firefly.core.model.ReportType
 
 interface ReportScreen1Interactions {
     fun onCloseClicked() = Unit

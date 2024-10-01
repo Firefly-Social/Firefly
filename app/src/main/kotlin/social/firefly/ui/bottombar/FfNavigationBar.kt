@@ -42,7 +42,7 @@ import social.firefly.ui.bottombar.Destination.Main
 @Composable
 fun FfBottomNavigationBar(
     modifier: Modifier = Modifier,
-    currentDestination: BottomBarNavigationDestination,
+    currentDestination: String?,
     bottomBarTabs: List<BottomBarTab>,
     navigateTo: (route: Destination) -> Unit,
     containerColor: Color = FfNavigationBarDefaults.containerColor,
@@ -66,8 +66,8 @@ fun FfBottomNavigationBar(
                             .semantics { contentDescription = it.tabText.build(context) },
                         destination = it,
                         isSelected =
-                            currentDestination ==
-                                (it.navigationDestination as? Destination.BottomBar)?.bottomBarNavigationDestination,
+                            currentDestination == (it.navigationDestination as Destination.BottomBar)
+                                .bottomBarNavigationDestination::class.qualifiedName,
                         navigateTo = navigateTo,
                     )
                 }
@@ -251,8 +251,8 @@ object FfNavigationBarDefaults {
     val height: Dp
         get() = 48.dp
 
-    fun Modifier.bottomBarPadding(currentDestination: NavigationDestination?): Modifier =
-        if (currentDestination == NavigationDestination.Tabs) {
+    fun Modifier.bottomBarPadding(currentDestination: String?): Modifier =
+        if (currentDestination == NavigationDestination.Tabs::class.qualifiedName) {
             padding(bottom = height)
         } else {
             this

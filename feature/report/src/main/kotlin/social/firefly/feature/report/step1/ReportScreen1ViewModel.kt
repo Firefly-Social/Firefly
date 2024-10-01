@@ -6,19 +6,23 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import social.firefly.common.utils.edit
 import social.firefly.core.analytics.ReportScreenAnalytics
 import social.firefly.core.model.InstanceRule
+import social.firefly.core.model.ReportType
+import social.firefly.core.navigation.NavigationDestination
+import social.firefly.core.navigation.usecases.NavigateTo
+import social.firefly.core.navigation.usecases.PopNavBackstack
 import social.firefly.core.repository.mastodon.InstanceRepository
-import social.firefly.feature.report.ReportDataBundle
-import social.firefly.feature.report.ReportType
 import timber.log.Timber
 
 class ReportScreen1ViewModel(
     private val analytics: ReportScreenAnalytics,
     private val instanceRepository: InstanceRepository,
-    private val onNextClicked: (bundle: ReportDataBundle) -> Unit,
-    private val onClose: () -> Unit,
+    private val popNavBackstack: PopNavBackstack,
+    private val navigateTo: NavigateTo,
     private val reportAccountId: String,
     private val reportAccountHandle: String,
     private val reportStatusId: String?,
@@ -54,7 +58,7 @@ class ReportScreen1ViewModel(
     }
 
     override fun onCloseClicked() {
-        onClose()
+        popNavBackstack()
     }
 
     override fun onReportTypeSelected(reportType: ReportType) {
@@ -86,27 +90,25 @@ class ReportScreen1ViewModel(
     }
 
     override fun onNextClicked() {
-        val bundle =
-            when (selectedReportType.value) {
-                ReportType.DO_NOT_LIKE ->
-                    ReportDataBundle.ReportDataBundleForScreen3(
-                        reportAccountId = reportAccountId,
-                        reportAccountHandle = reportAccountHandle,
-                        didUserReportAccount = false,
-                    )
+        when (selectedReportType.value) {
+            ReportType.DO_NOT_LIKE -> navigateTo(
+                NavigationDestination.ReportScreen3(
+                    reportAccountId = reportAccountId,
+                    reportAccountHandle = reportAccountHandle,
+                    didUserReportAccount = false,
+                )
+            )
 
-                else ->
-                    ReportDataBundle.ReportDataBundleForScreen2(
-                        reportAccountId = reportAccountId,
-                        reportAccountHandle = reportAccountHandle,
-                        reportStatusId = reportStatusId,
-                        reportType = selectedReportType.value ?: ReportType.DO_NOT_LIKE,
-                        checkedInstanceRules = checkedRules.value,
-                        additionalText = additionalCommentText.value,
-                        sendToExternalServer = sendToExternalServerChecked.value,
-                    )
-            }
-        onNextClicked(bundle)
+            else -> navigateTo(NavigationDestination.ReportScreen2(
+                reportAccountId = reportAccountId,
+                reportAccountHandle = reportAccountHandle,
+                reportStatusId = reportStatusId,
+                reportType = selectedReportType.value ?: ReportType.DO_NOT_LIKE,
+                checkedInstanceRules = Json.encodeToString(checkedRules.value),
+                additionalText = additionalCommentText.value,
+                sendToExternalServer = sendToExternalServerChecked.value,
+            ))
+        }
     }
 
     override fun onScreenViewed() {

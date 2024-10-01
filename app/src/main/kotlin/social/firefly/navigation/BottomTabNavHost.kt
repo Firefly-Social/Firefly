@@ -20,7 +20,7 @@ fun BottomTabNavHost(
     NavHost(
         modifier = modifier,
         navController = tabbedNavController,
-        startDestination = BottomBarNavigationDestination.Feed.route,
+        startDestination = BottomBarNavigationDestination.Feed,
         enterTransition = { ffFadeIn() },
         exitTransition = { ffFadeOut() },
         popEnterTransition = { ffFadeIn() },

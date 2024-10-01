@@ -6,6 +6,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import social.firefly.core.navigation.Event
+import social.firefly.core.navigation.EventRelay
+import social.firefly.core.navigation.usecases.PopNavBackstack
 import social.firefly.core.usecase.mastodon.account.BlockAccount
 import social.firefly.core.usecase.mastodon.account.GetLoggedInUserAccountId
 import social.firefly.core.usecase.mastodon.account.MuteAccount
@@ -16,10 +19,11 @@ class ReportScreen3ViewModel(
     private val unfollowAccount: UnfollowAccount,
     private val blockAccount: BlockAccount,
     private val muteAccount: MuteAccount,
+    private val popNavBackstack: PopNavBackstack,
+    private val eventRelay: EventRelay,
     getLoggedInUserAccountId: GetLoggedInUserAccountId,
-    private val doneClicked: () -> Unit,
-    private val closeClicked: () -> Unit,
     private val reportAccountId: String,
+    private val didUserReportAccount: Boolean,
 ) : ViewModel(), ReportScreen3Interactions {
     /**
      * The account ID of the logged in user
@@ -36,11 +40,15 @@ class ReportScreen3ViewModel(
     val blockVisible = _blockVisible.asStateFlow()
 
     override fun onCloseClicked() {
-        closeClicked()
+        if (didUserReportAccount) {
+            eventRelay.emitEvent(Event.ExitReportFlow)
+        } else {
+            popNavBackstack()
+        }
     }
 
     override fun onDoneClicked() {
-        doneClicked()
+        eventRelay.emitEvent(Event.ExitReportFlow)
     }
 
     override fun onUnfollowClicked() {

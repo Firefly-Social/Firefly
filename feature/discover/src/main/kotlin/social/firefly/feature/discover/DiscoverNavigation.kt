@@ -5,9 +5,7 @@ import androidx.navigation.compose.composable
 import social.firefly.core.navigation.BottomBarNavigationDestination
 
 fun NavGraphBuilder.discoverScreen() {
-    composable(
-        route = BottomBarNavigationDestination.Discover.route,
-    ) {
+    composable<BottomBarNavigationDestination.Discover> {
         DiscoverScreen()
     }
 }

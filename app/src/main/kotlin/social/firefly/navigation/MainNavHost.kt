@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import social.firefly.common.utils.ffFadeIn
 import social.firefly.common.utils.ffFadeOut
+import social.firefly.core.navigation.NavigationDestination
 import social.firefly.feature.account.accountScreen
 import social.firefly.feature.account.edit.editAccountScreen
 import social.firefly.feature.auth.authFlow
@@ -14,14 +15,15 @@ import social.firefly.feature.followedHashTags.followedHashTagsScreen
 import social.firefly.feature.followers.followersScreen
 import social.firefly.feature.hashtag.hashTagScreen
 import social.firefly.feature.media.mediaScreen
-import social.firefly.feature.report.reportFlow
 import social.firefly.feature.settings.settingsFlow
 import social.firefly.feature.thread.threadScreen
 import social.firefly.feature.post.newPostScreen
+import social.firefly.feature.report.step1.reportScreen1
+import social.firefly.feature.report.step2.reportScreen2
+import social.firefly.feature.report.step3.reportScreen3
 import social.firefly.feature.search.searchScreen
 import social.firefly.splash.splashScreen
 import social.firefly.ui.AppState
-import social.firefly.ui.bottombar.Routes
 import social.firefly.ui.bottombar.bottomTabScreen
 
 @Composable
@@ -32,7 +34,7 @@ fun MainNavHost(
     NavHost(
         modifier = modifier,
         navController = appState.mainNavController,
-        startDestination = Routes.SPLASH,
+        startDestination = NavigationDestination.Splash,
         enterTransition = { ffFadeIn() },
         exitTransition = { ffFadeOut() },
         popEnterTransition = { ffFadeIn() },
@@ -44,7 +46,9 @@ fun MainNavHost(
         followersScreen()
         newPostScreen()
         threadScreen()
-        reportFlow(navController = appState.mainNavController)
+        reportScreen1()
+        reportScreen2()
+        reportScreen3()
         hashTagScreen()
         bottomTabScreen(appState)
         editAccountScreen()

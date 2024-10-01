@@ -1,36 +1,19 @@
 package social.firefly.core.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
+import kotlinx.serialization.Serializable
 
-sealed class BottomBarNavigationDestination(val route: String) {
-    data object Feed : BottomBarNavigationDestination(
-        route = "feed",
-    ) {
-        fun NavController.navigateToFeed(navOptions: NavOptions? = null) {
-            this.navigate(route, navOptions)
-        }
-    }
+@Serializable
+sealed class BottomBarNavigationDestination {
 
-    data object Discover : BottomBarNavigationDestination(
-        route = "discover",
-    ) {
-        fun NavController.navigateToDiscover(navOptions: NavOptions? = null) {
-            navigate(route, navOptions)
-        }
-    }
+    @Serializable
+    data object Feed : BottomBarNavigationDestination()
 
-    data object MyAccount : BottomBarNavigationDestination(route = "myAccount") {
-        fun NavController.navigateToMyAccount(navOptions: NavOptions? = null) {
-            navigate(route, navOptions)
-        }
-    }
+    @Serializable
+    data object Discover : BottomBarNavigationDestination()
 
-    data object Notifications : BottomBarNavigationDestination(
-        route = "notifications",
-    ) {
-        fun NavController.navigateToNotificationsScreen(navOptions: NavOptions? = null) {
-            navigate(route, navOptions)
-        }
-    }
+    @Serializable
+    data object MyAccount : BottomBarNavigationDestination()
+
+    @Serializable
+    data object Notifications : BottomBarNavigationDestination()
 }
