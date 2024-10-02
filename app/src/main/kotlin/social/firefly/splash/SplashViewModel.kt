@@ -3,6 +3,7 @@ package social.firefly.splash
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.navOptions
 import kotlinx.coroutines.launch
 import social.firefly.IntentHandler
 import social.firefly.core.accounts.AccountsManager
@@ -28,11 +29,25 @@ class SplashViewModel(
             AppState.navigationCollectionCompletable.await()
 
             if (accountsManager.getAllAccounts().isNotEmpty()) {
-                navigateTo(NavigationDestination.Tabs)
+                navigateTo(
+                    NavigationDestination.Tabs,
+                    navOptions = navOptions {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
+                )
                 intent?.let { intentHandler.handleIntent(intent) }
                 updateAllLoggedInAccounts()
             } else {
-                navigateTo(NavigationDestination.Auth)
+                navigateTo(
+                    NavigationDestination.Auth,
+                    navOptions = navOptions {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
+                )
             }
         }
     }

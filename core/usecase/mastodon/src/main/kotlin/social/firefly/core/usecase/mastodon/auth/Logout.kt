@@ -1,5 +1,6 @@
 package social.firefly.core.usecase.mastodon.auth
 
+import androidx.navigation.navOptions
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -41,9 +42,23 @@ class Logout(
             // logging out of active account
             if (isDeletingActiveUserDataStore) {
                 if (accounts.size <= 1) {
-                    navigateTo(NavigationDestination.Auth)
+                    navigateTo(
+                        NavigationDestination.Auth,
+                        navOptions = navOptions {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                        }
+                    )
                 } else {
-                    navigateTo(NavigationDestination.Tabs)
+                    navigateTo(
+                        NavigationDestination.Tabs,
+                        navOptions = navOptions {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                        }
+                    )
                 }
                 databaseDelegate.clearAllTables()
             }

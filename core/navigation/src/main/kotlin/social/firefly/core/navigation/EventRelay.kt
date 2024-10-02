@@ -49,10 +49,7 @@ class EventRelay {
 }
 
 sealed class Event {
-    data class PopBackStack(
-        val popUpTo: NavigationDestination? = null,
-        val inclusive: Boolean = false,
-    ) : Event()
+    data object PopBackStack : Event()
 
     data class OpenLink(val url: String) : Event()
 

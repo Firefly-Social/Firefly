@@ -1,5 +1,6 @@
 package social.firefly.core.usecase.mastodon.auth
 
+import androidx.navigation.navOptions
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,14 @@ class LogoutOfAllAccounts(
     operator fun invoke() =
         GlobalScope.launch(ioDispatcher) {
             appScope.reset()
-            navigateTo(NavigationDestination.Auth)
+            navigateTo(
+                NavigationDestination.Auth,
+                navOptions = navOptions {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                }
+            )
             accountsManager.deleteAllAccounts()
             databaseDelegate.clearAllTables()
         }
