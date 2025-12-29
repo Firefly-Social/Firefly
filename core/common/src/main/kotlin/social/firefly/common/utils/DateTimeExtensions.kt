@@ -1,9 +1,9 @@
 package social.firefly.common.utils
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import social.firefly.core.common.R
+import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 @Suppress("MagicNumber")
 

@@ -12,8 +12,8 @@ val accountsModule = module {
             AccountsDatabase::class.java,
             "database-accounts",
         )
-            .fallbackToDestructiveMigration()
-            .fallbackToDestructiveMigrationOnDowngrade()
+            .fallbackToDestructiveMigration(true)
+            .fallbackToDestructiveMigrationOnDowngrade(true)
             .build()
     }
 

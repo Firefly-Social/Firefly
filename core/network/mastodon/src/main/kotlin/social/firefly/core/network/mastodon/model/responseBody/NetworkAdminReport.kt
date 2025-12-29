@@ -1,6 +1,6 @@
 package social.firefly.core.network.mastodon.model.responseBody
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

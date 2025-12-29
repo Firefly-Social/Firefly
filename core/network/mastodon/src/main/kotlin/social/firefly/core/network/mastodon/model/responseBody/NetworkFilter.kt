@@ -1,6 +1,6 @@
 package social.firefly.core.network.mastodon.model.responseBody
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * Represents a user-defined filter for determining

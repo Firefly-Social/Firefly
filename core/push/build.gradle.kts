@@ -14,8 +14,8 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:accounts"))
 
-    implementation(libs.unifiedPush.androidConnector)
-    implementation(libs.unifiedPush.androidConnector.ui)
+//    implementation(libs.unifiedPush.androidConnector)
+//    implementation(libs.unifiedPush.androidConnector.ui)
     implementation(libs.jakewharton.timber)
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutines.android)

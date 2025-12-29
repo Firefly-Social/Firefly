@@ -1,6 +1,6 @@
 package social.firefly.core.database.model
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 /**

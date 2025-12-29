@@ -2,7 +2,7 @@ package social.firefly.core.database.model.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import social.firefly.core.database.model.DatabaseEmoji
 import social.firefly.core.database.model.DatabasePollOption
 

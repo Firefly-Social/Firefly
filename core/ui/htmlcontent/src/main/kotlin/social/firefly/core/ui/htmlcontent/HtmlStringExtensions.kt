@@ -3,11 +3,11 @@ package social.firefly.core.ui.htmlcontent
 import android.text.Spannable
 import android.text.style.QuoteSpan
 import android.text.style.URLSpan
-import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.core.text.HtmlCompat
 import androidx.core.text.toSpannable
@@ -54,11 +54,13 @@ fun Spannable.toAnnotatedString(
 
         when (span) {
             is URLSpan -> {
-                addStyle(SpanStyle(color = linkColor), start, end)
                 if (clickableLinks) {
                     when {
                         spanText.startsWith("@") -> addLink(
                             clickable = LinkAnnotation.Clickable(
+                                styles = TextLinkStyles(
+                                    style = SpanStyle(color = linkColor),
+                                ),
                                 tag = Tags.MENTION,
                             ) {
                                 val mentionAccountId = mentions.find {
@@ -77,6 +79,9 @@ fun Spannable.toAnnotatedString(
 
                         spanText.startsWith("#") -> addLink(
                             clickable = LinkAnnotation.Clickable(
+                                styles = TextLinkStyles(
+                                    style = SpanStyle(color = linkColor),
+                                ),
                                 tag = Tags.HASH_TAG,
                             ) {
                                 onHashTagClicked(spanText.substringAfter("#"))
@@ -87,6 +92,9 @@ fun Spannable.toAnnotatedString(
 
                         else -> addLink(
                             clickable = LinkAnnotation.Clickable(
+                                styles = TextLinkStyles(
+                                    style = SpanStyle(color = linkColor),
+                                ),
                                 tag = Tags.LINK,
                             ) {
                                 onLinkClick(span.url)
