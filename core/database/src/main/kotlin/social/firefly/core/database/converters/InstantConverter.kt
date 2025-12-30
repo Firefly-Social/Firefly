@@ -1,12 +1,12 @@
 package social.firefly.core.database.converters
 
 import androidx.room.TypeConverter
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 class InstantConverter {
     @TypeConverter
-    fun Long?.toInstant(): Instant? = this?.let { Instant.fromEpochMilliseconds(it) }
+    fun toInstant(value: Long?): Instant? = value?.let { Instant.fromEpochMilliseconds(it) }
 
     @TypeConverter
-    fun Instant?.toLong(): Long? = this?.toEpochMilliseconds()
+    fun toLong(value: Instant?): Long? = value?.toEpochMilliseconds()
 }

@@ -37,7 +37,7 @@ interface MastodonAccountsDao : BaseDao<MastodonAccount> {
             "SELECT domain FROM activeAccount" +
         ") "
     )
-    fun getActiveAccountFlow(): Flow<MastodonAccount>
+    fun getActiveAccountFlow(): Flow<MastodonAccount?>
 
     @Query(
         "SELECT * from mastodonAccounts"

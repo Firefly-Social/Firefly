@@ -1,6 +1,6 @@
 package social.firefly.core.ui.postcard
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import social.firefly.common.utils.StringFactory
 import social.firefly.common.utils.timeSinceNow
 import social.firefly.core.model.Attachment

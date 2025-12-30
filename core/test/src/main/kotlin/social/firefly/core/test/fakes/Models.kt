@@ -1,6 +1,6 @@
 package social.firefly.core.test.fakes
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import social.firefly.core.model.Account
 import social.firefly.core.model.Status
 import social.firefly.core.model.StatusVisibility

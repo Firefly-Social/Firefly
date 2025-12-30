@@ -4,9 +4,9 @@ import java.util.Properties
 plugins {
     id("social.firefly.android.application")
     id("social.firefly.android.application.compose")
-    alias(libs.plugins.about.libraries.plugin)
     id("social.firefly.android.application.secrets")
     alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.about.libraries.plugin)
 }
 
 val keystorePropertiesFile = rootProject.file("secrets/keystore.properties")

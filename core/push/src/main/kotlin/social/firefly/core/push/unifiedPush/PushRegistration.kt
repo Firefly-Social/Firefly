@@ -1,10 +1,10 @@
 package social.firefly.core.push.unifiedPush
 
 import android.content.Context
-import org.unifiedpush.android.connector.INSTANCE_DEFAULT
-import org.unifiedpush.android.connector.UnifiedPush
-import org.unifiedpush.android.connector.ui.SelectDistributorDialogBuilder
-import org.unifiedpush.android.connector.ui.UnifiedPushFunctions
+//import org.unifiedpush.android.connector.INSTANCE_DEFAULT
+//import org.unifiedpush.android.connector.UnifiedPush
+//import org.unifiedpush.android.connector.ui.SelectDistributorDialogBuilder
+//import org.unifiedpush.android.connector.ui.UnifiedPushFunctions
 
 @Suppress("UnusedParameter")
 object PushRegistration {

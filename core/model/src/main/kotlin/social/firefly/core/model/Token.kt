@@ -1,6 +1,6 @@
 package social.firefly.core.model
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * Represents an OAuth token used for authenticating with the API and performing actions.

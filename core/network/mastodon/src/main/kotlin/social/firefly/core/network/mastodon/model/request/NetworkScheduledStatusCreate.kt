@@ -1,6 +1,6 @@
 package social.firefly.core.network.mastodon.model.request
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import social.firefly.core.network.mastodon.model.responseBody.NetworkStatusVisibility
 
 /**

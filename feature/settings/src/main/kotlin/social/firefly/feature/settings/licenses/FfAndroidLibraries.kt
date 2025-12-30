@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,11 +22,14 @@ import androidx.core.text.HtmlCompat
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.entity.Library
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
+import com.mikepenz.aboutlibraries.ui.compose.libraryColors
+import com.mikepenz.aboutlibraries.ui.compose.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.util.htmlReadyLicenseContent
 import com.mikepenz.aboutlibraries.util.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import social.firefly.core.designsystem.theme.FfTheme
+import social.firefly.feature.settings.R
 
 /**
  * Displays all provided libraries in a simple list.
@@ -43,7 +47,7 @@ fun FfLibrariesContainer(
     showLicenseBadges: Boolean = true,
     colors: FfLibraryColors = FfLibraryDefaults.FfLibraryColors(),
     padding: FfLibraryPadding = FfLibraryDefaults.FfLibraryPadding(),
-    itemContentPadding: PaddingValues = LibraryDefaults.ContentPadding,
+    itemContentPadding: PaddingValues = LibraryDefaults.libraryPadding().contentPadding,
     itemSpacing: Dp = FfLibraryDefaults.LibraryItemSpacing,
     header: (LazyListScope.() -> Unit)? = null,
     onLibraryClick: ((Library) -> Unit)? = null,
@@ -82,7 +86,7 @@ fun FfLibrariesContainer(
 fun HtmlText(
     html: String,
     modifier: Modifier = Modifier,
-    color: Color = LibraryDefaults.libraryColors().contentColor,
+    color: Color = LibraryDefaults.libraryColors().libraryContentColor,
 ) {
     AndroidView(modifier = modifier, factory = { context ->
         TextView(context).apply {

@@ -5,12 +5,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import social.firefly.common.utils.edit
 import social.firefly.core.analytics.NewPostAnalytics
 import social.firefly.core.model.Poll
 import social.firefly.core.repository.mastodon.StatusRepository
+import kotlin.time.Clock
 
 class PollDelegate(
     private val analytics: NewPostAnalytics,

@@ -5,7 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import social.firefly.core.database.model.DatabaseApplication
 import social.firefly.core.database.model.DatabaseAttachment
 import social.firefly.core.database.model.DatabaseCard

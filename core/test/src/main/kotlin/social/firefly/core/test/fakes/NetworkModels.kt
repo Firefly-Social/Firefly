@@ -1,6 +1,6 @@
 package social.firefly.core.test.fakes
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import social.firefly.core.network.mastodon.model.responseBody.NetworkAccount
 import social.firefly.core.network.mastodon.model.responseBody.NetworkStatus
 import social.firefly.core.network.mastodon.model.responseBody.NetworkStatusVisibility

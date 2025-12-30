@@ -3,11 +3,11 @@ package social.firefly.core.database.model.entities
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import social.firefly.core.database.model.DatabaseEmoji
 import social.firefly.core.database.model.DatabaseField
 import social.firefly.core.database.model.DatabaseSource
+import kotlin.time.Instant
 
 /**
  * Represents a user of Mastodon and their associated profile.

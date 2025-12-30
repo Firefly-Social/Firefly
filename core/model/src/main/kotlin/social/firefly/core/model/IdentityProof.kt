@@ -1,6 +1,6 @@
 package social.firefly.core.model
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * Represents a proof from an external identity provider.
