@@ -133,4 +133,5 @@ data class Status(
      * if the status is currently being deleted by the user
      */
     val isBeingDeleted: Boolean = false,
+    val quote: Quote? = null,
 )

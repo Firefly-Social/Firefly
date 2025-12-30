@@ -34,4 +34,19 @@ data class StatusWrapper(
         entityColumn = "pollId",
     )
     val boostedPoll: DatabasePoll?,
+    @Relation(
+        parentColumn = "quoteStatusId",
+        entityColumn = "statusId",
+    )
+    val quoteStatus: DatabaseStatus?,
+    @Relation(
+        parentColumn = "quoteStatusAccountId",
+        entityColumn = "accountId",
+    )
+    val quoteAccount: DatabaseAccount?,
+    @Relation(
+        parentColumn = "quotePollId",
+        entityColumn = "pollId",
+    )
+    val quotePoll: DatabasePoll?,
 )

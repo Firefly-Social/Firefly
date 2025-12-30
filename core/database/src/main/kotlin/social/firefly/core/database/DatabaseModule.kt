@@ -12,8 +12,8 @@ val databaseModule =
                 SocialDatabase::class.java,
                 "database-social",
             )
-                .fallbackToDestructiveMigration()
-                .fallbackToDestructiveMigrationOnDowngrade()
+                .fallbackToDestructiveMigration(true)
+                .fallbackToDestructiveMigrationOnDowngrade(true)
                 .build()
         }
 

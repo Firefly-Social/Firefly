@@ -64,6 +64,10 @@ fun Status.toDatabaseModel(): DatabaseStatus =
         isBookmarked = isBookmarked,
         isPinned = isPinned,
         isBeingDeleted = isBeingDeleted,
+        quoteState = quote?.state,
+        quoteStatusId = quote?.quotedStatus?.statusId,
+        quoteStatusAccountId = quote?.quotedStatus?.account?.accountId,
+        quotePollId = quote?.quotedStatus?.poll?.pollId,
     )
 
 fun Account.toDatabaseModel(): DatabaseAccount =

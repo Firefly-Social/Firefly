@@ -28,6 +28,7 @@ import social.firefly.core.model.History
 import social.firefly.core.model.Mention
 import social.firefly.core.model.Poll
 import social.firefly.core.model.PollOption
+import social.firefly.core.model.Quote
 import social.firefly.core.model.Source
 import social.firefly.core.model.Status
 import social.firefly.core.model.StatusVisibility
@@ -65,6 +66,10 @@ fun StatusWrapper.toExternalModel(): Status =
         isBookmarked = status.isBookmarked,
         isPinned = status.isPinned,
         isBeingDeleted = status.isBeingDeleted,
+        quote = Quote(
+            state = status.quoteState,
+            quotedStatus = quoteAccount?.let { quoteStatus?.toExternalModel(it, quotePoll) },
+        )
     )
 
 fun DatabaseStatus.toExternalModel(

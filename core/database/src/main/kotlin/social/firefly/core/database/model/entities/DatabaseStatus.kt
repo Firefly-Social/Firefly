@@ -55,6 +55,27 @@ import social.firefly.core.database.model.DatabaseStatusVisibility
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
         ),
+        ForeignKey(
+            entity = DatabaseStatus::class,
+            parentColumns = ["statusId"],
+            childColumns = ["quoteStatusId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
+            entity = DatabaseAccount::class,
+            parentColumns = ["accountId"],
+            childColumns = ["quoteStatusAccountId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
+            entity = DatabasePoll::class,
+            parentColumns = ["pollId"],
+            childColumns = ["quotePollId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+        ),
     ]
 )
 data class DatabaseStatus(
@@ -194,4 +215,12 @@ data class DatabaseStatus(
      * if the status is currently being deleted by the user
      */
     val isBeingDeleted: Boolean = false,
+
+    val quoteState: String? = null,
+    @ColumnInfo(index = true)
+    val quoteStatusId: String? = null,
+    @ColumnInfo(index = true)
+    val quoteStatusAccountId: String? = null,
+    @ColumnInfo(index = true)
+    val quotePollId: String? = null,
 )
