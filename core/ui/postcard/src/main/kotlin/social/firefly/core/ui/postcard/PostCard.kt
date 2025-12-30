@@ -26,6 +26,7 @@ import social.firefly.core.ui.postcard.components.DepthLines
 import social.firefly.core.ui.postcard.components.DepthLinesExpandButton
 import social.firefly.core.ui.postcard.components.MetaData
 import social.firefly.core.ui.postcard.components.PostContent
+import social.firefly.core.ui.postcard.components.Quote
 import social.firefly.core.ui.postcard.components.TopRowMetaData
 
 @Composable
@@ -123,7 +124,7 @@ private fun Post(
 ) {
     Row {
         Avatar(
-            post = post,
+            metaDataUiState = post.metaDataUiState,
             postCardInteractions = postCardInteractions,
         )
         Spacer(modifier = Modifier.padding(start = 8.dp))
@@ -137,6 +138,13 @@ private fun Post(
                 uiState = post.postContentUiState,
                 postCardInteractions = postCardInteractions,
             )
+
+            post.quoteUiState?.let { quoteUiState ->
+                Quote(
+                    quoteUiState = quoteUiState,
+                    postCardInteractions = postCardInteractions,
+                )
+            }
 
             Box(
                 modifier = Modifier.height(36.dp)
@@ -320,6 +328,30 @@ private fun PostCardPreviewFirstItem() {
                     ),
                     expandRepliesButtonUiState = ExpandRepliesButtonUiState.PLUS,
                 ),
+            ),
+            postCardInteractions = PostCardInteractionsNoOp,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PostCardWithQuotePreview() {
+    PreviewTheme {
+        PostCard(
+            post = PostCardUiState(
+                statusId = "",
+                topRowMetaDataUiState = TopRowMetaDataUiState(
+                    TopRowIconType.REPLY,
+                    StringFactory.literal("in reply to Other person"),
+                ),
+                mainPostCardUiState = postCardUiStatePreview.copy(
+                    quoteUiState = QuoteUiState(
+                        metaDataUiState = metaDataUiStatePreview,
+                        postContentUiState = postContentUiState,
+                    )
+                ),
+                depthLinesUiState = null,
             ),
             postCardInteractions = PostCardInteractionsNoOp,
         )

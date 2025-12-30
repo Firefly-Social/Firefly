@@ -18,25 +18,47 @@ data class PostCardUiState(
 
 data class MainPostCardUiState(
     val url: String?,
+    val statusId: String,
+    val replyCount: String?,
+    val boostCount: String?,
+    val favoriteCount: String?,
+    val userBoosted: Boolean,
+    val isFavorited: Boolean,
+    val isBookmarked: Boolean,
+    val isBeingDeleted: Boolean,
+    val metaDataUiState: MetaDataUiState,
+    val overflowUiState: OverflowUiState,
+    val postContentUiState: PostContentUiState,
+    val shouldShowUnfavoriteConfirmation: Boolean,
+    val shouldShowUnbookmarkConfirmation: Boolean,
+    val quoteUiState: QuoteUiState?,
+)
+
+data class OverflowUiState(
+    val username: String,
+    val domain: String, // if the domain is the user's domain, value will be blank
+    val statusId: String,
+    val accountId: String,
+    val statusTextHtml: String,
+    val overflowDropDownType: OverflowDropDownType,
+    val accountEmojis: List<Emoji>,
+    val isBeingDeleted: Boolean,
+    val accountName: String,
+)
+
+data class MetaDataUiState(
     val username: String,
     val domain: String, // if the domain is the user's domain, value will be blank
     val profilePictureUrl: String,
     val postTimeSince: StringFactory,
     val accountName: String,
-    val replyCount: String?,
-    val boostCount: String?,
-    val favoriteCount: String?,
-    val statusId: String,
-    val userBoosted: Boolean,
-    val isFavorited: Boolean,
-    val isBookmarked: Boolean,
     val accountId: String,
-    val isBeingDeleted: Boolean,
-    val postContentUiState: PostContentUiState,
-    val overflowDropDownType: OverflowDropDownType,
-    val shouldShowUnfavoriteConfirmation: Boolean,
-    val shouldShowUnbookmarkConfirmation: Boolean,
     val accountEmojis: List<Emoji>,
+)
+
+data class QuoteUiState(
+    val metaDataUiState: MetaDataUiState,
+    val postContentUiState: PostContentUiState,
 )
 
 data class PostContentUiState(
@@ -87,35 +109,52 @@ data class PreviewCard(
     val providerName: String?,
 )
 
-@Suppress("MagicNumber", "MaxLineLength")
-internal val postCardUiStatePreview = MainPostCardUiState(
-    url = "",
+internal val metaDataUiStatePreview = MetaDataUiState(
     username = "Cool guy",
     domain = "mozilla.social",
     profilePictureUrl = "",
     postTimeSince = Instant.fromEpochMilliseconds(1695308821000L).timeSinceNow(),
     accountName = "coolguy",
+    accountId = "",
+    accountEmojis = emptyList(),
+)
+
+internal val postContentUiState = PostContentUiState(
+    statusId = "",
+    pollUiState = null,
+    statusTextHtml = "<p><span class=\"h-card\"><a href=\"https://mozilla.social/@obez\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>obez</span></a></span> This is a text status.  Here is the text and that is all I have to say about that.</p>",
+    mediaAttachments = emptyList(),
+    mentions = emptyList(),
+    emojis = emptyList(),
+    previewCard = null,
+    contentWarning = "",
+)
+
+@Suppress("MagicNumber", "MaxLineLength")
+internal val postCardUiStatePreview = MainPostCardUiState(
+    statusId = "",
+    url = "",
     replyCount = "4",
     boostCount = "300k",
     favoriteCount = "4.4m",
-    statusId = "",
     userBoosted = false,
     isFavorited = false,
     isBookmarked = false,
-    accountId = "",
     isBeingDeleted = false,
-    postContentUiState = PostContentUiState(
+    metaDataUiState = metaDataUiStatePreview,
+    overflowUiState = OverflowUiState(
+        username = "Cool guy",
+        domain = "mozilla.social",
+        accountName = "coolguy",
         statusId = "",
-        pollUiState = null,
-        statusTextHtml = "<p><span class=\"h-card\"><a href=\"https://mozilla.social/@obez\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>obez</span></a></span> This is a text status.  Here is the text and that is all I have to say about that.</p>",
-        mediaAttachments = emptyList(),
-        mentions = emptyList(),
-        emojis = emptyList(),
-        previewCard = null,
-        contentWarning = "",
+        accountId = "",
+        accountEmojis = emptyList(),
+        isBeingDeleted = false,
+        statusTextHtml = "",
+        overflowDropDownType = OverflowDropDownType.USER,
     ),
-    overflowDropDownType = OverflowDropDownType.USER,
+    postContentUiState = postContentUiState,
     shouldShowUnfavoriteConfirmation = false,
     shouldShowUnbookmarkConfirmation = false,
-    accountEmojis = emptyList(),
+    quoteUiState = null,
 )

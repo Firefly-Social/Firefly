@@ -28,7 +28,9 @@ import social.firefly.core.ui.common.loading.FfCircularProgressIndicator
 import social.firefly.core.ui.common.text.EmojiText
 import social.firefly.core.ui.htmlcontent.htmlToSpannable
 import social.firefly.core.ui.postcard.MainPostCardUiState
+import social.firefly.core.ui.postcard.MetaDataUiState
 import social.firefly.core.ui.postcard.OverflowDropDownType
+import social.firefly.core.ui.postcard.OverflowUiState
 import social.firefly.core.ui.postcard.PostCardInteractions
 import social.firefly.core.ui.postcard.R
 
@@ -38,30 +40,41 @@ internal fun MetaData(
     post: MainPostCardUiState,
     postCardInteractions: PostCardInteractions,
 ) {
-    val context = LocalContext.current
-
     Row(
         modifier = modifier,
     ) {
-        Column(
+        MetaData(
             modifier = Modifier.weight(1f),
-        ) {
-            EmojiText(
-                text = post.username,
-                emojis = post.accountEmojis,
-                style = FfTheme.typography.labelMedium,
-            )
-            Text(
-                text = "${post.postTimeSince.build(context)} - @${post.accountName}",
-                style = FfTheme.typography.bodyMedium,
-                color = FfTheme.colors.textSecondary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
+            metaDataUiState = post.metaDataUiState,
+        )
         OverflowMenu(
-            post = post,
+            uiState = post.overflowUiState,
             postCardInteractions = postCardInteractions,
+        )
+    }
+}
+
+@Composable
+internal fun MetaData(
+    modifier: Modifier = Modifier,
+    metaDataUiState: MetaDataUiState,
+) {
+    val context = LocalContext.current
+
+    Column(
+        modifier = modifier,
+    ) {
+        EmojiText(
+            text = metaDataUiState.username,
+            emojis = metaDataUiState.accountEmojis,
+            style = FfTheme.typography.labelMedium,
+        )
+        Text(
+            text = "${metaDataUiState.postTimeSince.build(context)} - @${metaDataUiState.accountName}",
+            style = FfTheme.typography.bodyMedium,
+            color = FfTheme.colors.textSecondary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -69,32 +82,32 @@ internal fun MetaData(
 @Suppress("LongMethod")
 @Composable
 private fun OverflowMenu(
-    post: MainPostCardUiState,
+    uiState: OverflowUiState,
     postCardInteractions: PostCardInteractions,
 ) {
     val overflowMenuExpanded = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    val blockDialog = blockAccountConfirmationDialog(userName = post.username) {
+    val blockDialog = blockAccountConfirmationDialog(userName = uiState.username) {
         postCardInteractions.onOverflowBlockClicked(
-            accountId = post.accountId,
-            statusId = post.statusId,
+            accountId = uiState.accountId,
+            statusId = uiState.statusId,
         )
     }
 
-    val muteDialog = muteAccountConfirmationDialog(userName = post.username) {
+    val muteDialog = muteAccountConfirmationDialog(userName = uiState.username) {
         postCardInteractions.onOverflowMuteClicked(
-            accountId = post.accountId,
-            statusId = post.statusId,
+            accountId = uiState.accountId,
+            statusId = uiState.statusId,
         )
     }
 
-    val blockDomainDialog = blockDomainConfirmationDialog(domain = post.domain) {
-        postCardInteractions.onOverflowBlockDomainClicked(post.domain)
+    val blockDomainDialog = blockDomainConfirmationDialog(domain = uiState.domain) {
+        postCardInteractions.onOverflowBlockDomainClicked(uiState.domain)
     }
 
     val deleteStatusDialog = deleteStatusConfirmationDialog {
-        postCardInteractions.onOverflowDeleteClicked(post.statusId)
+        postCardInteractions.onOverflowDeleteClicked(uiState.statusId)
     }
 
     FfIconButtonDropDownMenu(
@@ -114,13 +127,13 @@ private fun OverflowMenu(
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip = ClipData.newHtmlText(
                         StringFactory.resource(resId = R.string.copied_text_label).build(context),
-                        post.postContentUiState.statusTextHtml.htmlToSpannable(),
-                        post.postContentUiState.statusTextHtml,
+                        uiState.statusTextHtml.htmlToSpannable(),
+                        uiState.statusTextHtml,
                     )
                     clipboard.setPrimaryClip(clip)
                 },
             )
-            when (post.overflowDropDownType) {
+            when (uiState.overflowDropDownType) {
                 OverflowDropDownType.USER -> {
                     FfDropDownItem(
                         text = StringFactory.resource(resId = R.string.edit_post).build(context),
@@ -132,7 +145,7 @@ private fun OverflowMenu(
                             )
                         },
                         expanded = overflowMenuExpanded,
-                        onClick = { postCardInteractions.onOverflowEditClicked(post.statusId) },
+                        onClick = { postCardInteractions.onOverflowEditClicked(uiState.statusId) },
                     )
                     FfDropDownItem(
                         text = StringFactory.resource(resId = R.string.delete_post).build(context),
@@ -151,7 +164,7 @@ private fun OverflowMenu(
                     FfDropDownItem(
                         text = StringFactory.resource(
                             R.string.mute_user,
-                            post.username
+                            uiState.username
                         ).build(context),
                         icon = {
                             Icon(
@@ -160,14 +173,14 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
-                        emojis = post.accountEmojis,
+                        emojis = uiState.accountEmojis,
                         expanded = overflowMenuExpanded,
                         onClick = { muteDialog.open() },
                     )
                     FfDropDownItem(
                         text = StringFactory.resource(
                             R.string.block_user,
-                            post.username
+                            uiState.username
                         ).build(context),
                         icon = {
                             Icon(
@@ -176,14 +189,14 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
-                        emojis = post.accountEmojis,
+                        emojis = uiState.accountEmojis,
                         expanded = overflowMenuExpanded,
                         onClick = { blockDialog.open() },
                     )
                     FfDropDownItem(
                         text = StringFactory.resource(
                             R.string.report_user,
-                            post.username
+                            uiState.username
                         ).build(context),
                         icon = {
                             Icon(
@@ -192,21 +205,21 @@ private fun OverflowMenu(
                                 contentDescription = null
                             )
                         },
-                        emojis = post.accountEmojis,
+                        emojis = uiState.accountEmojis,
                         expanded = overflowMenuExpanded,
                         onClick = {
                             postCardInteractions.onOverflowReportClicked(
-                                accountId = post.accountId,
-                                accountHandle = post.accountName,
-                                statusId = post.statusId,
+                                accountId = uiState.accountId,
+                                accountHandle = uiState.accountName,
+                                statusId = uiState.statusId,
                             )
                         }
                     )
-                    if (post.domain.isNotBlank()) {
+                    if (uiState.domain.isNotBlank()) {
                         FfDropDownItem(
                             text = StringFactory.resource(
                                 R.string.block_domain,
-                                post.domain
+                                uiState.domain
                             ).build(context),
                             icon = {
                                 Icon(
@@ -223,7 +236,7 @@ private fun OverflowMenu(
             }
         }
     ) {
-        if (post.isBeingDeleted) {
+        if (uiState.isBeingDeleted) {
             FfCircularProgressIndicator(
                 modifier =
                 Modifier

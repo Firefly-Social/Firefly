@@ -43,35 +43,71 @@ private fun Status.toMainPostCardUiState(
     shouldShowUnfavoriteConfirmation: Boolean = false,
     shouldShowUnbookmarkConfirmation: Boolean = false,
 ): MainPostCardUiState = MainPostCardUiState(
+    statusId = statusId,
     url = url,
-    profilePictureUrl = account.avatarStaticUrl,
-    postTimeSince = createdAt.timeSinceNow(),
-    accountName = account.acct,
     replyCount = repliesCount.toShortenedStringValue(),
     boostCount = boostsCount.toShortenedStringValue(),
     favoriteCount = favouritesCount.toShortenedStringValue(),
+    userBoosted = isBoosted ?: false,
+    isFavorited = isFavourited ?: false,
+    isBookmarked = isBookmarked ?: false,
+    isBeingDeleted = isBeingDeleted,
+    metaDataUiState = toMetaDataUiState(),
+    overflowUiState = toOverflowUiState(
+        currentUserAccountId = currentUserAccountId,
+    ),
+    postContentUiState = toPostContentUiState(
+        statusId = statusId,
+        currentUserAccountId = currentUserAccountId
+    ),
+    shouldShowUnbookmarkConfirmation = shouldShowUnbookmarkConfirmation,
+    shouldShowUnfavoriteConfirmation = shouldShowUnfavoriteConfirmation,
+    quoteUiState = quote?.quotedStatus?.toQuoteUiState(
+        currentUserAccountId = currentUserAccountId,
+    )
+)
+
+fun Status.toMetaDataUiState() = MetaDataUiState(
+    profilePictureUrl = account.avatarStaticUrl,
+    postTimeSince = createdAt.timeSinceNow(),
+    accountName = account.acct,
+    username = account.displayName,
+    domain = account.acct.substringAfter(
+        delimiter = "@",
+        missingDelimiterValue = ""
+    ),
+    accountId = account.accountId,
+    accountEmojis = account.emojis,
+)
+
+fun Status.toOverflowUiState(
+    currentUserAccountId: String,
+) = OverflowUiState(
+    accountName = account.acct,
     username = account.displayName,
     domain = account.acct.substringAfter(
         delimiter = "@",
         missingDelimiterValue = ""
     ),
     statusId = statusId,
-    userBoosted = isBoosted ?: false,
-    isFavorited = isFavourited ?: false,
-    isBookmarked = isBookmarked ?: false,
     accountId = account.accountId,
-    isBeingDeleted = isBeingDeleted,
-    postContentUiState = toPostContentUiState(
-        statusId = statusId,
-        currentUserAccountId = currentUserAccountId
-    ),
+    accountEmojis = account.emojis,
     overflowDropDownType = when {
         currentUserAccountId == account.accountId -> OverflowDropDownType.USER
         else -> OverflowDropDownType.NOT_USER
     },
-    shouldShowUnbookmarkConfirmation = shouldShowUnbookmarkConfirmation,
-    shouldShowUnfavoriteConfirmation = shouldShowUnfavoriteConfirmation,
-    accountEmojis = account.emojis,
+    isBeingDeleted = isBeingDeleted,
+    statusTextHtml = content,
+)
+
+fun Status.toQuoteUiState(
+    currentUserAccountId: String,
+) = QuoteUiState(
+    metaDataUiState = toMetaDataUiState(),
+    postContentUiState = toPostContentUiState(
+        statusId = statusId,
+        currentUserAccountId = currentUserAccountId
+    ),
 )
 
 fun Status.toPostContentUiState(
