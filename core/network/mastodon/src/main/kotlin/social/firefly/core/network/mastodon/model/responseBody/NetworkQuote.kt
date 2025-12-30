@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NetworkQuote(
     @SerialName("state")
-    val state: String?,
+    val state: String? = null,
 
     @SerialName("quoted_status")
-    val quotedStatus: NetworkStatus?,
+    val quotedStatus: NetworkStatus? = null,
 )

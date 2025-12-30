@@ -14,11 +14,13 @@ import androidx.compose.ui.unit.dp
 import social.firefly.core.designsystem.theme.FfRadius
 import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.postcard.PostCardInteractions
 import social.firefly.core.ui.postcard.PostCardInteractionsNoOp
 import social.firefly.core.ui.postcard.QuoteUiState
 import social.firefly.core.ui.postcard.metaDataUiStatePreview
 import social.firefly.core.ui.postcard.postContentUiState
+import social.firefly.core.ui.postcard.quoteUiStatePreview
 
 @Composable
 fun Quote(
@@ -33,6 +35,9 @@ fun Quote(
                 shape = RoundedCornerShape(FfRadius.md_8_dp),
             )
             .padding(8.dp)
+            .noRippleClickable {
+                postCardInteractions.onPostCardClicked(quoteUiState.statusId)
+            }
     ) {
         Row {
             Avatar(
@@ -60,10 +65,7 @@ fun Quote(
 private fun QuotePreview() {
     PreviewTheme {
         Quote(
-            quoteUiState = QuoteUiState(
-                metaDataUiState = metaDataUiStatePreview,
-                postContentUiState = postContentUiState,
-            ),
+            quoteUiState = quoteUiStatePreview,
             postCardInteractions = PostCardInteractionsNoOp,
         )
     }

@@ -103,6 +103,7 @@ fun Status.toOverflowUiState(
 fun Status.toQuoteUiState(
     currentUserAccountId: String,
 ) = QuoteUiState(
+    statusId = statusId,
     metaDataUiState = toMetaDataUiState(),
     postContentUiState = toPostContentUiState(
         statusId = statusId,

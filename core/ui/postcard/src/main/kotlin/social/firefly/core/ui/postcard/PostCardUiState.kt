@@ -57,6 +57,7 @@ data class MetaDataUiState(
 )
 
 data class QuoteUiState(
+    val statusId: String,
     val metaDataUiState: MetaDataUiState,
     val postContentUiState: PostContentUiState,
 )
@@ -128,6 +129,12 @@ internal val postContentUiState = PostContentUiState(
     emojis = emptyList(),
     previewCard = null,
     contentWarning = "",
+)
+
+internal val quoteUiStatePreview = QuoteUiState(
+    statusId = "",
+    metaDataUiState = metaDataUiStatePreview,
+    postContentUiState = postContentUiState,
 )
 
 @Suppress("MagicNumber", "MaxLineLength")

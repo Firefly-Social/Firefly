@@ -346,10 +346,7 @@ private fun PostCardWithQuotePreview() {
                     StringFactory.literal("in reply to Other person"),
                 ),
                 mainPostCardUiState = postCardUiStatePreview.copy(
-                    quoteUiState = QuoteUiState(
-                        metaDataUiState = metaDataUiStatePreview,
-                        postContentUiState = postContentUiState,
-                    )
+                    quoteUiState = quoteUiStatePreview,
                 ),
                 depthLinesUiState = null,
             ),
