@@ -29,9 +29,9 @@ fun Quote(
     Column(
         modifier = modifier
             .border(
-                width = 2.dp,
+                width = 1.dp,
                 color = FfTheme.colors.borderPrimary,
-                shape = RoundedCornerShape(FfRadius.md_8_dp),
+                shape = RoundedCornerShape(FfRadius.lg_16_dp),
             )
             .padding(8.dp)
             .noRippleClickable {
