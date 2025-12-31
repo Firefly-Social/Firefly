@@ -85,7 +85,8 @@ class NewPostViewModel(
                 val images = imagesStates.filter { it.fileType == FileType.IMAGE }
                 val videos = imagesStates.filter { it.fileType == FileType.VIDEO }
                 newPostUiState.value.bottomBarState.copy(
-                    imageButtonEnabled = videos.isEmpty() && images.size < MAX_IMAGES && pollUiState == null && quoteStatusId == null,
+                    imageButtonEnabled = videos.isEmpty() && images.size < MAX_IMAGES &&
+                            pollUiState == null && quoteStatusId == null,
                     videoButtonEnabled = images.isEmpty() && pollUiState == null && quoteStatusId == null,
                     pollButtonEnabled = images.isEmpty() && videos.isEmpty() && quoteStatusId == null,
                     contentWarningText = statusUiState.contentWarningText,
