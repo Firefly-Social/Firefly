@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -141,6 +142,7 @@ private fun Post(
 
             post.quoteUiState?.let { quoteUiState ->
                 Quote(
+                    modifier = Modifier.fillMaxWidth(),
                     quoteUiState = quoteUiState,
                     postCardInteractions = postCardInteractions,
                 )
@@ -346,7 +348,11 @@ private fun PostCardWithQuotePreview() {
                     StringFactory.literal("in reply to Other person"),
                 ),
                 mainPostCardUiState = postCardUiStatePreview.copy(
-                    quoteUiState = quoteUiStatePreview,
+                    quoteUiState = quoteUiStatePreview.copy(
+                        postContentUiState = postContentUiStatePreview.copy(
+                            statusTextHtml = "Quoted Text"
+                        )
+                    ),
                 ),
                 depthLinesUiState = null,
             ),

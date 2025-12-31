@@ -120,7 +120,7 @@ internal val metaDataUiStatePreview = MetaDataUiState(
     accountEmojis = emptyList(),
 )
 
-internal val postContentUiState = PostContentUiState(
+internal val postContentUiStatePreview = PostContentUiState(
     statusId = "",
     pollUiState = null,
     statusTextHtml = "<p><span class=\"h-card\"><a href=\"https://mozilla.social/@obez\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>obez</span></a></span> This is a text status.  Here is the text and that is all I have to say about that.</p>",
@@ -134,7 +134,7 @@ internal val postContentUiState = PostContentUiState(
 val quoteUiStatePreview = QuoteUiState(
     statusId = "",
     metaDataUiState = metaDataUiStatePreview,
-    postContentUiState = postContentUiState,
+    postContentUiState = postContentUiStatePreview,
 )
 
 @Suppress("MagicNumber", "MaxLineLength")
@@ -160,7 +160,7 @@ internal val postCardUiStatePreview = MainPostCardUiState(
         statusTextHtml = "",
         overflowDropDownType = OverflowDropDownType.USER,
     ),
-    postContentUiState = postContentUiState,
+    postContentUiState = postContentUiStatePreview,
     shouldShowUnfavoriteConfirmation = false,
     shouldShowUnbookmarkConfirmation = false,
     quoteUiState = null,

@@ -441,6 +441,7 @@ private fun MainBox(
                             .padding(8.dp)
                     ) {
                         Quote(
+                            modifier = Modifier.fillMaxWidth(),
                             quoteUiState = it,
                             postCardInteractions = PostCardInteractionsNoOp,
                         )
