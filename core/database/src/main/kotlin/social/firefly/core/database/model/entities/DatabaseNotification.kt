@@ -44,5 +44,7 @@ data class DatabaseNotification(
         FAVORITE,
         POLL_ENDED,
         STATUS_UPDATED,
+        QUOTE,
+        QUOTE_UPDATE,
     }
 }

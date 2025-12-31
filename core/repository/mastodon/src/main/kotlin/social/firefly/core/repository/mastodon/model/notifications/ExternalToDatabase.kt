@@ -68,5 +68,21 @@ fun Notification.toDatabase(): DatabaseNotification? = when (this) {
         statusId = null,
     )
 
+    is Notification.Quote -> DatabaseNotification(
+        id = id,
+        type = DatabaseNotification.Type.QUOTE,
+        createdAt = createdAt,
+        accountId = account.accountId,
+        statusId = status.statusId,
+    )
+
+    is Notification.QuoteUpdate -> DatabaseNotification(
+        id = id,
+        type = DatabaseNotification.Type.QUOTE_UPDATE,
+        createdAt = createdAt,
+        accountId = account.accountId,
+        statusId = status.statusId,
+    )
+
     else -> null
 }
