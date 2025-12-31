@@ -163,4 +163,7 @@ data class NetworkStatus(
 
     @SerialName("quote")
     val quote: NetworkQuote? = null,
+
+    @SerialName("quote_approval")
+    val quoteApproval: NetworkQuoteApproval,
 )

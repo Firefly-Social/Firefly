@@ -13,6 +13,9 @@ import social.firefly.core.model.Mention
 import social.firefly.core.model.Poll
 import social.firefly.core.model.PollOption
 import social.firefly.core.model.Quote
+import social.firefly.core.model.QuoteApproval
+import social.firefly.core.model.QuoteApprovalGroup
+import social.firefly.core.model.QuoteApprovalType
 import social.firefly.core.model.Source
 import social.firefly.core.model.Status
 import social.firefly.core.model.StatusVisibility
@@ -29,6 +32,9 @@ import social.firefly.core.network.mastodon.model.responseBody.NetworkMention
 import social.firefly.core.network.mastodon.model.responseBody.NetworkPoll
 import social.firefly.core.network.mastodon.model.responseBody.NetworkPollOption
 import social.firefly.core.network.mastodon.model.responseBody.NetworkQuote
+import social.firefly.core.network.mastodon.model.responseBody.NetworkQuoteApproval
+import social.firefly.core.network.mastodon.model.responseBody.NetworkQuoteApprovalGroup
+import social.firefly.core.network.mastodon.model.responseBody.NetworkQuoteApprovalType
 import social.firefly.core.network.mastodon.model.responseBody.NetworkSource
 import social.firefly.core.network.mastodon.model.responseBody.NetworkStatus
 import social.firefly.core.network.mastodon.model.responseBody.NetworkStatusVisibility
@@ -65,6 +71,7 @@ fun NetworkStatus.toExternalModel(): Status =
         isBookmarked = isBookmarked,
         isPinned = isPinned,
         quote = quote?.toExternalModel(),
+        quoteApproval = quoteApproval.toExternalModel(),
     )
 
 fun NetworkAccount.toExternalModel(): Account =
@@ -321,6 +328,43 @@ fun NetworkQuote.toExternalModel(): Quote =
         state = state,
         quotedStatus = quotedStatus?.toExternalModel(),
     )
+
+fun NetworkQuoteApproval.toExternalModel(): QuoteApproval =
+    QuoteApproval(
+        automatic = automatic.map { it.toExternalModel() },
+        manual = manual.map { it.toExternalModel() },
+        currentUser = currentUser.toExternalModel(),
+    )
+
+private fun NetworkQuoteApprovalGroup.toExternalModel(): QuoteApprovalGroup =
+    when (this) {
+        NetworkQuoteApprovalGroup.PUBLIC ->
+            QuoteApprovalGroup.PUBLIC
+
+        NetworkQuoteApprovalGroup.FOLLOWERS ->
+            QuoteApprovalGroup.FOLLOWERS
+
+        NetworkQuoteApprovalGroup.FOLLOWING ->
+            QuoteApprovalGroup.FOLLOWING
+
+        NetworkQuoteApprovalGroup.UNSUPPORTED_POLICY ->
+            QuoteApprovalGroup.UNSUPPORTED_POLICY
+    }
+
+private fun NetworkQuoteApprovalType.toExternalModel(): QuoteApprovalType =
+    when (this) {
+        NetworkQuoteApprovalType.AUTOMATIC ->
+            QuoteApprovalType.AUTOMATIC
+
+        NetworkQuoteApprovalType.MANUAL ->
+            QuoteApprovalType.MANUAL
+
+        NetworkQuoteApprovalType.DENIED ->
+            QuoteApprovalType.DENIED
+
+        NetworkQuoteApprovalType.UNKNOWN ->
+            QuoteApprovalType.UNKNOWN
+    }
 
 fun NetworkCard.toExternalModel(): Card =
     when (type) {

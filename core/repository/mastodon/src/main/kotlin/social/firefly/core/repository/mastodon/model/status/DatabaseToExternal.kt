@@ -10,6 +10,9 @@ import social.firefly.core.database.model.DatabaseHashTag
 import social.firefly.core.database.model.DatabaseHistory
 import social.firefly.core.database.model.DatabaseMention
 import social.firefly.core.database.model.DatabasePollOption
+import social.firefly.core.database.model.DatabaseQuoteApproval
+import social.firefly.core.database.model.DatabaseQuoteApprovalGroup
+import social.firefly.core.database.model.DatabaseQuoteApprovalType
 import social.firefly.core.database.model.DatabaseSource
 import social.firefly.core.database.model.DatabaseStatusVisibility
 import social.firefly.core.database.model.entities.DatabaseAccount
@@ -29,6 +32,9 @@ import social.firefly.core.model.Mention
 import social.firefly.core.model.Poll
 import social.firefly.core.model.PollOption
 import social.firefly.core.model.Quote
+import social.firefly.core.model.QuoteApproval
+import social.firefly.core.model.QuoteApprovalGroup
+import social.firefly.core.model.QuoteApprovalType
 import social.firefly.core.model.Source
 import social.firefly.core.model.Status
 import social.firefly.core.model.StatusVisibility
@@ -69,7 +75,8 @@ fun StatusWrapper.toExternalModel(): Status =
         quote = Quote(
             state = status.quoteState,
             quotedStatus = quoteAccount?.let { quoteStatus?.toExternalModel(it, quotePoll) },
-        )
+        ),
+        quoteApproval = status.quoteApproval.toExternalModel(),
     )
 
 fun DatabaseStatus.toExternalModel(
@@ -106,6 +113,7 @@ fun DatabaseStatus.toExternalModel(
         isMuted = isMuted,
         isBookmarked = isBookmarked,
         isPinned = isPinned,
+        quoteApproval = quoteApproval.toExternalModel(),
     )
 
 fun DatabaseAccount.toExternalModel(): Account =
@@ -357,6 +365,43 @@ fun DatabaseSource.toExternalModel(): Source =
         defaultLanguage = defaultLanguage,
         followRequestsCount = followRequestsCount,
     )
+
+fun DatabaseQuoteApproval.toExternalModel(): QuoteApproval =
+    QuoteApproval(
+        automatic = automatic.map { it.toExternalModel() },
+        manual = manual.map { it.toExternalModel() },
+        currentUser = currentUser.toExternalModel(),
+    )
+
+private fun DatabaseQuoteApprovalGroup.toExternalModel(): QuoteApprovalGroup =
+    when (this) {
+        DatabaseQuoteApprovalGroup.PUBLIC ->
+            QuoteApprovalGroup.PUBLIC
+
+        DatabaseQuoteApprovalGroup.FOLLOWERS ->
+            QuoteApprovalGroup.FOLLOWERS
+
+        DatabaseQuoteApprovalGroup.FOLLOWING ->
+            QuoteApprovalGroup.FOLLOWING
+
+        DatabaseQuoteApprovalGroup.UNSUPPORTED_POLICY ->
+            QuoteApprovalGroup.UNSUPPORTED_POLICY
+    }
+
+private fun DatabaseQuoteApprovalType.toExternalModel(): QuoteApprovalType =
+    when (this) {
+        DatabaseQuoteApprovalType.AUTOMATIC ->
+            QuoteApprovalType.AUTOMATIC
+
+        DatabaseQuoteApprovalType.MANUAL ->
+            QuoteApprovalType.MANUAL
+
+        DatabaseQuoteApprovalType.DENIED ->
+            QuoteApprovalType.DENIED
+
+        DatabaseQuoteApprovalType.UNKNOWN ->
+            QuoteApprovalType.UNKNOWN
+    }
 
 fun DatabaseCard.toExternalModel(): Card =
     when (this) {

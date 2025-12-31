@@ -134,4 +134,5 @@ data class Status(
      */
     val isBeingDeleted: Boolean = false,
     val quote: Quote? = null,
+    val quoteApproval: QuoteApproval,
 )

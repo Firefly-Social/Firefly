@@ -9,6 +9,9 @@ import social.firefly.core.database.model.DatabaseFocalPoint
 import social.firefly.core.database.model.DatabaseHashTag
 import social.firefly.core.database.model.DatabaseHistory
 import social.firefly.core.database.model.DatabaseMention
+import social.firefly.core.database.model.DatabaseQuoteApproval
+import social.firefly.core.database.model.DatabaseQuoteApprovalGroup
+import social.firefly.core.database.model.DatabaseQuoteApprovalType
 import social.firefly.core.database.model.DatabaseSource
 import social.firefly.core.database.model.DatabaseStatusVisibility
 import social.firefly.core.database.model.entities.DatabaseAccount
@@ -25,6 +28,9 @@ import social.firefly.core.model.Field
 import social.firefly.core.model.FocalPoint
 import social.firefly.core.model.History
 import social.firefly.core.model.Mention
+import social.firefly.core.model.QuoteApproval
+import social.firefly.core.model.QuoteApprovalGroup
+import social.firefly.core.model.QuoteApprovalType
 import social.firefly.core.model.Source
 import social.firefly.core.model.Status
 import social.firefly.core.model.StatusVisibility
@@ -68,6 +74,7 @@ fun Status.toDatabaseModel(): DatabaseStatus =
         quoteStatusId = quote?.quotedStatus?.statusId,
         quoteStatusAccountId = quote?.quotedStatus?.account?.accountId,
         quotePollId = quote?.quotedStatus?.poll?.pollId,
+        quoteApproval = quoteApproval.toDatabaseModel()
     )
 
 fun Account.toDatabaseModel(): DatabaseAccount =
@@ -305,6 +312,43 @@ fun Source.toDatabaseModel(): DatabaseSource =
         defaultLanguage = defaultLanguage,
         followRequestsCount = followRequestsCount,
     )
+
+fun QuoteApproval.toDatabaseModel(): DatabaseQuoteApproval =
+    DatabaseQuoteApproval(
+        automatic = automatic.map { it.toDatabaseModel() },
+        manual = manual.map { it.toDatabaseModel() },
+        currentUser = currentUser.toDatabaseModel(),
+    )
+
+private fun QuoteApprovalGroup.toDatabaseModel(): DatabaseQuoteApprovalGroup =
+    when (this) {
+        QuoteApprovalGroup.PUBLIC ->
+            DatabaseQuoteApprovalGroup.PUBLIC
+
+        QuoteApprovalGroup.FOLLOWERS ->
+            DatabaseQuoteApprovalGroup.FOLLOWERS
+
+        QuoteApprovalGroup.FOLLOWING ->
+            DatabaseQuoteApprovalGroup.FOLLOWING
+
+        QuoteApprovalGroup.UNSUPPORTED_POLICY ->
+            DatabaseQuoteApprovalGroup.UNSUPPORTED_POLICY
+    }
+
+private fun QuoteApprovalType.toDatabaseModel(): DatabaseQuoteApprovalType =
+    when (this) {
+        QuoteApprovalType.AUTOMATIC ->
+            DatabaseQuoteApprovalType.AUTOMATIC
+
+        QuoteApprovalType.MANUAL ->
+            DatabaseQuoteApprovalType.MANUAL
+
+        QuoteApprovalType.DENIED ->
+            DatabaseQuoteApprovalType.DENIED
+
+        QuoteApprovalType.UNKNOWN ->
+            DatabaseQuoteApprovalType.UNKNOWN
+    }
 
 fun Card.toDatabaseModel(): DatabaseCard =
     when (this) {

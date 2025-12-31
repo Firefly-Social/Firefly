@@ -12,6 +12,7 @@ import social.firefly.core.database.model.DatabaseCard
 import social.firefly.core.database.model.DatabaseEmoji
 import social.firefly.core.database.model.DatabaseHashTag
 import social.firefly.core.database.model.DatabaseMention
+import social.firefly.core.database.model.DatabaseQuoteApproval
 import social.firefly.core.database.model.DatabaseStatusVisibility
 
 /**
@@ -223,4 +224,9 @@ data class DatabaseStatus(
     val quoteStatusAccountId: String? = null,
     @ColumnInfo(index = true)
     val quotePollId: String? = null,
+
+    @ColumnInfo(
+        defaultValue = "'{\"automatic\":[],\"manual\":[],\"currentUser\":\"denied\"}'"
+    )
+    val quoteApproval: DatabaseQuoteApproval,
 )
