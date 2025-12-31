@@ -16,10 +16,13 @@ fun NavGraphBuilder.newPostScreen() {
             backStackEntry.toRoute<NavigationDestination.NewPost>().replyStatusId
         val editStatusId: String? =
             backStackEntry.toRoute<NavigationDestination.NewPost>().editStatusId
+        val quoteStatusId: String? =
+            backStackEntry.toRoute<NavigationDestination.NewPost>().quoteStatusId
 
         NewPostScreen(
             replyStatusId = replyStatusId,
-            editStatusId = editStatusId
+            editStatusId = editStatusId,
+            quoteStatusId = quoteStatusId,
         )
     }
 }

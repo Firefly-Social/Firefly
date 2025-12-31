@@ -33,9 +33,12 @@ import social.firefly.core.ui.notifications.cards.FollowRequestNotificationConte
 import social.firefly.core.ui.notifications.cards.MentionNotificationContent
 import social.firefly.core.ui.notifications.cards.NewStatusNotificationContent
 import social.firefly.core.ui.notifications.cards.PollEndedNotificationContent
+import social.firefly.core.ui.notifications.cards.QuoteNotificationContent
+import social.firefly.core.ui.notifications.cards.QuoteUpdateNotificationContent
 import social.firefly.core.ui.notifications.cards.RepostNotificationContent
 import social.firefly.core.ui.notifications.cards.StatusUpdatedNotificationContent
 import social.firefly.core.ui.postcard.PostCardInteractions
+import social.firefly.core.ui.postcard.components.Quote
 
 @Suppress("LongMethod")
 @Composable
@@ -149,6 +152,34 @@ fun NotificationCard(
                 notificationTypeIcon = FfIcons.bell(),
             ) {
                 StatusUpdatedNotificationContent(
+                    uiState = uiState,
+                    postCardInteractions = postCardInteractions,
+                )
+            }
+
+            is NotificationUiState.Quote -> NotificationCard(
+                modifier = Modifier.noRippleClickable {
+                    notificationInteractions.onQuoteClicked(uiState.statusId)
+                },
+                uiState = uiState,
+                notificationInteractions = notificationInteractions,
+                notificationTypeIcon = FfIcons.quotes(),
+            ) {
+                QuoteNotificationContent(
+                    uiState = uiState,
+                    postCardInteractions = postCardInteractions,
+                )
+            }
+
+            is NotificationUiState.QuoteUpdate -> NotificationCard(
+                modifier = Modifier.noRippleClickable {
+                    notificationInteractions.onQuoteUpdateClicked(uiState.statusId)
+                },
+                uiState = uiState,
+                notificationInteractions = notificationInteractions,
+                notificationTypeIcon = FfIcons.quotes(),
+            ) {
+                QuoteUpdateNotificationContent(
                     uiState = uiState,
                     postCardInteractions = postCardInteractions,
                 )

@@ -38,6 +38,7 @@ class NewPostViewModel(
     private val analytics: NewPostAnalytics,
     private val replyStatusId: String?,
     private val editStatusId: String?,
+    private val quoteStatusId: String?,
     getLoggedInUserAccountId: GetLoggedInUserAccountId,
     accountRepository: AccountRepository,
     private val postStatus: PostStatus,
@@ -53,6 +54,7 @@ class NewPostViewModel(
             viewModelScope,
             replyStatusId,
             editStatusId,
+            quoteStatusId,
         )
     }
 
@@ -83,9 +85,10 @@ class NewPostViewModel(
                 val images = imagesStates.filter { it.fileType == FileType.IMAGE }
                 val videos = imagesStates.filter { it.fileType == FileType.VIDEO }
                 newPostUiState.value.bottomBarState.copy(
-                    imageButtonEnabled = videos.isEmpty() && images.size < MAX_IMAGES && pollUiState == null,
-                    videoButtonEnabled = images.isEmpty() && pollUiState == null,
-                    pollButtonEnabled = images.isEmpty() && videos.isEmpty(),
+                    imageButtonEnabled = videos.isEmpty() && images.size < MAX_IMAGES &&
+                            pollUiState == null && quoteStatusId == null,
+                    videoButtonEnabled = images.isEmpty() && pollUiState == null && quoteStatusId == null,
+                    pollButtonEnabled = images.isEmpty() && videos.isEmpty() && quoteStatusId == null,
                     contentWarningText = statusUiState.contentWarningText,
                     characterCountText = "${
                         MAX_POST_LENGTH -
@@ -222,6 +225,7 @@ class NewPostViewModel(
                     contentWarningText = statusDelegate.uiState.value.contentWarningText,
                     inReplyToId = replyStatusId,
                     languageCode = newPostUiState.value.bottomBarState.language,
+                    quotedStatusId = quoteStatusId,
                 )
 
                 onStatusPosted()

@@ -10,13 +10,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import social.firefly.core.designsystem.theme.FfTheme
-import social.firefly.core.ui.postcard.MainPostCardUiState
+import social.firefly.core.ui.postcard.MetaDataUiState
 import social.firefly.core.ui.postcard.PostCardInteractions
 
 @Composable
 internal fun Avatar(
     modifier: Modifier = Modifier,
-    post: MainPostCardUiState,
+    metaDataUiState: MetaDataUiState,
     postCardInteractions: PostCardInteractions,
 ) {
     AsyncImage(
@@ -24,8 +24,8 @@ internal fun Avatar(
             .size(36.dp)
             .clip(CircleShape)
             .background(FfTheme.colors.layer2)
-            .clickable { postCardInteractions.onAccountImageClicked(post.accountId) },
-        model = post.profilePictureUrl,
+            .clickable { postCardInteractions.onAccountImageClicked(metaDataUiState.accountId) },
+        model = metaDataUiState.profilePictureUrl,
         contentDescription = null,
     )
 }

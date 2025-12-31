@@ -2,7 +2,6 @@ package social.firefly.feature.post
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,6 +66,10 @@ import social.firefly.core.ui.common.text.SmallTextLabel
 import social.firefly.core.ui.common.transparentTextFieldColors
 import social.firefly.core.ui.common.utils.getWindowHeightClass
 import social.firefly.core.ui.common.utils.noRippleClickable
+import social.firefly.core.ui.postcard.PostCardInteractionsNoOp
+import social.firefly.core.ui.postcard.QuoteUiState
+import social.firefly.core.ui.postcard.components.Quote
+import social.firefly.core.ui.postcard.quoteUiStatePreview
 import social.firefly.feature.post.bottombar.BottomBar
 import social.firefly.feature.post.bottombar.BottomBarState
 import social.firefly.feature.post.bottombar.VisibilityDropDownButton
@@ -87,10 +90,12 @@ import social.firefly.feature.post.status.StatusUiState
 internal fun NewPostScreen(
     replyStatusId: String?,
     editStatusId: String?,
+    quoteStatusId: String?,
     viewModel: NewPostViewModel = koinViewModel(parameters = {
         parametersOf(
             replyStatusId,
-            editStatusId
+            editStatusId,
+            quoteStatusId,
         )
     }),
 ) {
@@ -427,6 +432,22 @@ private fun MainBox(
                     mediaInteractions = mediaInteractions,
                 )
             }
+
+            statusUiState.quoteUiStatus?.let {
+                item {
+                    Spacer(Modifier.height(16.dp))
+                    Box(
+                        modifier = Modifier
+                            .padding(8.dp)
+                    ) {
+                        Quote(
+                            modifier = Modifier.fillMaxWidth(),
+                            quoteUiState = it,
+                            postCardInteractions = PostCardInteractionsNoOp,
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -661,6 +682,38 @@ private fun EditPostScreenPreview() {
             pollInteractions = object : PollInteractions {},
             contentWarningInteractions = object : ContentWarningInteractions {},
             newPostInteractions = social.firefly.feature.post.NewPostInteractionsNoOp,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun QuotePostScreenPreview() {
+    FfTheme {
+        NewPostScreen(
+            statusUiState = StatusUiState(
+                statusText = TextFieldValue(),
+                contentWarningText = null,
+                accountList = null,
+                hashtagList = null,
+                inReplyToAccountName = null,
+                editStatusId = null,
+                quoteUiStatus = quoteUiStatePreview,
+            ),
+            newPostUiState = NewPostUiState(
+                sendButtonEnabled = true,
+                isSendingPost = false,
+                visibility = StatusVisibility.Private,
+                userHeaderState = UserHeaderState("", "Barack Obama"),
+                bottomBarState = BottomBarState(),
+            ),
+            statusInteractions = object : StatusInteractions {},
+            imageStates = listOf(),
+            mediaInteractions = object : MediaInteractions {},
+            pollUiState = null,
+            pollInteractions = object : PollInteractions {},
+            contentWarningInteractions = object : ContentWarningInteractions {},
+            newPostInteractions = NewPostInteractionsNoOp,
         )
     }
 }

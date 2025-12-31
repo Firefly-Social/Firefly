@@ -15,6 +15,7 @@ import social.firefly.core.database.converters.IntListConverter
 import social.firefly.core.database.converters.LocalDateConverter
 import social.firefly.core.database.converters.MentionConverter
 import social.firefly.core.database.converters.PollOptionConverter
+import social.firefly.core.database.converters.QuoteApprovalConverter
 import social.firefly.core.database.dao.AccountTimelineStatusDao
 import social.firefly.core.database.dao.AccountsDao
 import social.firefly.core.database.dao.BlocksDao
@@ -96,11 +97,12 @@ import social.firefly.core.database.model.entities.statusCollections.DbTrendingS
         FollowedHashTag::class,
         BookmarksTimelineStatus::class,
     ],
-    version = 4,
+    version = 5,
     autoMigrations = [
         AutoMigration (from = 1, to = 2),
         AutoMigration (from = 2, to = 3),
         AutoMigration (from = 3, to = 4),
+        AutoMigration (from = 4, to = 5),
     ],
     exportSchema = true,
 )
@@ -116,6 +118,7 @@ import social.firefly.core.database.model.entities.statusCollections.DbTrendingS
     PollOptionConverter::class,
     IntListConverter::class,
     CardConverter::class,
+    QuoteApprovalConverter::class,
 )
 abstract class SocialDatabase : RoomDatabase() {
     abstract fun statusDao(): StatusDao

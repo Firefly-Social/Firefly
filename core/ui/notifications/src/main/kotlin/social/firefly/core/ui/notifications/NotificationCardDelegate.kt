@@ -51,6 +51,14 @@ class NotificationCardDelegate(
         navigateTo(NavigationDestination.Account(accountId))
     }
 
+    override fun onQuoteClicked(statusId: String) {
+        navigateTo(NavigationDestination.Thread(statusId))
+    }
+
+    override fun onQuoteUpdateClicked(statusId: String) {
+        navigateTo(NavigationDestination.Thread(statusId))
+    }
+
     override fun onAcceptFollowRequestClicked(
         accountId: String,
         notificationId: Int,

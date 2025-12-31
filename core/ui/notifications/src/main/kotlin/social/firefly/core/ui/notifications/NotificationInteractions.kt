@@ -10,6 +10,8 @@ interface NotificationInteractions {
     fun onFavoritedCardClicked(statusId: String)
     fun onFollowCardClicked(accountId: String)
     fun onFollowRequestCardClicked(accountId: String)
+    fun onQuoteClicked(statusId: String)
+    fun onQuoteUpdateClicked(statusId: String)
     fun onAcceptFollowRequestClicked(
         accountId: String,
         notificationId: Int,
@@ -30,6 +32,8 @@ object NotificationInteractionsNoOp : NotificationInteractions {
     override fun onNewStatusClicked(statusId: String) = Unit
     override fun onFavoritedCardClicked(statusId: String) = Unit
     override fun onFollowCardClicked(accountId: String) = Unit
+    override fun onQuoteClicked(statusId: String) = Unit
+    override fun onQuoteUpdateClicked(statusId: String) = Unit
     override fun onAcceptFollowRequestClicked(accountId: String, notificationId: Int) = Unit
     override fun onDenyFollowRequestClicked(accountId: String, notificationId: Int) = Unit
     override fun onFollowRequestCardClicked(accountId: String) = Unit

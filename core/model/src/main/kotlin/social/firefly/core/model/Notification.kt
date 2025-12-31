@@ -119,4 +119,25 @@ sealed class Notification {
         override val account: Account,
         val severanceEvent: RelationshipSeveranceEvent,
     ) : Notification()
+
+    data class ModerationWarning(
+        override val id: Int,
+        override val createdAt: Instant,
+        override val account: Account,
+        val moderationWarning: AccountWarning,
+    ) : Notification()
+
+    data class Quote(
+        override val id: Int,
+        override val createdAt: Instant,
+        override val account: Account,
+        val status: Status,
+    ) : Notification()
+
+    data class QuoteUpdate(
+        override val id: Int,
+        override val createdAt: Instant,
+        override val account: Account,
+        val status: Status,
+    ) : Notification()
 }

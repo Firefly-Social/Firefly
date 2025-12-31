@@ -170,4 +170,43 @@ sealed class NetworkNotification {
         @SerialName("relationship_severance_event")
         val severanceEvent: NetworkRelationshipSeveranceEvent,
     ) : NetworkNotification()
+
+    @Serializable
+    @SerialName("moderation_warning")
+    data class ModerationWarning(
+        @SerialName("id")
+        override val id: String,
+        @SerialName("created_at")
+        override val createdAt: Instant,
+        @SerialName("account")
+        override val account: NetworkAccount,
+        @SerialName("moderation_warning")
+        val moderationWarning: NetworkAccountWarning,
+    ) : NetworkNotification()
+
+    @Serializable
+    @SerialName("quote")
+    data class Quote(
+        @SerialName("id")
+        override val id: String,
+        @SerialName("created_at")
+        override val createdAt: Instant,
+        @SerialName("account")
+        override val account: NetworkAccount,
+        @SerialName("status")
+        val status: NetworkStatus,
+    ) : NetworkNotification()
+
+    @Serializable
+    @SerialName("quoted_update")
+    data class QuoteUpdate(
+        @SerialName("id")
+        override val id: String,
+        @SerialName("created_at")
+        override val createdAt: Instant,
+        @SerialName("account")
+        override val account: NetworkAccount,
+        @SerialName("status")
+        val status: NetworkStatus,
+    ) : NetworkNotification()
 }

@@ -2,6 +2,8 @@ package social.firefly.core.test.fakes
 
 import kotlin.time.Instant
 import social.firefly.core.network.mastodon.model.responseBody.NetworkAccount
+import social.firefly.core.network.mastodon.model.responseBody.NetworkQuoteApproval
+import social.firefly.core.network.mastodon.model.responseBody.NetworkQuoteApprovalType
 import social.firefly.core.network.mastodon.model.responseBody.NetworkStatus
 import social.firefly.core.network.mastodon.model.responseBody.NetworkStatusVisibility
 
@@ -63,6 +65,11 @@ object NetworkModels {
             isMuted = null,
             isBookmarked = null,
             isPinned = null,
+            quoteApproval = NetworkQuoteApproval(
+                automatic = emptyList(),
+                manual = emptyList(),
+                currentUser = NetworkQuoteApprovalType.AUTOMATIC,
+            )
         )
 
     val networkAccount =

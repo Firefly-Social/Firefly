@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":core:ui:htmlcontent"))
     implementation(project(":core:share"))
     implementation(project(":core:accounts"))
+    implementation(project(":core:ui:postcard"))
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.koin.core)

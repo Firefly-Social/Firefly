@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import social.firefly.core.ui.postcard.components.DepthLines
 import social.firefly.core.ui.postcard.components.DepthLinesExpandButton
 import social.firefly.core.ui.postcard.components.MetaData
 import social.firefly.core.ui.postcard.components.PostContent
+import social.firefly.core.ui.postcard.components.Quote
 import social.firefly.core.ui.postcard.components.TopRowMetaData
 
 @Composable
@@ -123,7 +125,7 @@ private fun Post(
 ) {
     Row {
         Avatar(
-            post = post,
+            metaDataUiState = post.metaDataUiState,
             postCardInteractions = postCardInteractions,
         )
         Spacer(modifier = Modifier.padding(start = 8.dp))
@@ -137,6 +139,14 @@ private fun Post(
                 uiState = post.postContentUiState,
                 postCardInteractions = postCardInteractions,
             )
+
+            post.quoteUiState?.let { quoteUiState ->
+                Quote(
+                    modifier = Modifier.fillMaxWidth(),
+                    quoteUiState = quoteUiState,
+                    postCardInteractions = postCardInteractions,
+                )
+            }
 
             Box(
                 modifier = Modifier.height(36.dp)
@@ -320,6 +330,31 @@ private fun PostCardPreviewFirstItem() {
                     ),
                     expandRepliesButtonUiState = ExpandRepliesButtonUiState.PLUS,
                 ),
+            ),
+            postCardInteractions = PostCardInteractionsNoOp,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PostCardWithQuotePreview() {
+    PreviewTheme {
+        PostCard(
+            post = PostCardUiState(
+                statusId = "",
+                topRowMetaDataUiState = TopRowMetaDataUiState(
+                    TopRowIconType.REPLY,
+                    StringFactory.literal("in reply to Other person"),
+                ),
+                mainPostCardUiState = postCardUiStatePreview.copy(
+                    quoteUiState = quoteUiStatePreview.copy(
+                        postContentUiState = postContentUiStatePreview.copy(
+                            statusTextHtml = "Quoted Text"
+                        )
+                    ),
+                ),
+                depthLinesUiState = null,
             ),
             postCardInteractions = PostCardInteractionsNoOp,
         )

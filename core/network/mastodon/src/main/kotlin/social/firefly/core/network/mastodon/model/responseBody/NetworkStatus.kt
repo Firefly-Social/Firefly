@@ -160,4 +160,10 @@ data class NetworkStatus(
      */
     @SerialName("pinned")
     val isPinned: Boolean? = null,
+
+    @SerialName("quote")
+    val quote: NetworkQuote? = null,
+
+    @SerialName("quote_approval")
+    val quoteApproval: NetworkQuoteApproval,
 )

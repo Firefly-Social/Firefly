@@ -26,6 +26,8 @@ class SaveNotificationsToDatabase(
                     is Notification.Repost -> saveStatusToDatabase(it.status)
                     is Notification.NewStatus -> saveStatusToDatabase(it.status)
                     is Notification.Mention -> saveStatusToDatabase(it.status)
+                    is Notification.Quote -> saveStatusToDatabase(it.status)
+                    is Notification.QuoteUpdate -> saveStatusToDatabase(it.status)
                     else -> {}
                 }
             }

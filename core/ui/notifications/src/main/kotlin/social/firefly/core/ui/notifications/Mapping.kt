@@ -4,6 +4,7 @@ import social.firefly.common.utils.StringFactory
 import social.firefly.common.utils.timeSinceNow
 import social.firefly.core.model.Notification
 import social.firefly.core.ui.postcard.toPostContentUiState
+import social.firefly.core.ui.postcard.toQuoteUiState
 import java.lang.RuntimeException
 
 @Suppress("TooGenericExceptionThrown", "LongMethod")
@@ -111,6 +112,42 @@ fun Notification.toUiState(
         accountName = account.displayName,
         postContentUiState = status.toPostContentUiState(
             statusId = status.statusId,
+            currentUserAccountId = currentUserAccountId,
+        ),
+        statusId = status.statusId,
+    )
+
+    is Notification.Quote -> NotificationUiState.Quote(
+        id = id,
+        timeStamp = createdAt.timeSinceNow(),
+        title = StringFactory.resource(resId = R.string.quote_title, account.displayName),
+        avatarUrl = account.avatarUrl,
+        accountId = account.accountId,
+        accountName = account.displayName,
+        postContentUiState = status.toPostContentUiState(
+            statusId = status.statusId,
+            currentUserAccountId = currentUserAccountId,
+            contentWarningOverride = "",
+            onlyShowPreviewOfText = true,
+        ),
+        quoteUiState = status.quote?.quotedStatus?.toQuoteUiState(
+            currentUserAccountId = currentUserAccountId,
+        ),
+        statusId = status.statusId,
+    )
+
+    is Notification.QuoteUpdate -> NotificationUiState.QuoteUpdate(
+        id = id,
+        timeStamp = createdAt.timeSinceNow(),
+        title = StringFactory.resource(resId = R.string.quote_update_title),
+        avatarUrl = status.account.avatarUrl,
+        accountId = status.account.accountId,
+        accountName = status.account.displayName,
+        postContentUiState = status.toPostContentUiState(
+            statusId = status.statusId,
+            currentUserAccountId = currentUserAccountId,
+        ),
+        quoteUiState = status.quote?.quotedStatus?.toQuoteUiState(
             currentUserAccountId = currentUserAccountId,
         ),
         statusId = status.statusId,

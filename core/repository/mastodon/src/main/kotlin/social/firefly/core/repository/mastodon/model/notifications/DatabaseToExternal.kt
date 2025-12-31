@@ -73,6 +73,24 @@ fun NotificationWrapper.toExternal(): Notification =
                 status = it.toExternalModel(),
             )
         } ?: throw MissingDataException()
+
+        DatabaseNotification.Type.QUOTE -> status?.let {
+            Notification.Quote(
+                id = notification.id,
+                createdAt = notification.createdAt,
+                account = account.toExternalModel(),
+                status = it.toExternalModel(),
+            )
+        } ?: throw MissingDataException()
+
+        DatabaseNotification.Type.QUOTE_UPDATE -> status?.let {
+            Notification.QuoteUpdate(
+                id = notification.id,
+                createdAt = notification.createdAt,
+                account = account.toExternalModel(),
+                status = it.toExternalModel(),
+            )
+        } ?: throw MissingDataException()
     }
 
 class MissingDataException : Exception()

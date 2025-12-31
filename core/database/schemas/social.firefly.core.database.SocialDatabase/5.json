@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "989b4ac9baa718600b97bc55065f2a63",
+    "version": 5,
+    "identityHash": "1680fed038cd4fd5843123fc87cf2a1f",
     "entities": [
       {
         "tableName": "statuses",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`statusId` TEXT NOT NULL, `uri` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `accountId` TEXT NOT NULL, `content` TEXT NOT NULL, `visibility` TEXT NOT NULL, `isSensitive` INTEGER NOT NULL, `contentWarningText` TEXT NOT NULL, `mediaAttachments` TEXT NOT NULL, `mentions` TEXT NOT NULL, `hashTags` TEXT NOT NULL, `emojis` TEXT NOT NULL, `boostsCount` INTEGER NOT NULL, `favouritesCount` INTEGER NOT NULL, `repliesCount` INTEGER NOT NULL, `url` TEXT, `inReplyToId` TEXT, `inReplyToAccountId` TEXT, `inReplyToAccountName` TEXT, `boostedStatusId` TEXT, `boostedStatusAccountId` TEXT, `boostedPollId` TEXT, `pollId` TEXT, `card` TEXT, `language` TEXT, `plainText` TEXT, `isFavorited` INTEGER, `isBoosted` INTEGER, `isMuted` INTEGER, `isBookmarked` INTEGER, `isPinned` INTEGER, `isBeingDeleted` INTEGER NOT NULL, `application_name` TEXT, `application_website` TEXT, `application_vapidKey` TEXT, `application_clientId` TEXT, `application_clientSecret` TEXT, PRIMARY KEY(`statusId`), FOREIGN KEY(`accountId`) REFERENCES `accounts`(`accountId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`pollId`) REFERENCES `polls`(`pollId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`boostedStatusId`) REFERENCES `statuses`(`statusId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`boostedStatusAccountId`) REFERENCES `accounts`(`accountId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`boostedPollId`) REFERENCES `polls`(`pollId`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`statusId` TEXT NOT NULL, `uri` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `accountId` TEXT NOT NULL, `content` TEXT NOT NULL, `visibility` TEXT NOT NULL, `isSensitive` INTEGER NOT NULL, `contentWarningText` TEXT NOT NULL, `mediaAttachments` TEXT NOT NULL, `mentions` TEXT NOT NULL, `hashTags` TEXT NOT NULL, `emojis` TEXT NOT NULL, `boostsCount` INTEGER NOT NULL, `favouritesCount` INTEGER NOT NULL, `repliesCount` INTEGER NOT NULL, `url` TEXT, `inReplyToId` TEXT, `inReplyToAccountId` TEXT, `inReplyToAccountName` TEXT, `boostedStatusId` TEXT, `boostedStatusAccountId` TEXT, `boostedPollId` TEXT, `pollId` TEXT, `card` TEXT, `language` TEXT, `plainText` TEXT, `isFavorited` INTEGER, `isBoosted` INTEGER, `isMuted` INTEGER, `isBookmarked` INTEGER, `isPinned` INTEGER, `isBeingDeleted` INTEGER NOT NULL, `quoteState` TEXT, `quoteStatusId` TEXT, `quoteStatusAccountId` TEXT, `quotePollId` TEXT, `quoteApproval` TEXT NOT NULL DEFAULT '{\"automatic\":[],\"manual\":[],\"currentUser\":\"denied\"}', `application_name` TEXT, `application_website` TEXT, `application_vapidKey` TEXT, `application_clientId` TEXT, `application_clientSecret` TEXT, PRIMARY KEY(`statusId`), FOREIGN KEY(`accountId`) REFERENCES `accounts`(`accountId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`pollId`) REFERENCES `polls`(`pollId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`boostedStatusId`) REFERENCES `statuses`(`statusId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`boostedStatusAccountId`) REFERENCES `accounts`(`accountId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`boostedPollId`) REFERENCES `polls`(`pollId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`quoteStatusId`) REFERENCES `statuses`(`statusId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`quoteStatusAccountId`) REFERENCES `accounts`(`accountId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`quotePollId`) REFERENCES `polls`(`pollId`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "statusId",
@@ -101,98 +101,82 @@
           {
             "fieldPath": "url",
             "columnName": "url",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "inReplyToId",
             "columnName": "inReplyToId",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "inReplyToAccountId",
             "columnName": "inReplyToAccountId",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "inReplyToAccountName",
             "columnName": "inReplyToAccountName",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "boostedStatusId",
             "columnName": "boostedStatusId",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "boostedStatusAccountId",
             "columnName": "boostedStatusAccountId",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "boostedPollId",
             "columnName": "boostedPollId",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "pollId",
             "columnName": "pollId",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "card",
             "columnName": "card",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "language",
             "columnName": "language",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "plainText",
             "columnName": "plainText",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "isFavorited",
             "columnName": "isFavorited",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isBoosted",
             "columnName": "isBoosted",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isMuted",
             "columnName": "isMuted",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isBookmarked",
             "columnName": "isBookmarked",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isPinned",
             "columnName": "isPinned",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isBeingDeleted",
@@ -201,34 +185,56 @@
             "notNull": true
           },
           {
+            "fieldPath": "quoteState",
+            "columnName": "quoteState",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "quoteStatusId",
+            "columnName": "quoteStatusId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "quoteStatusAccountId",
+            "columnName": "quoteStatusAccountId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "quotePollId",
+            "columnName": "quotePollId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "quoteApproval",
+            "columnName": "quoteApproval",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'{\"automatic\":[],\"manual\":[],\"currentUser\":\"denied\"}'"
+          },
+          {
             "fieldPath": "application.name",
             "columnName": "application_name",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "application.website",
             "columnName": "application_website",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "application.vapidKey",
             "columnName": "application_vapidKey",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "application.clientId",
             "columnName": "application_clientId",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "application.clientSecret",
             "columnName": "application_clientSecret",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -282,6 +288,33 @@
             ],
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_statuses_pollId` ON `${TABLE_NAME}` (`pollId`)"
+          },
+          {
+            "name": "index_statuses_quoteStatusId",
+            "unique": false,
+            "columnNames": [
+              "quoteStatusId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_statuses_quoteStatusId` ON `${TABLE_NAME}` (`quoteStatusId`)"
+          },
+          {
+            "name": "index_statuses_quoteStatusAccountId",
+            "unique": false,
+            "columnNames": [
+              "quoteStatusAccountId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_statuses_quoteStatusAccountId` ON `${TABLE_NAME}` (`quoteStatusAccountId`)"
+          },
+          {
+            "name": "index_statuses_quotePollId",
+            "unique": false,
+            "columnNames": [
+              "quotePollId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_statuses_quotePollId` ON `${TABLE_NAME}` (`quotePollId`)"
           }
         ],
         "foreignKeys": [
@@ -339,6 +372,39 @@
             "referencedColumns": [
               "pollId"
             ]
+          },
+          {
+            "table": "statuses",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "quoteStatusId"
+            ],
+            "referencedColumns": [
+              "statusId"
+            ]
+          },
+          {
+            "table": "accounts",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "quoteStatusAccountId"
+            ],
+            "referencedColumns": [
+              "accountId"
+            ]
+          },
+          {
+            "table": "polls",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "quotePollId"
+            ],
+            "referencedColumns": [
+              "pollId"
+            ]
           }
         ]
       },
@@ -365,7 +431,6 @@
             "accountId"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "accounts",
@@ -414,7 +479,6 @@
             "accountId"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "accounts",
@@ -543,8 +607,7 @@
           {
             "fieldPath": "isDiscoverable",
             "columnName": "isDiscoverable",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isGroup",
@@ -555,62 +618,52 @@
           {
             "fieldPath": "fields",
             "columnName": "fields",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "isBot",
             "columnName": "isBot",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isSuspended",
             "columnName": "isSuspended",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "muteExpiresAt",
             "columnName": "muteExpiresAt",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "source.bio",
             "columnName": "source_bio",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source.fields",
             "columnName": "source_fields",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source.defaultPrivacy",
             "columnName": "source_defaultPrivacy",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source.defaultSensitivity",
             "columnName": "source_defaultSensitivity",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "source.defaultLanguage",
             "columnName": "source_defaultLanguage",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source.followRequestsCount",
             "columnName": "source_followRequestsCount",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -618,9 +671,7 @@
           "columnNames": [
             "accountId"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "homeTimeline",
@@ -639,7 +690,6 @@
             "statusId"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "statuses",
@@ -697,26 +747,22 @@
           {
             "fieldPath": "expiresAt",
             "columnName": "expiresAt",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "votersCount",
             "columnName": "votersCount",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "hasVoted",
             "columnName": "hasVoted",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "ownVotes",
             "columnName": "ownVotes",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -724,9 +770,7 @@
           "columnNames": [
             "pollId"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "hashTagTimeline",
@@ -752,7 +796,6 @@
             "hashTag"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "statuses",
@@ -916,9 +959,7 @@
           "columnNames": [
             "accountId"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "localTimeline",
@@ -937,7 +978,6 @@
             "statusId"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "statuses",
@@ -969,7 +1009,6 @@
             "statusId"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "statuses",
@@ -1139,7 +1178,6 @@
             "statusId"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "statuses",
@@ -1179,8 +1217,7 @@
           {
             "fieldPath": "history",
             "columnName": "history",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -1188,9 +1225,7 @@
           "columnNames": [
             "name"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "searchedAccounts",
@@ -1215,7 +1250,6 @@
             "accountId"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "accounts",
@@ -1253,7 +1287,6 @@
             "statusId"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "statuses",
@@ -1291,7 +1324,6 @@
             "hashTagName"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "hashtags",
@@ -1337,8 +1369,7 @@
           {
             "fieldPath": "statusId",
             "columnName": "statusId",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -1409,7 +1440,6 @@
             "id"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "notifications",
@@ -1441,7 +1471,6 @@
             "id"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "notifications",
@@ -1473,7 +1502,6 @@
             "id"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "notifications",
@@ -1487,12 +1515,183 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "trendingLinks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`url`))",
+        "fields": [
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "url"
+          ]
+        }
+      },
+      {
+        "tableName": "trendingStatuses",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`statusId` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`statusId`), FOREIGN KEY(`statusId`) REFERENCES `statuses`(`statusId`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "statusId",
+            "columnName": "statusId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "statusId"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "statuses",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "statusId"
+            ],
+            "referencedColumns": [
+              "statusId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "trendingHashTags",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`hashTagName` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`hashTagName`), FOREIGN KEY(`hashTagName`) REFERENCES `hashtags`(`name`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "hashTagName",
+            "columnName": "hashTagName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "hashTagName"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "hashtags",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "hashTagName"
+            ],
+            "referencedColumns": [
+              "name"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "followedHashTags",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`hashTagName` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`hashTagName`), FOREIGN KEY(`hashTagName`) REFERENCES `hashtags`(`name`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "hashTagName",
+            "columnName": "hashTagName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "hashTagName"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "hashtags",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "hashTagName"
+            ],
+            "referencedColumns": [
+              "name"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "bookmarksTimeline",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`statusId` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`statusId`), FOREIGN KEY(`statusId`) REFERENCES `statuses`(`statusId`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "statusId",
+            "columnName": "statusId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "statusId"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "statuses",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "statusId"
+            ],
+            "referencedColumns": [
+              "statusId"
+            ]
+          }
+        ]
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '989b4ac9baa718600b97bc55065f2a63')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1680fed038cd4fd5843123fc87cf2a1f')"
     ]
   }
 }

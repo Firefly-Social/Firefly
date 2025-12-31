@@ -4,6 +4,8 @@ import social.firefly.common.utils.StringFactory
 import social.firefly.common.utils.timeSinceNow
 import social.firefly.common.utils.toShortenedStringValue
 import social.firefly.core.model.Card
+import social.firefly.core.model.QuoteApprovalGroup
+import social.firefly.core.model.QuoteApprovalType
 import social.firefly.core.model.Status
 import social.firefly.core.ui.common.R
 import social.firefly.core.ui.poll.toPollUiState
@@ -43,35 +45,85 @@ private fun Status.toMainPostCardUiState(
     shouldShowUnfavoriteConfirmation: Boolean = false,
     shouldShowUnbookmarkConfirmation: Boolean = false,
 ): MainPostCardUiState = MainPostCardUiState(
+    statusId = statusId,
     url = url,
-    profilePictureUrl = account.avatarStaticUrl,
-    postTimeSince = createdAt.timeSinceNow(),
-    accountName = account.acct,
     replyCount = repliesCount.toShortenedStringValue(),
     boostCount = boostsCount.toShortenedStringValue(),
     favoriteCount = favouritesCount.toShortenedStringValue(),
+    userBoosted = isBoosted ?: false,
+    isFavorited = isFavourited ?: false,
+    isBookmarked = isBookmarked ?: false,
+    isBeingDeleted = isBeingDeleted,
+    metaDataUiState = toMetaDataUiState(),
+    overflowUiState = toOverflowUiState(
+        currentUserAccountId = currentUserAccountId,
+    ),
+    postContentUiState = toPostContentUiState(
+        statusId = statusId,
+        currentUserAccountId = currentUserAccountId
+    ),
+    shouldShowUnbookmarkConfirmation = shouldShowUnbookmarkConfirmation,
+    shouldShowUnfavoriteConfirmation = shouldShowUnfavoriteConfirmation,
+    quoteUiState = quote?.quotedStatus?.toQuoteUiState(
+        currentUserAccountId = currentUserAccountId,
+    ),
+    quotability = when (quoteApproval.currentUser) {
+        QuoteApprovalType.AUTOMATIC -> QuotabilityUiState.CAN_QUOTE
+        QuoteApprovalType.MANUAL -> QuotabilityUiState.CAN_QUOTE_WITH_APPROVAL
+        QuoteApprovalType.DENIED -> if (
+            quoteApproval.automatic.contains(QuoteApprovalGroup.FOLLOWERS) ||
+            quoteApproval.manual.contains(QuoteApprovalGroup.FOLLOWERS)
+        ) {
+            QuotabilityUiState.CAN_NOT_QUOTE_REQUIRES_FOLLOW
+        } else {
+            QuotabilityUiState.CAN_NOT_QUOTE
+        }
+        QuoteApprovalType.UNKNOWN -> QuotabilityUiState.CAN_NOT_QUOTE
+    }
+)
+
+fun Status.toMetaDataUiState() = MetaDataUiState(
+    profilePictureUrl = account.avatarStaticUrl,
+    postTimeSince = createdAt.timeSinceNow(),
+    accountName = account.acct,
+    username = account.displayName,
+    domain = account.acct.substringAfter(
+        delimiter = "@",
+        missingDelimiterValue = ""
+    ),
+    accountId = account.accountId,
+    accountEmojis = account.emojis,
+)
+
+fun Status.toOverflowUiState(
+    currentUserAccountId: String,
+) = OverflowUiState(
+    accountName = account.acct,
     username = account.displayName,
     domain = account.acct.substringAfter(
         delimiter = "@",
         missingDelimiterValue = ""
     ),
     statusId = statusId,
-    userBoosted = isBoosted ?: false,
-    isFavorited = isFavourited ?: false,
-    isBookmarked = isBookmarked ?: false,
     accountId = account.accountId,
-    isBeingDeleted = isBeingDeleted,
-    postContentUiState = toPostContentUiState(
-        statusId = statusId,
-        currentUserAccountId = currentUserAccountId
-    ),
+    accountEmojis = account.emojis,
     overflowDropDownType = when {
         currentUserAccountId == account.accountId -> OverflowDropDownType.USER
         else -> OverflowDropDownType.NOT_USER
     },
-    shouldShowUnbookmarkConfirmation = shouldShowUnbookmarkConfirmation,
-    shouldShowUnfavoriteConfirmation = shouldShowUnfavoriteConfirmation,
-    accountEmojis = account.emojis,
+    isBeingDeleted = isBeingDeleted,
+    statusTextHtml = content,
+)
+
+fun Status.toQuoteUiState(
+    currentUserAccountId: String,
+) = QuoteUiState(
+    statusId = statusId,
+    metaDataUiState = toMetaDataUiState(),
+    postContentUiState = toPostContentUiState(
+        statusId = statusId,
+        currentUserAccountId = currentUserAccountId
+    ),
 )
 
 fun Status.toPostContentUiState(

@@ -56,4 +56,7 @@ data class NetworkStatusCreate(
      */
     @SerialName("language")
     val language: String? = null,
+
+    @SerialName("quoted_status_id")
+    val quotedStatusId: String? = null,
 )

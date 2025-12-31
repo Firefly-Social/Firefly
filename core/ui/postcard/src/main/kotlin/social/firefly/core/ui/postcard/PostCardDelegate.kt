@@ -83,6 +83,10 @@ class PostCardDelegate(
         }
     }
 
+    override fun onQuoteClicked(statusId: String) {
+        navigateTo(NavigationDestination.NewPost(quoteStatusId = statusId))
+    }
+
     override fun onFavoriteClicked(
         statusId: String,
         isFavoriting: Boolean,
