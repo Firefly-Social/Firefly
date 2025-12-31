@@ -2,6 +2,8 @@ package social.firefly.core.test.fakes
 
 import kotlin.time.Instant
 import social.firefly.core.model.Account
+import social.firefly.core.model.QuoteApproval
+import social.firefly.core.model.QuoteApprovalType
 import social.firefly.core.model.Status
 import social.firefly.core.model.StatusVisibility
 
@@ -63,6 +65,11 @@ object Models {
             isMuted = null,
             isBookmarked = null,
             isPinned = null,
+            quoteApproval = QuoteApproval(
+                automatic = emptyList(),
+                manual = emptyList(),
+                currentUser = QuoteApprovalType.AUTOMATIC,
+            )
         )
 
     val networkAccount =
