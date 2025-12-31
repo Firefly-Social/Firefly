@@ -1,22 +1,17 @@
 package social.firefly.core.designsystem.icon
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AddCircleOutline
-import androidx.compose.material.icons.rounded.AddPhotoAlternate
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.DeleteOutline
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.LockOpen
 import androidx.compose.material.icons.rounded.Message
 import androidx.compose.material.icons.rounded.Poll
 import androidx.compose.material.icons.rounded.Public
-import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material.icons.rounded.VolumeMute
 import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.runtime.Composable
@@ -180,6 +175,9 @@ object FfIcons {
 
     @Composable
     fun prohibit() = painterResource(id = R.drawable.prohibit)
+
+    @Composable
+    fun quotes() = painterResource(id = R.drawable.quotes)
 
     @Composable
     fun repeat() = painterResource(id = R.drawable.repeat)

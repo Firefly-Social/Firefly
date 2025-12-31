@@ -10,6 +10,9 @@
     <string name="report_user">Report %s</string>
     <string name="block_domain">Block domain %s</string>
     <string name="copy_text">Copy post text</string>
+    <string name="boost">Boost</string>
+    <string name="remove_boost">Remove Boost</string>
+    <string name="quote">Quote</string>
 
     <string name="copied_text_label">Post text</string>
 
