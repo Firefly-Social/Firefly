@@ -128,6 +128,7 @@ internal val metaDataUiStatePreview = MetaDataUiState(
     accountEmojis = emptyList(),
 )
 
+@Suppress("MagicNumber", "MaxLineLength")
 internal val postContentUiStatePreview = PostContentUiState(
     statusId = "",
     pollUiState = null,

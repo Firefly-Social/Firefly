@@ -42,7 +42,7 @@ import social.firefly.core.ui.postcard.R
 import social.firefly.core.ui.postcard.postCardUiStatePreview
 import kotlin.math.roundToInt
 
-@Suppress("MagicNumber", "LongMethod")
+@Suppress("MagicNumber", "LongMethod", "CyclomaticComplexMethod")
 @Composable
 internal fun BottomRow(
     modifier: Modifier = Modifier,
