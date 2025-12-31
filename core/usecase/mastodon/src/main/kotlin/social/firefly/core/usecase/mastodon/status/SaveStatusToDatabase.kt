@@ -17,18 +17,19 @@ class SaveStatusToDatabase internal constructor(
     suspend operator fun invoke(vararg statuses: Status) {
         databaseDelegate.withTransaction {
             val boostedStatuses = statuses.mapNotNull { it.boostedStatus }
-            val quotedStatuses = statuses.mapNotNull { it.quote?.quotedStatus }
+            val quotedStatuses = statuses.mapNotNull { it.quote?.quotedStatus } +
+                    boostedStatuses.mapNotNull { it.quote?.quotedStatus }
 
-            pollRepository.insertAll(boostedStatuses.mapNotNull { it.poll })
             pollRepository.insertAll(quotedStatuses.mapNotNull { it.poll })
+            pollRepository.insertAll(boostedStatuses.mapNotNull { it.poll })
             pollRepository.insertAll(statuses.mapNotNull { it.poll })
 
-            accountRepository.insertAll(boostedStatuses.map { it.account })
             accountRepository.insertAll(quotedStatuses.map { it.account })
+            accountRepository.insertAll(boostedStatuses.map { it.account })
             accountRepository.insertAll(statuses.map { it.account })
 
-            statusRepository.insertAll(boostedStatuses)
             statusRepository.insertAll(quotedStatuses)
+            statusRepository.insertAll(boostedStatuses)
             statusRepository.insertAll(statuses.asList())
         }
     }
