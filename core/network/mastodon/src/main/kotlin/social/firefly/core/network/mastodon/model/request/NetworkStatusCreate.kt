@@ -59,4 +59,7 @@ data class NetworkStatusCreate(
 
     @SerialName("quoted_status_id")
     val quotedStatusId: String? = null,
+
+    @SerialName("quote_approval_policy")
+    val quoteApprovalPolicy: NetworkQuoteApprovalPolicy? = null
 )

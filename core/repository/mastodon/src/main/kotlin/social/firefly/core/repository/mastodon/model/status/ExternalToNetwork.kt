@@ -1,6 +1,7 @@
 package social.firefly.core.repository.mastodon.model.status
 
 import social.firefly.core.model.PollVote
+import social.firefly.core.model.QuoteApprovalPolicy
 import social.firefly.core.model.StatusVisibility
 import social.firefly.core.model.request.MediaAttributes
 import social.firefly.core.model.request.PollCreate
@@ -10,6 +11,7 @@ import social.firefly.core.network.mastodon.model.request.NetworkMediaAttributes
 import social.firefly.core.network.mastodon.model.responseBody.NetworkStatusVisibility
 import social.firefly.core.network.mastodon.model.request.NetworkPollCreate
 import social.firefly.core.network.mastodon.model.request.NetworkPollVote
+import social.firefly.core.network.mastodon.model.request.NetworkQuoteApprovalPolicy
 import social.firefly.core.network.mastodon.model.request.NetworkReportCreate
 import social.firefly.core.network.mastodon.model.request.NetworkStatusCreate
 
@@ -43,6 +45,7 @@ internal fun StatusCreate.toNetworkModel(): NetworkStatusCreate =
         visibility = visibility?.toNetworkModel(),
         language = language,
         quotedStatusId = quotedStatusId,
+        quoteApprovalPolicy = quoteApprovalPolicy?.toNetworkModel()
     )
 
 internal fun ReportCreate.toNetworkModel(): NetworkReportCreate =
@@ -60,3 +63,10 @@ internal fun MediaAttributes.toNetworkModel(): NetworkMediaAttributes =
         id = id,
         description = description,
     )
+
+internal fun QuoteApprovalPolicy.toNetworkModel(): NetworkQuoteApprovalPolicy =
+    when (this) {
+        QuoteApprovalPolicy.PUBLIC -> NetworkQuoteApprovalPolicy.PUBLIC
+        QuoteApprovalPolicy.FOLLOWERS -> NetworkQuoteApprovalPolicy.FOLLOWERS
+        QuoteApprovalPolicy.NOBODY -> NetworkQuoteApprovalPolicy.NOBODY
+    }

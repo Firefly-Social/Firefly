@@ -17,6 +17,7 @@ import social.firefly.common.utils.StringFactory
 import social.firefly.common.utils.edit
 import social.firefly.core.accounts.AccountsManager
 import social.firefly.core.analytics.NewPostAnalytics
+import social.firefly.core.model.QuoteApprovalPolicy
 import social.firefly.core.model.StatusVisibility
 import social.firefly.core.model.request.PollCreate
 import social.firefly.core.navigation.usecases.PopNavBackstack
@@ -201,6 +202,16 @@ class NewPostViewModel(
         }
     }
 
+    override fun onQuoteApprovalPolicySelected(quoteApprovalPolicy: QuoteApprovalPolicy) {
+        _newPostUiState.edit {
+            copy(
+                bottomBarState = newPostUiState.value.bottomBarState.copy(
+                    quoteApprovalPolicy = quoteApprovalPolicy,
+                )
+            )
+        }
+    }
+
     override fun onPostClicked() {
         analytics.postClicked()
         viewModelScope.launch {
@@ -226,6 +237,7 @@ class NewPostViewModel(
                     inReplyToId = replyStatusId,
                     languageCode = newPostUiState.value.bottomBarState.language,
                     quotedStatusId = quoteStatusId,
+                    quoteApprovalPolicy = newPostUiState.value.bottomBarState.quoteApprovalPolicy,
                 )
 
                 onStatusPosted()

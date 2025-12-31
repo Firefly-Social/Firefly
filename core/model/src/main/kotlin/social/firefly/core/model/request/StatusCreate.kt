@@ -1,5 +1,6 @@
 package social.firefly.core.model.request
 
+import social.firefly.core.model.QuoteApprovalPolicy
 import social.firefly.core.model.Status
 import social.firefly.core.model.StatusVisibility
 
@@ -45,4 +46,5 @@ data class StatusCreate(
      */
     val language: String? = null,
     val quotedStatusId: String? = null,
+    val quoteApprovalPolicy: QuoteApprovalPolicy? = null,
 )

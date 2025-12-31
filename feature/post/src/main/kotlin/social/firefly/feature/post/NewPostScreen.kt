@@ -53,6 +53,7 @@ import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfSpacing
 import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.model.ImageState
+import social.firefly.core.model.QuoteApprovalPolicy
 import social.firefly.core.model.StatusVisibility
 import social.firefly.core.ui.common.TransparentNoTouchOverlay
 import social.firefly.core.ui.common.UiConstants
@@ -72,6 +73,7 @@ import social.firefly.core.ui.postcard.components.Quote
 import social.firefly.core.ui.postcard.quoteUiStatePreview
 import social.firefly.feature.post.bottombar.BottomBar
 import social.firefly.feature.post.bottombar.BottomBarState
+import social.firefly.feature.post.bottombar.QuotePolicyDropDownButton
 import social.firefly.feature.post.bottombar.VisibilityDropDownButton
 import social.firefly.feature.post.media.MediaInteractions
 import social.firefly.feature.post.poll.Poll
@@ -286,6 +288,7 @@ private fun NewPostScreenContent(
             onUploadImageClicked = newPostInteractions::onUploadImageClicked,
             onUploadMediaClicked = newPostInteractions::onUploadMediaClicked,
             onLanguageSelected = newPostInteractions::onLanguageSelected,
+            newPostInteractions = newPostInteractions,
         )
     }
 }

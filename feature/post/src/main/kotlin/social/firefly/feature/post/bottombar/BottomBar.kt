@@ -6,12 +6,15 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Icon
@@ -23,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import social.firefly.common.utils.FileType
 import social.firefly.common.utils.getFileType
@@ -31,6 +35,9 @@ import social.firefly.core.designsystem.icon.FfIcons
 import social.firefly.core.designsystem.theme.FfSpacing
 import social.firefly.core.designsystem.theme.FfTheme
 import social.firefly.core.ui.common.divider.FfDivider
+import social.firefly.core.ui.common.utils.PreviewTheme
+import social.firefly.feature.post.NewPostInteractions
+import social.firefly.feature.post.NewPostInteractionsNoOp
 import social.firefly.feature.post.R
 import social.firefly.feature.post.NewPostViewModel
 import social.firefly.feature.post.poll.PollInteractions
@@ -42,6 +49,7 @@ internal fun BottomBar(
     bottomBarState: BottomBarState,
     pollInteractions: PollInteractions,
     contentWarningInteractions: ContentWarningInteractions,
+    newPostInteractions: NewPostInteractions,
     onMediaInserted: (Uri, File, FileType) -> Unit,
     onUploadImageClicked: () -> Unit,
     onUploadMediaClicked: () -> Unit,
@@ -95,6 +103,7 @@ internal fun BottomBar(
         pollInteractions = pollInteractions,
         contentWarningInteractions = contentWarningInteractions,
         onLanguageSelected = onLanguageSelected,
+        newPostInteractions = newPostInteractions,
     )
 }
 
@@ -105,6 +114,7 @@ private fun BottomBar(
     onUploadVideoClicked: () -> Unit,
     pollInteractions: PollInteractions,
     contentWarningInteractions: ContentWarningInteractions,
+    newPostInteractions: NewPostInteractions,
     onLanguageSelected: (code: String) -> Unit,
 ) {
     Column {
@@ -113,7 +123,7 @@ private fun BottomBar(
         )
         Row(
             modifier = Modifier
-                .height(56.dp)
+                .padding(top = 8.dp)
                 .fillMaxWidth()
                 .background(FfTheme.colors.layer1)
                 .horizontalScroll(rememberScrollState()),
@@ -157,6 +167,18 @@ private fun BottomBar(
             )
 
             CharacterCountLabel(characterCountText = bottomBarState.characterCountText)
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            QuotePolicyDropDownButton(
+                quoteApprovalPolicy = bottomBarState.quoteApprovalPolicy,
+                onPolicySelected = newPostInteractions::onQuoteApprovalPolicySelected,
+            )
         }
     }
 }
@@ -211,4 +233,21 @@ private fun CharacterCountLabel(characterCountText: String) {
         style = FfTheme.typography.labelSmall,
         color = FfTheme.colors.textSecondary,
     )
+}
+
+@Preview
+@Composable
+private fun BottomBarPreview() {
+    PreviewTheme {
+        BottomBar(
+            bottomBarState = BottomBarState(),
+            pollInteractions = object : PollInteractions {},
+            contentWarningInteractions = object : ContentWarningInteractions {},
+            newPostInteractions = NewPostInteractionsNoOp,
+            onMediaInserted = { _, _, _ -> },
+            onUploadImageClicked = {},
+            onUploadMediaClicked = {},
+            onLanguageSelected = {},
+        )
+    }
 }

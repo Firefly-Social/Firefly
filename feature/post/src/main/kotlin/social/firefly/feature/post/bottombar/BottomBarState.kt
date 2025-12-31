@@ -1,5 +1,6 @@
 package social.firefly.feature.post.bottombar
 
+import social.firefly.core.model.QuoteApprovalPolicy
 import social.firefly.feature.post.NewPostViewModel
 
 data class BottomBarState(
@@ -11,6 +12,7 @@ data class BottomBarState(
     val maxImages: Int = NewPostViewModel.MAX_IMAGES,
     val language: String = "",
     val availableLocales: List<LocaleUiState> = emptyList(),
+    val quoteApprovalPolicy: QuoteApprovalPolicy = QuoteApprovalPolicy.PUBLIC,
 )
 
 data class LocaleUiState(

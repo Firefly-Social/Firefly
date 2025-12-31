@@ -7,6 +7,7 @@ import kotlinx.coroutines.async
 import social.firefly.common.annotations.PreferUseCase
 import social.firefly.common.utils.StringFactory
 import social.firefly.core.model.ImageState
+import social.firefly.core.model.QuoteApprovalPolicy
 import social.firefly.core.model.StatusVisibility
 import social.firefly.core.model.exceptions.HttpException
 import social.firefly.core.model.request.PollCreate
@@ -38,6 +39,7 @@ class PostStatus internal constructor(
         inReplyToId: String?,
         languageCode: String?,
         quotedStatusId: String?,
+        quoteApprovalPolicy: QuoteApprovalPolicy,
     ) = externalScope.async(dispatcherIo) {
         try {
             // asynchronously update all attachment descriptions before sending post
@@ -76,6 +78,7 @@ class PostStatus internal constructor(
                         inReplyToId = inReplyToId,
                         language = languageCode,
                         quotedStatusId = quotedStatusId,
+                        quoteApprovalPolicy = quoteApprovalPolicy,
                     ),
                 )
             saveStatusToDatabase(status)

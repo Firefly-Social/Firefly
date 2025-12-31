@@ -1,5 +1,6 @@
 package social.firefly.feature.post
 
+import social.firefly.core.model.QuoteApprovalPolicy
 import social.firefly.core.model.StatusVisibility
 
 interface NewPostInteractions {
@@ -9,6 +10,7 @@ interface NewPostInteractions {
     fun onPostClicked()
     fun onEditClicked()
     fun onVisibilitySelected(statusVisibility: StatusVisibility)
+    fun onQuoteApprovalPolicySelected(quoteApprovalPolicy: QuoteApprovalPolicy)
     fun onLanguageSelected(code: String)
 }
 
@@ -19,5 +21,6 @@ object NewPostInteractionsNoOp : NewPostInteractions {
     override fun onPostClicked() = Unit
     override fun onEditClicked() = Unit
     override fun onVisibilitySelected(statusVisibility: StatusVisibility) = Unit
+    override fun onQuoteApprovalPolicySelected(quoteApprovalPolicy: QuoteApprovalPolicy) = Unit
     override fun onLanguageSelected(code: String) = Unit
 }

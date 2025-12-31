@@ -50,4 +50,14 @@
     <string name="visibility_unlisted">Unlisted</string>
     <string name="visibility_private">Private</string>
     <string name="visibility_direct">Direct</string>
+
+    <string name="quote_policy_public">Anyone can quote</string>
+    <string name="quote_policy_followers">Followers can quote</string>
+    <string name="quote_policy_nobody">Nobody can quote</string>
+
+    <string name="quote_policy_public_short">Anyone</string>
+    <string name="quote_policy_followers_short">Limited</string>
+    <string name="quote_policy_nobody_short">Nobody</string>
+
+    <string name="quote_policy">Quote policy:</string>
 </resources>
