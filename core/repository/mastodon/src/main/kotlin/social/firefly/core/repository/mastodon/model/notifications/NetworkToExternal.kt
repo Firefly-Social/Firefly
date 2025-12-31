@@ -14,6 +14,7 @@ import social.firefly.core.network.mastodon.model.responseBody.NetworkNotificati
 import social.firefly.core.network.mastodon.model.responseBody.NetworkRelationshipSeveranceEvent
 import social.firefly.core.repository.mastodon.model.status.toExternalModel
 
+@Suppress("CyclomaticComplexMethod")
 fun NetworkNotification.toExternal(): Notification =
     when (this) {
         is NetworkNotification.Mention -> Notification.Mention(
