@@ -37,6 +37,7 @@ class PostStatus internal constructor(
         contentWarningText: String?,
         inReplyToId: String?,
         languageCode: String?,
+        quotedStatusId: String?,
     ) = externalScope.async(dispatcherIo) {
         try {
             // asynchronously update all attachment descriptions before sending post
@@ -74,6 +75,7 @@ class PostStatus internal constructor(
                         },
                         inReplyToId = inReplyToId,
                         language = languageCode,
+                        quotedStatusId = quotedStatusId,
                     ),
                 )
             saveStatusToDatabase(status)

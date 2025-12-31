@@ -136,7 +136,7 @@ internal fun BottomRow(
                             )
                         },
                         expanded = boostMenuExpanded,
-                        onClick = {  },
+                        onClick = { postCardInteractions.onQuoteClicked(post.statusId) },
                     )
                 }
             }

@@ -42,6 +42,7 @@ internal fun StatusCreate.toNetworkModel(): NetworkStatusCreate =
         contentWarningText = contentWarningText,
         visibility = visibility?.toNetworkModel(),
         language = language,
+        quotedStatusId = quotedStatusId,
     )
 
 internal fun ReportCreate.toNetworkModel(): NetworkReportCreate =

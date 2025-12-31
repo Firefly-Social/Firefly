@@ -59,6 +59,7 @@ sealed class NavigationDestination {
     data class NewPost(
         val replyStatusId: String? = null,
         val editStatusId: String? = null,
+        val quoteStatusId: String? = null,
     ) : NavigationDestination()
 
     @Serializable

@@ -44,4 +44,5 @@ data class StatusCreate(
      * ISO 639-1 language code for this status.
      */
     val language: String? = null,
+    val quotedStatusId: String? = null,
 )

@@ -11,6 +11,10 @@ interface PostCardInteractions : PollInteractions, HtmlContentInteractions {
         isBoosting: Boolean,
     )
 
+    fun onQuoteClicked(
+        statusId: String,
+    )
+
     fun onFavoriteClicked(
         statusId: String,
         isFavoriting: Boolean,
@@ -63,6 +67,8 @@ object PostCardInteractionsNoOp: PostCardInteractions {
     override fun onReplyClicked(statusId: String) = Unit
 
     override fun onBoostClicked(statusId: String, isBoosting: Boolean) = Unit
+
+    override fun onQuoteClicked(statusId: String) = Unit
 
     override fun onFavoriteClicked(statusId: String, isFavoriting: Boolean) = Unit
 

@@ -19,11 +19,11 @@ fun String.reduceHtmlLinks(): String {
     } while (true)
 
     do {
-        val spanStartIndex = reducedHtml.indexOf(INLINE_QUOTE_SPAN)
+        val spanStartIndex = reducedHtml.indexOf(INLINE_QUOTE_PARAGRAPH)
         if (spanStartIndex == -1) break
-        val endIndex = reducedHtml.indexOf(SPAN_END, spanStartIndex)
+        val endIndex = reducedHtml.indexOf(PARAGRAPH_END, spanStartIndex)
         reducedHtml = reducedHtml.replace(
-            reducedHtml.substring(spanStartIndex, endIndex + SPAN_END.length),
+            reducedHtml.substring(spanStartIndex, endIndex + PARAGRAPH_END.length),
             ""
         )
     } while (true)
@@ -45,4 +45,5 @@ fun String.reduceHtmlLinks(): String {
 private const val INVISIBLE_SPAN = "<span class=\"invisible\">"
 private const val SPAN_END = "</span>"
 private const val ELLIPSIS_SPAN = "<span class=\"ellipsis\">"
-private const val INLINE_QUOTE_SPAN = "<p class=\"quote-inline\">"
+private const val INLINE_QUOTE_PARAGRAPH = "<p class=\"quote-inline\">"
+private const val PARAGRAPH_END = "</p>"

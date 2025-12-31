@@ -131,7 +131,7 @@ internal val postContentUiState = PostContentUiState(
     contentWarning = "",
 )
 
-internal val quoteUiStatePreview = QuoteUiState(
+val quoteUiStatePreview = QuoteUiState(
     statusId = "",
     metaDataUiState = metaDataUiStatePreview,
     postContentUiState = postContentUiState,

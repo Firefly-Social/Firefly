@@ -30,6 +30,7 @@ val newPostModule = module {
             analytics = get(),
             replyStatusId = parametersHolder[0],
             editStatusId = parametersHolder[1],
+            quoteStatusId = parametersHolder[2],
             postStatus = get(),
             editStatus = get(),
             popNavBackstack = get(),
@@ -47,9 +48,11 @@ val newPostModule = module {
             getDomain = get(),
             searchRepository = get(),
             statusRepository = get(),
+            userAccountId = get(),
             coroutineScope = parametersHolder[0],
             inReplyToId = parametersHolder[1],
-            editStatusId = parametersHolder[2]
+            editStatusId = parametersHolder[2],
+            quoteStatusId = parametersHolder[3],
         )
     }
 

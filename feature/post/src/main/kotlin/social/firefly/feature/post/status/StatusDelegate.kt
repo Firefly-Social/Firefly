@@ -19,7 +19,9 @@ import social.firefly.core.repository.mastodon.SearchRepository
 import social.firefly.core.repository.mastodon.StatusRepository
 import social.firefly.core.share.ShareInfo
 import social.firefly.core.ui.htmlcontent.htmlToStringWithExpandedMentions
+import social.firefly.core.ui.postcard.toQuoteUiState
 import social.firefly.core.usecase.mastodon.account.GetDomain
+import social.firefly.core.usecase.mastodon.account.GetLoggedInUserAccountId
 import social.firefly.feature.post.NewPostViewModel
 import timber.log.Timber
 
@@ -29,8 +31,10 @@ class StatusDelegate(
     private val searchRepository: SearchRepository,
     private val statusRepository: StatusRepository,
     private val coroutineScope: CoroutineScope,
+    private val userAccountId: GetLoggedInUserAccountId,
     private val inReplyToId: String? = null,
     private val editStatusId: String? = null,
+    private val quoteStatusId: String? = null,
 ) : StatusInteractions, ContentWarningInteractions {
 
     private val _uiState = MutableStateFlow(StatusUiState())
@@ -38,10 +42,13 @@ class StatusDelegate(
 
     private var searchJob: Job? = null
 
+    private val loggedInUserId = userAccountId()
+
     init {
         coroutineScope.launch {
             inReplyToId?.let { populateReply(it) }
             editStatusId?.let { populateEditStatus(it) }
+            quoteStatusId?.let { populateQuoteStatus(it) }
             populateSharedText()
         }
     }
@@ -85,6 +92,16 @@ class StatusDelegate(
                         editStatusId = status.statusId,
                     )
                 }
+            }
+        }
+    }
+
+    private suspend fun populateQuoteStatus(quoteStatusId: String) {
+        statusRepository.getStatusLocal(quoteStatusId)?.let { quotedStatus ->
+            _uiState.edit {
+                copy(
+                    quoteUiStatus = quotedStatus.toQuoteUiState(loggedInUserId)
+                )
             }
         }
     }

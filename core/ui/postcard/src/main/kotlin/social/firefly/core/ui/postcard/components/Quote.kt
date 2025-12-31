@@ -18,17 +18,16 @@ import social.firefly.core.ui.common.utils.noRippleClickable
 import social.firefly.core.ui.postcard.PostCardInteractions
 import social.firefly.core.ui.postcard.PostCardInteractionsNoOp
 import social.firefly.core.ui.postcard.QuoteUiState
-import social.firefly.core.ui.postcard.metaDataUiStatePreview
-import social.firefly.core.ui.postcard.postContentUiState
 import social.firefly.core.ui.postcard.quoteUiStatePreview
 
 @Composable
 fun Quote(
+    modifier: Modifier = Modifier,
     quoteUiState: QuoteUiState,
     postCardInteractions: PostCardInteractions,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .border(
                 width = 2.dp,
                 color = FfTheme.colors.borderPrimary,
