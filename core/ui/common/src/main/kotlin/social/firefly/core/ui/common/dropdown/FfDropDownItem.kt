@@ -3,7 +3,6 @@ package social.firefly.core.ui.common.dropdown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
@@ -21,6 +20,7 @@ fun FfDropDownItem(
     icon: (@Composable () -> Unit)? = null,
     emojis: List<Emoji>? = null,
     expanded: MutableState<Boolean>,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     DropdownMenuItem(
@@ -44,6 +44,7 @@ fun FfDropDownItem(
                 }
             }
         },
+        enabled = enabled,
         onClick = {
             onClick()
             expanded.value = false

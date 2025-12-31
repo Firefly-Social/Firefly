@@ -32,6 +32,7 @@ data class MainPostCardUiState(
     val shouldShowUnfavoriteConfirmation: Boolean,
     val shouldShowUnbookmarkConfirmation: Boolean,
     val quoteUiState: QuoteUiState?,
+    val quotability: QuotabilityUiState,
 )
 
 data class OverflowUiState(
@@ -86,6 +87,13 @@ data class DepthLinesUiState(
     val expandRepliesButtonUiState: ExpandRepliesButtonUiState,
     val showViewMoreRepliesWithPlusButton: Boolean = false,
 )
+
+enum class QuotabilityUiState {
+    CAN_QUOTE,
+    CAN_QUOTE_WITH_APPROVAL,
+    CAN_NOT_QUOTE_REQUIRES_FOLLOW,
+    CAN_NOT_QUOTE,
+}
 
 enum class ExpandRepliesButtonUiState {
     HIDDEN,
@@ -164,4 +172,5 @@ internal val postCardUiStatePreview = MainPostCardUiState(
     shouldShowUnfavoriteConfirmation = false,
     shouldShowUnbookmarkConfirmation = false,
     quoteUiState = null,
+    quotability = QuotabilityUiState.CAN_QUOTE,
 )

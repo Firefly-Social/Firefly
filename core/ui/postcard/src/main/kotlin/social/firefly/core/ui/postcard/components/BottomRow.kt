@@ -37,6 +37,7 @@ import social.firefly.core.ui.common.utils.shareUrl
 import social.firefly.core.ui.postcard.MainPostCardUiState
 import social.firefly.core.ui.postcard.PostCardInteractions
 import social.firefly.core.ui.postcard.PostCardInteractionsNoOp
+import social.firefly.core.ui.postcard.QuotabilityUiState
 import social.firefly.core.ui.postcard.R
 import social.firefly.core.ui.postcard.postCardUiStatePreview
 import kotlin.math.roundToInt
@@ -127,13 +128,26 @@ internal fun BottomRow(
                     )
 
                     FfDropDownItem(
-                        text = StringFactory.resource(resId = R.string.quote).build(context),
+                        text = StringFactory.resource(
+                            resId = when (post.quotability) {
+                                QuotabilityUiState.CAN_QUOTE -> R.string.quote
+                                QuotabilityUiState.CAN_QUOTE_WITH_APPROVAL -> R.string.quote_with_approval
+                                QuotabilityUiState.CAN_NOT_QUOTE_REQUIRES_FOLLOW -> R.string.quote_follow_first
+                                QuotabilityUiState.CAN_NOT_QUOTE -> R.string.quote_denied
+                            }).build(context),
                         icon = {
                             Icon(
                                 modifier = Modifier.size(FfIcons.Sizes.small),
                                 painter = FfIcons.quotes(),
                                 contentDescription = null
                             )
+                        },
+                        enabled = when (post.quotability) {
+                            QuotabilityUiState.CAN_QUOTE,
+                            QuotabilityUiState.CAN_QUOTE_WITH_APPROVAL -> true
+
+                            QuotabilityUiState.CAN_NOT_QUOTE_REQUIRES_FOLLOW,
+                            QuotabilityUiState.CAN_NOT_QUOTE -> false
                         },
                         expanded = boostMenuExpanded,
                         onClick = { postCardInteractions.onQuoteClicked(post.statusId) },

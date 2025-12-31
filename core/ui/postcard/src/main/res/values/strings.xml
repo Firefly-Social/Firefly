@@ -12,7 +12,11 @@
     <string name="copy_text">Copy post text</string>
     <string name="boost">Boost</string>
     <string name="remove_boost">Remove Boost</string>
+
     <string name="quote">Quote</string>
+    <string name="quote_with_approval">Quote (requires approval)</string>
+    <string name="quote_follow_first">Only followers can quote</string>
+    <string name="quote_denied">Can not quote</string>
 
     <string name="copied_text_label">Post text</string>
 

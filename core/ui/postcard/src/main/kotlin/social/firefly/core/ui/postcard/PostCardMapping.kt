@@ -4,6 +4,8 @@ import social.firefly.common.utils.StringFactory
 import social.firefly.common.utils.timeSinceNow
 import social.firefly.common.utils.toShortenedStringValue
 import social.firefly.core.model.Card
+import social.firefly.core.model.QuoteApprovalGroup
+import social.firefly.core.model.QuoteApprovalType
 import social.firefly.core.model.Status
 import social.firefly.core.ui.common.R
 import social.firefly.core.ui.poll.toPollUiState
@@ -64,7 +66,20 @@ private fun Status.toMainPostCardUiState(
     shouldShowUnfavoriteConfirmation = shouldShowUnfavoriteConfirmation,
     quoteUiState = quote?.quotedStatus?.toQuoteUiState(
         currentUserAccountId = currentUserAccountId,
-    )
+    ),
+    quotability = when (quoteApproval.currentUser) {
+        QuoteApprovalType.AUTOMATIC -> QuotabilityUiState.CAN_QUOTE
+        QuoteApprovalType.MANUAL -> QuotabilityUiState.CAN_QUOTE_WITH_APPROVAL
+        QuoteApprovalType.DENIED -> if (
+            quoteApproval.automatic.contains(QuoteApprovalGroup.FOLLOWERS) ||
+            quoteApproval.manual.contains(QuoteApprovalGroup.FOLLOWERS)
+        ) {
+            QuotabilityUiState.CAN_NOT_QUOTE_REQUIRES_FOLLOW
+        } else {
+            QuotabilityUiState.CAN_NOT_QUOTE
+        }
+        QuoteApprovalType.UNKNOWN -> QuotabilityUiState.CAN_NOT_QUOTE
+    }
 )
 
 fun Status.toMetaDataUiState() = MetaDataUiState(
