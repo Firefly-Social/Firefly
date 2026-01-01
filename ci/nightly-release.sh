@@ -19,14 +19,12 @@ VERSION_NAME=$(cat app/build.gradle.kts | grep versionName | cut -d "\"" -f2)
 TAG="$VERSION_NAME.$RELEASE_VERSION_CODE"
 RELEASE_NAME="Nightly $TAG"
 
-echo "Building APK…"
-./gradlew --no-daemon clean :app:assembleRelease
+ci/nightly-build.sh
 
-APK_DIR="app/build/outputs/apk/release"
-APK_FILE="$(ls -1 ${APK_DIR}/*.apk 2>/dev/null | head -n1)"
+SIGNED_APK_FINAL_PATH="secrets/nightly.apk"
 
 if [[ -z "$APK_FILE" ]]; then
-  echo "No APK found in ${APK_DIR}"
+  echo "No APK found"
   exit 1
 fi
 
