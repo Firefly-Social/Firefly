@@ -21,7 +21,7 @@ RELEASE_NAME="Nightly $TAG"
 
 ci/nightly-build.sh
 
-SIGNED_APK_FINAL_PATH="secrets/nightly.apk"
+APK_FILE="secrets/nightly.apk"
 
 if [[ -z "$APK_FILE" ]]; then
   echo "No APK found"
