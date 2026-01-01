@@ -20,5 +20,36 @@ VERSION_NAME=$(cat app/build.gradle.kts | grep versionName | cut -d "\"" -f2)
 TAG="$VERSION_NAME.$RELEASE_VERSION_CODE"
 RELEASE_NAME="Nightly $TAG"
 
-echo "Releasing with fastlane…"
-bundle exec fastlane nightly token:$GITHUB_TOKEN name:"$RELEASE_NAME" tag:"$TAG"
+#echo "Releasing with fastlane…"
+#bundle exec fastlane nightly token:$GITHUB_TOKEN name:"$RELEASE_NAME" tag:"$TAG"
+
+echo "Building APK…"
+./gradlew --no-daemon clean :app:assembleRelease
+
+APK_DIR="app/build/outputs/apk/release"
+APK_FILE="$(ls -1 ${APK_DIR}/*.apk 2>/dev/null | head -n1)"
+
+if [[ -z "$APK_FILE" ]]; then
+  echo "No APK found in ${APK_DIR}"
+  exit 1
+fi
+
+echo "Found APK: ${APK_FILE}"
+
+if [[ -z "${GH_TOKEN:-}" ]]; then
+  echo "GH_TOKEN is not set"
+  echo "In GitHub Actions, set: GH_TOKEN: \${{ secrets.GITHUB_TOKEN }}"
+  exit 1
+fi
+
+echo "Publishing GitHub release ${RELEASE_NAME} (${TAG})…"
+
+if gh release view "$TAG" >/dev/null 2>&1; then
+  echo "Release already exists, replacing APK…"
+  gh release upload "$TAG" "$APK_FILE" --clobber
+else
+  gh release create "$TAG" \
+    --title "$RELEASE_NAME" \
+    --generate-notes \
+    "$APK_FILE"
+fi

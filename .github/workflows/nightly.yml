@@ -33,6 +33,8 @@ jobs:
     needs: check_date
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -45,12 +47,6 @@ jobs:
         # See: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Hosted-Tool-Cache
     - name: Set up Gradle
       uses: gradle/gradle-build-action@v3
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: .ruby-version
-        bundler: "2.7.2"
-        bundler-cache: true
     - name: Decrypt secrets
       env:
         GPG_KEY: ${{ secrets.gpg_key }}
