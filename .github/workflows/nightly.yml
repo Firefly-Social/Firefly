@@ -45,10 +45,11 @@ jobs:
         # See: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Hosted-Tool-Cache
     - name: Set up Gradle
       uses: gradle/gradle-build-action@v3
-    - name: Set up Homebrew
-      run: .github/workflows/setup-homebrew.sh
     - name: Set up Ruby
-      run: .github/workflows/setup-ruby.sh
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: .ruby-version
+        bundler-cache: true
     - name: Decrypt secrets
       env:
         GPG_KEY: ${{ secrets.gpg_key }}
