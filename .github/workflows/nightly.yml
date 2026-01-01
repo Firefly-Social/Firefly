@@ -55,4 +55,5 @@ jobs:
     - name: Build and release
       env:
         GRADLE_OPTS: -Dorg.gradle.daemon=false
-      run: ci/nightly-release.sh ${{ github.run_number }} ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: ci/nightly-release.sh ${{ github.run_number }}
